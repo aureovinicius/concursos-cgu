@@ -29,8 +29,8 @@ function harness(scope = "https://example.test/concursos-cgu/") {
   const calls = [];
   const failures = { open: false, put: false };
   const prefix = `concursos:${encodeURIComponent(scope)}:`;
-  const core = `${prefix}concursos-5:core`;
-  const resources = `${prefix}concursos-5:resources`;
+  const core = `${prefix}concursos-6:core`;
+  const resources = `${prefix}concursos-6:resources`;
   let network = request => contentFor(new URL(typeof request === "string" ? request : request.url));
   let claims = 0;
   let skips = 0;
@@ -92,7 +92,7 @@ for (const scope of ["https://example.test/", "https://example.test/concursos-cg
     app.network(() => { throw new TypeError("Offline"); });
     assert.equal(await (await app.fetch("./", { mode: "navigate" })).text(), APP_HTML);
     assert.equal(await (await app.fetch("index.html", { mode: "navigate" })).text(), APP_HTML);
-    for (const path of ["app.js?v=concursos-5", "styles.css?v=concursos-5", "pwa.js?v=concursos-5", "data/courses.json?v=concursos-5", "vendor/katex/katex.min.js", "vendor/katex/katex.min.css", ...FONT_FILES.map(name => `vendor/katex/fonts/${name}`)]) {
+    for (const path of ["app.js?v=concursos-6", "styles.css?v=concursos-6", "pwa.js?v=concursos-6", "data/courses.json?v=concursos-6", "vendor/katex/katex.min.js", "vendor/katex/katex.min.css", ...FONT_FILES.map(name => `vendor/katex/fonts/${name}`)]) {
       assert.equal((await app.fetch(path)).status, 200);
     }
   });
@@ -122,7 +122,7 @@ test("failed precache never replaces an existing version with authentication HTM
     response("Forbidden", "text/html", { status: 403 }),
   ]) {
     const app = harness();
-    const old = app.core.replace("concursos-5", "pwa-0");
+    const old = app.core.replace("concursos-6", "pwa-0");
     app.buckets.set(old, new Map([[app.scope, response(APP_HTML, "text/html")]]));
     app.network(request => request.url === app.scope ? result : contentFor(new URL(request.url)));
     await assert.rejects(app.dispatch("install"), /shell unavailable/);
@@ -130,7 +130,7 @@ test("failed precache never replaces an existing version with authentication HTM
     assert.ok(!app.buckets.has(app.core));
   }
   const app = harness();
-  const old = app.core.replace("concursos-5", "pwa-0");
+  const old = app.core.replace("concursos-6", "pwa-0");
   app.buckets.set(old, new Map());
   app.failures.put = true;
   await assert.rejects(app.dispatch("install"), /Quota exceeded/);
@@ -142,13 +142,14 @@ test("only visited question images and explicitly allowed local data become avai
   const app = harness();
   await app.dispatch("install");
   assert.ok(!app.calls.some(request => request.url.includes("assets/questions/")));
-  for (const path of ["assets/questions/2023/1/chart.png", "data/courses.json", "data/edital-cgu-2026.pdf"]) {
+  for (const path of ["assets/questions/2023/1/chart.png", "data/courses.json", "data/edital-cgu-2026.pdf", "data/edital-camara.pdf"]) {
     assert.equal((await app.fetch(path)).status, 200);
   }
-  assert.equal(app.buckets.get(app.resources).size, 3);
+  assert.equal(app.buckets.get(app.resources).size, 4);
   app.network(() => { throw new TypeError("Offline"); });
   assert.equal(await (await app.fetch("assets/questions/2023/1/chart.png")).text(), "image");
   assert.equal(await (await app.fetch("data/courses.json")).text(), "{}");
+  assert.equal(await (await app.fetch("data/edital-camara.pdf")).text(), "pdf");
   await assert.rejects(app.fetch("assets/questions/2023/2/unvisited.png"), /Offline/);
 });
 
@@ -194,7 +195,7 @@ test("storage read and write failures do not block available network resources",
 
 test("activation removes only old caches for this exact scope and leaves other applications untouched", async () => {
   const app = harness();
-  const old = app.core.replace("concursos-5", "pwa-0");
+  const old = app.core.replace("concursos-6", "pwa-0");
   const root = harness("https://example.test/").core;
   const sibling = harness("https://example.test/enem-other/").core;
   for (const name of [old, app.core, app.resources, root, sibling, "unrelated-cache"]) app.buckets.set(name, new Map());
@@ -215,7 +216,7 @@ test("the large official bank is cached only on request and remains available of
   const app = harness();
   await app.dispatch("install");
   assert.ok(!app.calls.some(request => request.url.includes("cebraspe-ti-questions")));
-  const path="data/cebraspe-ti-questions.json?v=concursos-5";
+  const path="data/cebraspe-ti-questions.json?v=concursos-6";
   assert.equal((await app.fetch(path)).status,200);
   app.network(()=>{throw new TypeError("Offline")});
   assert.equal(await (await app.fetch(path)).text(),"{}");
@@ -226,22 +227,22 @@ test("the large official bank is cached only on request and remains available of
 test("official bank parts are lazy, scoped and versioned in the offline cache", async () => {
  const app=harness();await app.dispatch("install");
  assert.ok(!app.calls.some(request=>request.url.includes("cebraspe-ti/part-")));
- const path="data/cebraspe-ti/part-001.json?v=concursos-5";
+ const path="data/cebraspe-ti/part-001.json?v=concursos-6";
  assert.equal((await app.fetch(path)).status,200);
  app.network(()=>{throw new TypeError("Offline")});
  assert.equal(await (await app.fetch(path)).text(),"{}");
- for(const path of ["data/cebraspe-ti/part-001.json?v=old","data/cebraspe-ti/private.json?v=concursos-5","data/cebraspe-ti/part-001.json?v=concursos-5&token=secret","data/cebraspe-ti/part-001.json"]) assert.equal(app.fetch(path),undefined,path);
+ for(const path of ["data/cebraspe-ti/part-001.json?v=old","data/cebraspe-ti/private.json?v=concursos-6","data/cebraspe-ti/part-001.json?v=concursos-6&token=secret","data/cebraspe-ti/part-001.json"]) assert.equal(app.fetch(path),undefined,path);
 });
 
 test("compressed official parts retain bytes offline and reject login HTML",async()=>{
  const app=harness();await app.dispatch('install');
- const path='data/cebraspe-ti/part-001.json.gz?v=concursos-5';
+ const path='data/cebraspe-ti/part-001.json.gz?v=concursos-6';
  app.network(()=>response('compressed bytes','application/gzip'));
  assert.equal(await (await app.fetch(path)).text(),'compressed bytes');
  app.network(()=>{throw new TypeError('Offline')});
  assert.equal(await (await app.fetch(path)).text(),'compressed bytes');
  assert.equal(app.fetch('data/cebraspe-ti/part-001.json.gz?v=old'),undefined);
- const other='data/cebraspe-ti/part-002.json.gz?v=concursos-5';
+ const other='data/cebraspe-ti/part-002.json.gz?v=concursos-6';
  app.network(()=>response('<html>Login</html>','text/html'));
  await app.fetch(other);app.network(()=>{throw new TypeError('Offline')});
  await assert.rejects(app.fetch(other),/Offline/);

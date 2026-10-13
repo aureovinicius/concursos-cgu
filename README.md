@@ -1,6 +1,16 @@
-# Concursos — CGU 2026
+# Concursos — CGU e Câmara dos Deputados
 
 Fork independente do [Enem](https://github.com/aureovinicius/enem), com trilhas por edital, questões de Certo ou Errado, prática contínua, justificativas, favoritos, revisão de erros e estatísticas. Veja a origem em `FORK.md`.
+
+O seletor **Edital, cargo ou banco** reúne os editais e o banco histórico. As quatro especialidades da CGU mantêm suas lições e questões; os 11 cargos da Câmara dos Deputados possuem roteiro de estudo e checklist de revisão.
+
+## Câmara dos Deputados
+
+O edital nº 1, de 02/10/2026, foi importado do PDF fornecido pelo usuário, preservado em `dist/data/edital-camara.pdf`. `data/camara-syllabus.json` contém o SHA-256, requisitos, cronograma, regras por cargo e o programa integral dos itens 14.2.3 e 14.2.4: 37 disciplinas e 287 tópicos principais. A prova está prevista no arquivo para 17/01/2027. Retificações externas não estão incorporadas.
+
+Os cargos compartilham a revisão das disciplinas comuns; disciplinas específicas e progresso da CGU mantêm IDs separados. O checklist registra revisão manual, sem conceder XP ou aprovação. Ainda não há questões nem introduções conceituais vinculadas a esse edital. O banco de 27.557 questões de cargos de TI permanece independente, sem alegação de alinhamento à Câmara.
+
+O link `?especialidade=camara-divulgacao-institucional#edital` abre o novo edital. Os demais cargos podem ser escolhidos no seletor. `catalog.exams` e `course.examId` associam cada trilha ao edital, enquanto `catalog.exam` mantém compatibilidade com o catálogo anterior da CGU.
 
 A especialidade prioritária é **TI — Desenvolvimento de Sistemas**. Novos acessos começam nessa trilha, com o bloco P3 e Engenharia de Software em destaque. Seleções anteriores e progresso são preservados. O link `?especialidade=desenvolvimento#aprender` seleciona explicitamente a trilha e consome o parâmetro para respeitar escolhas posteriores.
 

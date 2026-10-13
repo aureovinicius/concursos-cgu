@@ -7,16 +7,17 @@ const catalog = JSON.parse(readFileSync('dist/data/courses.json','utf8'));
 const source = readFileSync('dist/app.js','utf8').replace(/\ninit\(\);\s*$/,'');
 function harness(saved, customCatalog=catalog, search="", fetchImpl=async()=>{throw new Error("Offline")}) {
  const nodes=new Map();
+ const listeners=new Map();
  const node=()=>({innerHTML:'',hidden:true,dataset:{},setAttribute(){},focus(){},matches(){return false},scrollIntoView(){},scrollTo(){},querySelector(){return node()},classList:{add(){},remove(){}}});
  const store=new Map([['fisio-progress-v1',JSON.stringify({xp:999,completed:['mecanica-1']})]]);
  if(saved) store.set('concursos-cgu-progress-v1',JSON.stringify(saved));
- const ctx=vm.createContext({fetch:fetchImpl,Blob,Response,DecompressionStream,TextDecoder,Uint8Array,document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(){},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:'#aprender',search,pathname:'/concursos-cgu/'},window:{addEventListener(){},scrollTo(){}},history:{replaceState(_s,_title,url){ctx.lastReplacedUrl=url;ctx.location.search=new URL(url,"https://example.test").search;}},URLSearchParams,Intl,Date,setTimeout(){},structuredClone});
+ const ctx=vm.createContext({fetch:fetchImpl,Blob,Response,DecompressionStream,TextDecoder,Uint8Array,document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(type,listener){if(!listeners.has(type))listeners.set(type,[]);listeners.get(type).push(listener)},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:'#aprender',search,pathname:'/concursos-cgu/'},window:{addEventListener(){},scrollTo(){}},history:{replaceState(_s,_title,url){ctx.lastReplacedUrl=url;ctx.location.search=new URL(url,"https://example.test").search;}},URLSearchParams,Intl,Date,setTimeout(){},structuredClone});
  vm.runInContext(source,ctx);ctx.input=structuredClone(customCatalog);vm.runInContext('catalog=input;setCourse(state.activeCourse);',ctx);
- return {run:s=>vm.runInContext(s,ctx),nodes,store};
+ return {run:s=>vm.runInContext(s,ctx),nodes,store,dispatch(type,event){for(const listener of listeners.get(type)||[])listener(event)}};
 }
 test('all four specialities match official syllabus with authored, sourced C/E items',()=>{
  const authored = catalog.questions.filter(q=>q.origin==="autoral");
- const tracks = catalog.courses.filter(c=>!c.practiceOnly);
+ const tracks = catalog.courses.filter(c=>c.examId==='cgu-2026');
  assert.equal(tracks.length,4);assert.equal(authored.length,130);
  assert.equal(new Set(authored.map(q=>q.id)).size,130);
  const syllabus=JSON.parse(readFileSync('data/syllabus.json','utf8'));
@@ -91,6 +92,139 @@ test('an explicit specialty link selects Development once, preserving progress a
  const invalid=harness({activeCourse:'dados'},catalog,'?especialidade=unknown');assert.equal(invalid.run('initialCourseId()'),'dados');
 });
 
+function camaraTracks() {
+ const tracks=catalog.courses.filter(c=>c.examId==='camara-2026');
+ assert.equal(tracks.length,11,'the uploaded notice must expose all eleven positions');
+ return tracks;
+}
+
+function withoutSelectors(html) { return html.replace(/<select\b[^>]*>[\s\S]*?<\/select>/g,''); }
+
+test('multiple notices preserve the CGU catalog and add eleven Câmara syllabus tracks without invented questions',()=>{
+ assert.ok(Array.isArray(catalog.exams));
+ assert.equal(new Set(catalog.exams.map(exam=>exam.id)).size,catalog.exams.length);
+ assert.ok(catalog.exams.some(exam=>exam.id==='cgu-2026'));
+ assert.ok(catalog.exams.some(exam=>exam.id==='camara-2026'));
+ assert.equal(catalog.exam.id,'cgu-2026');
+ const cguIds=new Set(catalog.courses.filter(c=>c.examId==='cgu-2026').flatMap(c=>c.modules.map(m=>m.id)));
+ const ids=new Set();
+ for(const course of camaraTracks()){
+  assert.ok(course.id.startsWith('camara-'),course.id);
+  assert.ok(!ids.has(course.id));ids.add(course.id);
+  assert.equal(course.syllabusOnly,true,course.id);
+  assert.equal(course.total,0,course.id);
+  assert.deepEqual(course.questionIds,[],course.id);
+  assert.ok(course.modules.length>0,course.id);
+  for(const module of course.modules){
+   assert.ok(module.id.startsWith('camara-'),module.id);
+   assert.ok(!cguIds.has(module.id),module.id);
+   assert.ok(typeof module.syllabusText==='string'&&module.syllabusText.trim().length>0,module.id);
+  }
+ }
+ assert.equal(catalog.questions.filter(q=>q.examId==='camara-2026'||q.moduleId?.startsWith('camara-')).length,0);
+ assert.equal(catalog.questions.filter(q=>q.origin==='autoral').length,130);
+});
+
+test('all Câmara views render with their own notice and no empty lessons or fabricated performance',()=>{
+ const a=harness();
+ for(const course of camaraTracks()){
+  a.run(`setCourse(${JSON.stringify(course.id)})`);
+  assert.equal(a.run('currentExam().id'),'camara-2026',course.id);
+  assert.equal(a.run('lessons.length'),0,course.id);
+  assert.equal(a.run('data.questions.length'),0,course.id);
+  for(const view of ['aprender','edital','praticar','desempenho','conquistas','sobre']){
+   a.run(`activeView=${JSON.stringify(view)};renderPage()`);
+   for(const selector of ['#app','#right-rail']){
+    const html=a.nodes.get(selector).innerHTML;
+    assert.ok(html.length>0,`${course.id}/${view}/${selector}`);
+    assert.doesNotMatch(html,/\b(?:NaN|undefined)\b/,`${course.id}/${view}/${selector}`);
+   }
+  }
+  a.run('startPractice()');assert.equal(a.run('quiz'),null,course.id);
+  assert.equal(a.run('courseAttempts().length'),0,course.id);
+ }
+ assert.equal(a.run('state.xp'),0);
+ assert.equal(a.run('state.completed.length'),0);
+ assert.equal(a.run('state.attempts.length'),0);
+});
+
+test('Câmara notice, practice, performance and rail do not inherit CGU dates, sources or scoring',()=>{
+ const a=harness();
+ for(const course of camaraTracks()){
+  a.run(`setCourse(${JSON.stringify(course.id)});activeView='edital';renderPage()`);
+  const html=withoutSelectors(a.nodes.get('#app').innerHTML);
+  const rail=a.nodes.get('#right-rail').innerHTML;
+  for(const content of [html,rail]){
+   assert.doesNotMatch(content,/CGU|cgu_26|edital-cgu-2026\.pdf|Auditor Federal de Finanças e Controle/,course.id);
+   assert.doesNotMatch(content,/13 dez 2026|10\/10 a 04\/11\/2026|170 itens|260 pontos|Mínimo total nas objetivas: 78/,course.id);
+  }
+  assert.match(a.run('blockLabel("P2")'),/específicos/i,course.id);
+  const secondBlock=a.run('currentExam().blocks.find(block=>block.id==="P2").title');
+  assert.match(secondBlock,/específicos/i,course.id);
+  assert.ok(html.includes(secondBlock),course.id);
+  for(const view of ['praticar','desempenho']){
+   a.run(`activeView=${JSON.stringify(view)};renderPage()`);
+   const content=withoutSelectors(a.nodes.get('#app').innerHTML);
+   assert.doesNotMatch(content,/P1\/P2: \+1|\+2 em P3|P3: \+2|erro desconta o mesmo valor/,`${course.id}/${view}`);
+  }
+ }
+});
+
+test('Câmara checklist persists independently of CGU lessons and grants neither XP nor question credit',()=>{
+ const course=camaraTracks()[0],moduleId=course.modules[0].id;
+ const original={xp:120,todayXp:20,completed:['etica-1'],introductionsRead:['etica'],syllabusRead:['etica'],answered:[],attempts:[]};
+ const a=harness(original);
+ a.run(`setCourse(${JSON.stringify(course.id)});activeView='edital';renderPage()`);
+ a.dispatch('change',{target:{dataset:{syllabus:moduleId},checked:true}});
+ assert.equal(a.run('state.xp'),120);assert.equal(a.run('state.todayXp'),20);
+ assert.equal(a.run('JSON.stringify(state.completed)'),JSON.stringify(['etica-1']));
+ assert.equal(a.run('JSON.stringify(state.introductionsRead)'),JSON.stringify(['etica']));
+ assert.equal(a.run('state.answered.length'),0);assert.equal(a.run('state.attempts.length'),0);
+ assert.ok(a.run(`state.syllabusRead.includes(${JSON.stringify(moduleId)})`));
+ const b=harness(JSON.parse(a.store.get('concursos-cgu-progress-v1')));
+ assert.equal(b.run('data.id'),course.id);
+ assert.ok(b.run(`state.syllabusRead.includes(${JSON.stringify(moduleId)})`));
+ assert.ok(b.run('state.syllabusRead.includes("etica")'));
+ b.run('setCourse("desenvolvimento")');
+ assert.equal(b.run('data.modules.filter(m=>state.syllabusRead.includes(m.id)).length'),1);
+ assert.equal(b.run('completedLessons()'),1);
+ b.run(`setCourse(${JSON.stringify(course.id)});activeView='edital';renderPage()`);
+ b.dispatch('change',{target:{dataset:{syllabus:moduleId},checked:false}});
+ assert.equal(b.run('JSON.stringify(state.syllabusRead)'),JSON.stringify(['etica']));
+ assert.equal(b.run('state.xp'),120);
+});
+
+test('a direct Câmara link selects its position once while preserving CGU progress',()=>{
+ const course=camaraTracks()[0];
+ const a=harness({activeCourse:'desenvolvimento',completed:['etica-1'],xp:200},catalog,`?especialidade=${encodeURIComponent(course.id)}&origem=link`);
+ a.run('setCourse(initialCourseId())');
+ assert.equal(a.run('data.id'),course.id);
+ assert.equal(a.run('currentExam().id'),'camara-2026');
+ assert.equal(a.run('state.activeSyllabusCourse'),course.id);
+ assert.equal(a.run('state.xp'),200);
+ assert.ok(a.run('state.completed.includes("etica-1")'));
+ assert.equal(a.run('lastReplacedUrl'),'/concursos-cgu/?origem=link#aprender');
+ a.run('setCourse("dados");setCourse(initialCourseId())');assert.equal(a.run('data.id'),'dados');
+});
+
+test('opening the notice from the historical bank returns to the last chosen syllabus, including after reload',()=>{
+ const course=camaraTracks()[0],fixture=officialFixture();
+ const a=harness(null,fixture);
+ a.run(`setCourse(${JSON.stringify(course.id)});setCourse('cebraspe-ti');activeView='praticar';renderPage()`);
+ assert.equal(a.run('data.id'),'cebraspe-ti');
+ assert.equal(a.run('state.activeSyllabusCourse'),course.id);
+ const b=harness(JSON.parse(a.store.get('concursos-cgu-progress-v1')),fixture);
+ b.run('activeView="edital";renderPage()');
+ assert.equal(b.run('data.id'),course.id);assert.equal(b.run('currentExam().id'),'camara-2026');
+ b.run('setCourse("auditoria");setCourse("cebraspe-ti");activeView="edital";renderPage()');
+ assert.equal(b.run('data.id'),'auditoria');assert.equal(b.run('currentExam().id'),'cgu-2026');
+ for(const invalid of [undefined,'missing-course','cebraspe-ti']){
+  const fallback=harness({activeCourse:'cebraspe-ti',activeSyllabusCourse:invalid},fixture);
+  fallback.run('activeView="edital";renderPage()');
+  assert.equal(fallback.run('data.id'),'desenvolvimento');
+ }
+});
+
 
 function officialFixture() {
  const result=structuredClone(catalog);
@@ -100,7 +234,7 @@ function officialFixture() {
  const questions=[{...base,id:'oficial-a-51',index:51,examId:'concurso-a',examName:'Órgão A',year:2024},{...base,id:'oficial-b-52',index:52,examId:'concurso-b',examName:'Órgão B',year:2025,correctAlternative:'E'}];
  result.questions.push(...questions);
  result.courses.push({id:'cebraspe-ti',title:'Provas anteriores · Cebraspe TI',practiceOnly:true,questionIds:questions.map(q=>q.id),total:2,modules:[{id:'oficial-ti',title:'Conhecimentos de TI'}]});
- result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-5'};
+ result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-6'};
  return result;
 }
 
@@ -165,7 +299,7 @@ test('previous support pages remain available without hiding the numbered item b
 
 test('official manifest parts load atomically and without duplicate requests',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-5','/data/cebraspe-ti/part-002.json?v=concursos-5'];const calls=[];
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-6','/data/cebraspe-ti/part-002.json?v=concursos-6'];const calls=[];
  const a=harness(null,metadata,'',async url=>{calls.push(url);return {ok:true,json:async()=>url===metadata.officialBank.url?{parts,total:2}:{questions:[questions[parts.indexOf(url)]]}}});
  await Promise.all([a.run('ensureCourseData("cebraspe-ti")'),a.run('ensureCourseData("cebraspe-ti")')]);
  assert.equal(calls.length,3);assert.equal(new Set(calls).size,3);assert.equal(a.run('catalog.questions.length'),132);
@@ -173,7 +307,7 @@ test('official manifest parts load atomically and without duplicate requests',as
 
 test('missing official part never imports a partial bank and a retry stays unique',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-5','/data/cebraspe-ti/part-002.json?v=concursos-5'];let fails=true;
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-6','/data/cebraspe-ti/part-002.json?v=concursos-6'];let fails=true;
  const a=harness(null,metadata,'',async url=>({ok:!(fails&&url===parts[1]),json:async()=>url===metadata.officialBank.url?{parts}:{questions:[questions[parts.indexOf(url)]]}}));
  await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'),/parte do banco/);assert.equal(a.run('catalog.questions.length'),130);
  fails=false;await a.run('ensureCourseData("cebraspe-ti")');await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);assert.equal(a.run('new Set(catalog.questions.map(q=>q.id)).size'),132);
@@ -195,7 +329,7 @@ test('official filters identify coarse blocks and disambiguate identical exam na
 
 for (const decoded of [false,true]) test(`compressed official parts load correctly with server decoding=${decoded}`,async()=>{
  const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
- const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-5';
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-6';
  const content=JSON.stringify({questions});
  const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(decoded?content:gzipSync(content)));
  await a.run('ensureCourseData("cebraspe-ti")');
@@ -205,7 +339,7 @@ for (const decoded of [false,true]) test(`compressed official parts load correct
 
 test('a corrupted compressed part remains atomic and can be retried',async()=>{
  const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
- const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-5';let broken=true;
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-6';let broken=true;
  const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(broken?new Uint8Array([31,139,8,0]):gzipSync(JSON.stringify({questions}))));
  await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'));assert.equal(a.run('catalog.questions.length'),130);
  broken=false;await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);

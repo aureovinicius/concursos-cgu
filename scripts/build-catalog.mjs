@@ -2,6 +2,9 @@ import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 const read = async p => JSON.parse(await readFile(p, 'utf8'));
 const { exam, tracks, modules: syllabus } = await read('data/syllabus.json');
+Object.assign(exam, {id:'cgu-2026',shortTitle:'CGU 2026',roleTitle:'Auditor Federal de Finanças e Controle',localPdfUrl:'/data/edital-cgu-2026.pdf',syllabusSection:'15.2'});
+const camara = await read('data/camara-syllabus.json');
+const exams = [exam, camara.exam];
 const content = await Promise.all(['common','auditoria','ti'].map(n => read(`data/${n}-content.json`)));
 const lessons = content.flatMap(x => x.modules);
 const sourceQuestions = content.flatMap(x => x.questions);
@@ -27,8 +30,13 @@ const questions = sourceQuestions.map((q,i) => {
 const courses = [...tracks].sort((a,b) => Number(b.id === "desenvolvimento") - Number(a.id === "desenvolvimento")).map(t => {
   const selected = modules.filter(m => m.track === 'common' || m.track === t.id);
   const ids = questions.filter(q => selected.some(m => m.id===q.moduleId)).map(q => q.id);
-  return {...t,emoji:'✓',recommendedModule:t.id==='desenvolvimento'?'dev-engenharia':null,description:t.id==='desenvolvimento'?'Comece pelos conhecimentos específicos: engenharia de software, arquitetura, dados e desenvolvimento seguro. Intercale com os blocos comuns P1 e P2.':'Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.',studyGuide:true,modules:selected,questionIds:ids,total:ids.length};
+  return {...t,examId:exam.id,emoji:'✓',recommendedModule:t.id==='desenvolvimento'?'dev-engenharia':null,description:t.id==='desenvolvimento'?'Comece pelos conhecimentos específicos: engenharia de software, arquitetura, dados e desenvolvimento seguro. Intercale com os blocos comuns P1 e P2.':'Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.',studyGuide:true,modules:selected,questionIds:ids,total:ids.length};
 });
+for (const track of camara.tracks) {
+  const selected = camara.modules.filter(m => m.track === 'common' || m.track === track.id).map(m => ({...m,officialTitle:m.title,color:colors[m.block],emoji:'☷'}));
+  if (!selected.length || selected.some(m => !m.id.startsWith('camara-') || !m.syllabusText)) throw Error(`Invalid syllabus: ${track.id}`);
+  courses.push({...track,examId:camara.exam.id,syllabusOnly:true,studyGuide:false,description:'Programa do edital da Câmara dos Deputados, organizado para estudo e revisão.',modules:selected,recommendedModule:selected[0].id,questionIds:[],total:0});
+}
 let official;
 try { official = await read('data/official-content.json'); }
 catch (error) { if (error.code !== 'ENOENT') throw error; }
@@ -60,7 +68,7 @@ if (official?.questions?.length) {
     if (!batch.length) return;
     const name = `part-${String(parts.length+1).padStart(3,'0')}.json.gz`;
     await writeFile(`${directory}/${name}`, gzipSync(`{"questions":[${batch.join(',')}]}`+'\n', {level:9}));
-    parts.push(`/data/cebraspe-ti/${name}?v=concursos-5`);
+    parts.push(`/data/cebraspe-ti/${name}?v=concursos-6`);
     batch = []; bytes = 0;
   }
   for (const q of official.questions) {
@@ -74,7 +82,7 @@ if (official?.questions?.length) {
   await writeFile('dist/data/cebraspe-ti-questions.json', JSON.stringify({schemaVersion:1,total:official.questions.length,parts,summary:official.summary})+'\n');
 }
 const officialCount = official?.questions?.length || 0;
-const catalog = {schemaVersion:2,exam,total:questions.length+officialCount,origin:officialCount?'Questões autorais de preparação e questões oficiais de provas anteriores, identificadas pela origem.':'Banco autoral inicial. Não contém itens oficiais de provas anteriores.',courses,questions,
-  ...(officialCount ? {officialBank:{url:'/data/cebraspe-ti-questions.json?v=concursos-5',total:officialCount},importSummary:official.summary} : {})};
+const catalog = {schemaVersion:3,exam,exams,total:questions.length+officialCount,origin:officialCount?'Questões autorais de preparação e questões oficiais de provas anteriores, identificadas pela origem.':'Banco autoral inicial. Não contém itens oficiais de provas anteriores.',courses,questions,
+  ...(officialCount ? {officialBank:{url:'/data/cebraspe-ti-questions.json?v=concursos-6',total:officialCount},importSummary:official.summary} : {})};
 await writeFile('dist/data/courses.json',JSON.stringify(catalog,null,2)+'\n');
-console.log(JSON.stringify({questions:catalog.total,authored:questions.length,official:officialCount,modules:modules.length,tracks:courses.map(c=>({id:c.id,total:c.total}))}));
+console.log(JSON.stringify({questions:catalog.total,authored:questions.length,official:officialCount,modules:modules.length+camara.modules.length,tracks:courses.map(c=>({id:c.id,total:c.total}))}));

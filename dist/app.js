@@ -1,4 +1,4 @@
-const DATA_URL = "/data/courses.json?v=concursos-5";
+const DATA_URL = "/data/courses.json?v=concursos-6";
 const OFFICIAL_PART_PREFIX = "/data/cebraspe-ti/";
 const STORAGE_KEY = "concursos-cgu-progress-v1";
 const DAILY_GOAL = 50;
@@ -46,6 +46,7 @@ function loadState() {
     answered: [],
     missed: [],
     activeCourse: "desenvolvimento",
+    activeSyllabusCourse: "desenvolvimento",
     attempts: [],
     favorites: [],
     practiceFilters: {},
@@ -137,7 +138,7 @@ function renderMarkdown(value = "", proseOnly = false) {
 }
 
 function makeLessons() {
-  if (data.practiceOnly) { lessons = []; return; }
+  if (data.practiceOnly || data.syllabusOnly) { lessons = []; return; }
   let globalIndex = 0;
   lessons = data.modules.flatMap((module, moduleIndex) => {
     const questions = data.questions.filter((question) => question.moduleId === module.id);
@@ -151,7 +152,7 @@ function makeLessons() {
         moduleIndex,
         index,
         globalIndex: globalIndex++,
-        title: ["Fundamentos", "Aplicações", "Desafio CGU", "Domínio"][index] || `Prática ${index + 1}`,
+        title: ["Fundamentos", "Aplicações", "Desafio", "Domínio"][index] || `Prática ${index + 1}`,
         questions: lessonQuestions.length ? lessonQuestions : questions.slice(0, 5),
       };
       return lesson;
@@ -184,7 +185,7 @@ async function ensureCourseData(courseId) {
       const payload = await response.json();
       let questions = payload.questions;
       if (!Array.isArray(questions) && Array.isArray(payload.parts)) {
-        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json(?:\.gz)?\?v=concursos-5$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
+        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json(?:\.gz)?\?v=concursos-6$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
         const parts = new Array(payload.parts.length);
         let next = 0;
         let failure = null;
@@ -241,6 +242,7 @@ function setCourse(courseId) {
     return { ...question, moduleId: module.id, moduleTitle: module.title };
   }).filter(Boolean) };
   state.activeCourse = course.id;
+  if (!course.practiceOnly) state.activeSyllabusCourse = course.id;
   makeLessons();
   if (!data.modules.some(m => m.id === state.studyUnits[data.id]) && data.recommendedModule) {
     state.studyUnits[data.id] = data.recommendedModule;
@@ -262,12 +264,32 @@ function completedLessons() {
   return lessons.filter((lesson) => state.completed.includes(lesson.id)).length;
 }
 
+function currentExam() {
+  const exam = catalog.exams?.find(e => e.id === data.examId) || catalog.exam;
+  return { ...exam, ...data.examOverrides };
+}
+
+function examPdfUrl() { return currentExam().localPdfUrl || "/data/edital-cgu-2026.pdf"; }
+function examLabel() { return currentExam().shortTitle || "CGU 2026"; }
+function formatDate(value) { return value ? value.split("-").reverse().join("/") : "Não informada"; }
+function reviewedModules() { return data.modules.filter(m => state.syllabusRead.includes(m.id)).length; }
+function syllabusMarkup(module) {
+  if (module.topLevelTopics?.length) return module.topLevelTopics.map(topic => `<p>${escapeHtml(topic.text)}</p>`).join('');
+  return escapeHtml(module.syllabusText).replace(/ (?=\d+(?:\.\d+)*\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ])/g, "<br><br>");
+}
+
 function courseSwitcher() {
-  return `<div class="course-switcher"><label for="course-select">Trilha ou banco</label><select id="course-select" aria-label="Trilha ou banco de questões">${catalog.courses.map(course => `<option value="${course.id}" ${course.id === data.id ? "selected" : ""}>${escapeHtml(course.title)}</option>`).join("")}</select><span>${data.practiceOnly ? "Provas anteriores · Cebraspe" : "CGU 2026 · AFFC"}</span></div>`;
+  const groups = new Map();
+  for (const course of catalog.courses) {
+    const title = course.practiceOnly ? "Banco de questões" : catalog.exams?.find(e => e.id === course.examId)?.shortTitle || "CGU 2026";
+    if (!groups.has(title)) groups.set(title, []);
+    groups.get(title).push(course);
+  }
+  return `<div class="course-switcher"><label for="course-select">Edital, cargo ou banco</label><select id="course-select" aria-label="Edital, cargo ou banco de questões">${[...groups].map(([title, courses]) => `<optgroup label="${escapeHtml(title)}">${courses.map(course => `<option value="${course.id}" ${course.id === data.id ? "selected" : ""}>${escapeHtml(course.title)}</option>`).join("")}</optgroup>`).join("")}</select><span>${data.practiceOnly ? "Provas anteriores · Cebraspe" : escapeHtml(examLabel()) + (data.syllabusOnly ? " · Programa e revisão" : " · Estudo e prática")}</span></div>`;
 }
 
 function referenceMarkup(module) {
-  return `<details class="competency-reference"><summary>Conteúdo do edital · ${escapeHtml(module.block)} · item ${escapeHtml(module.section)}</summary><p><strong>${escapeHtml(module.officialTitle)}</strong></p><p>${escapeHtml(module.syllabusText)}</p><a class="source-link" href="${escapeHtml(catalog.exam.sourceUrl)}" target="_blank" rel="noreferrer">Consultar banca ↗</a></details>`;
+  return `<details class="competency-reference"><summary>Conteúdo do edital · ${escapeHtml(module.block)} · item ${escapeHtml(module.section)}</summary><p><strong>${escapeHtml(module.officialTitle)}</strong></p><div class="syllabus-text">${syllabusMarkup(module)}</div><a class="source-link" href="${escapeHtml(examPdfUrl())}${module.sourcePage ? `#page=${module.sourcePage}` : ""}" target="_blank" rel="noreferrer">Consultar no PDF ↗</a></details>`;
 }
 
 function nextLesson() {
@@ -286,7 +308,7 @@ function renderRail() {
   const completed = completedLessons();
   const answered = new Set(state.answered);
   const practiced = data.questions.filter(q => answered.has(q.id)).length;
-  const course = Math.round((data.practiceOnly ? practiced / Math.max(data.total, 1) : data.studyGuide ? studiedQuestionIds().size / Math.max(data.total, 1) : completed / Math.max(lessons.length, 1)) * 100);
+  const course = Math.round((data.syllabusOnly ? reviewedModules() / Math.max(data.modules.length, 1) : data.practiceOnly ? practiced / Math.max(data.total, 1) : data.studyGuide ? studiedQuestionIds().size / Math.max(data.total, 1) : completed / Math.max(lessons.length, 1)) * 100);
   rail.innerHTML = `
     <div class="stat-strip">${statMarkup()}</div>
     <section class="rail-card">
@@ -297,15 +319,15 @@ function renderRail() {
     </section>
     <section class="rail-card">
       <h3>${data.practiceOnly ? "Seu banco de questões" : "Seu curso"}</h3>
-      <p>${data.practiceOnly ? `${practiced} de ${data.total} questões respondidas.` : data.studyGuide ? `${studiedQuestionIds().size} de ${data.total} questões em lições concluídas.` : `${completed} de ${lessons.length} lições concluídas.`}</p>
+      <p>${data.syllabusOnly ? `${reviewedModules()} de ${data.modules.length} disciplinas revisadas.` : data.practiceOnly ? `${practiced} de ${data.total} questões respondidas.` : data.studyGuide ? `${studiedQuestionIds().size} de ${data.total} questões em lições concluídas.` : `${completed} de ${lessons.length} lições concluídas.`}</p>
       <div class="progress-row"><span>${escapeHtml(data.title)}</span><span>${course}%</span></div>
       <div class="progress-track"><div class="progress-fill" style="width:${course}%;background:var(--green)"></div></div>
-      <button class="button" data-action="continue">${data.practiceOnly ? "Escolher questões" : data.studyGuide ? "Estudar tema" : "Continuar"}</button>
+      <button class="button" data-action="continue">${data.syllabusOnly ? "Continuar revisão" : data.practiceOnly ? "Escolher questões" : data.studyGuide ? "Estudar tema" : "Continuar"}</button>
     </section>
     <section class="rail-card">
       <h3>Estudo dirigido</h3>
-      <p class="tiny">${data.practiceOnly ? `${data.total} questões de provas anteriores, com gabarito oficial e acesso às fontes. Treino de acertos, sem a ponderação da CGU.` : `${data.total} itens autorais de Certo ou Errado nesta especialidade, com explicação e fonte. Banco inicial em expansão.`}</p>
-      <p class="tiny" style="margin-top:9px"><a class="source-link" href="${escapeHtml(catalog.exam.sourceUrl)}" target="_blank" rel="noreferrer">Edital CGU 2026 ↗</a></p>
+      <p class="tiny">${data.syllabusOnly ? "Programa do edital organizado por disciplina. A revisão é marcada por você; ainda não há questões vinculadas a este cargo." : data.practiceOnly ? `${data.total} questões de provas anteriores, com gabarito oficial e acesso às fontes. Treino de acertos, sem ponderação de concurso.` : `${data.total} itens autorais de Certo ou Errado nesta especialidade, com explicação e fonte. Banco inicial em expansão.`}</p>
+      ${!data.practiceOnly ? `<p class="tiny" style="margin-top:9px"><a class="source-link" href="${escapeHtml(examPdfUrl())}" target="_blank" rel="noreferrer">Edital ${escapeHtml(examLabel())} ↗</a></p>` : ""}
     </section>
   `;
 }
@@ -366,7 +388,7 @@ function renderStudyTrail() {
   const studyBlock = state.studyBlocks[data.id] || module.block;
   const nextLabel = !introRead ? 'Ler introdução' : next ? `Continuar lição ${next.index + 1} de ${unitLessons.length}` : 'Revisar introdução';
   app.innerHTML = `
-    ${pageHeader('CGU 2026 · Trilha de estudo', 'Sua próxima conquista começa aqui.', escapeHtml(data.description))}
+    ${pageHeader(escapeHtml(examLabel()) + ' · Trilha de estudo', 'Sua próxima conquista começa aqui.', escapeHtml(data.description))}
     ${examBanner()}
     <section class="study-overview" aria-label="Progresso da trilha">
       <div><strong>${studied.size} de ${data.total}</strong><span>questões em lições concluídas</span></div>
@@ -376,7 +398,7 @@ function renderStudyTrail() {
     <section class="study-map" aria-labelledby="study-map-title">
       <div class="section-heading"><div><p class="page-kicker">Seu mapa de estudo</p><h2 id="study-map-title">Escolha seu foco</h2></div></div>
       <p class="study-help">Escolha uma disciplina do edital. Os conhecimentos básicos e complementares são comuns às quatro especialidades. Seu progresso nesses itens é compartilhado entre as trilhas.</p>
-      <div class="block-tabs" role="group" aria-label="Blocos da prova">${catalog.exam.blocks.map(b => `<button data-study-block="${b.id}" aria-pressed="${studyBlock === b.id}">${b.id} · ${blockLabel(b.id)}</button>`).join("")}</div>
+      <div class="block-tabs" role="group" aria-label="Blocos da prova">${currentExam().blocks.map(b => `<button data-study-block="${b.id}" aria-pressed="${studyBlock === b.id}">${b.id} · ${escapeHtml(blockLabel(b.id))}</button>`).join("")}</div>
       <div class="study-grid">${data.modules.filter(m => m.block === studyBlock).map((m, i) => {
         const qs = data.questions.filter(q => q.moduleId === m.id);
         const done = qs.filter(q => studied.has(q.id)).length;
@@ -404,13 +426,46 @@ function renderStudyTrail() {
     </section>`;
 }
 
-function renderLearn() { if (data.practiceOnly) renderPractice(); else renderStudyTrail(); }
+function renderLearn() { if (data.practiceOnly) renderPractice(); else if (data.syllabusOnly) renderSyllabusTrail(); else renderStudyTrail(); }
 
-function examBanner() {
-  return `<section class="exam-banner" aria-label="Resumo do concurso"><div><span class="exam-label">SEU OBJETIVO</span><h2>CGU · ${escapeHtml(data.title)}</h2><p>Auditor Federal de Finanças e Controle</p></div><div class="exam-facts"><span><strong>13 dez 2026</strong>provas previstas</span><span><strong>${data.vacancies} vagas</strong>nesta especialidade</span><a href="#edital" data-view="edital">Explorar edital ↗</a></div></section><p class="catalog-note">Banco inicial: ${data.total} exercícios autorais comentados. Concluir este banco não significa cobrir todo o edital.</p>`;
+function syllabusCheck(module) {
+  return `<label class="check-label"><input type="checkbox" data-syllabus="${module.id}" ${state.syllabusRead.includes(module.id) ? "checked" : ""}> Já revisei esta disciplina</label>`;
 }
 
-function blockLabel(id) { return ({P1:"Básicos", P2:"Complementares", P3:"Específicos"})[id] || id; }
+function renderSyllabusTrail() {
+  const module = selectedStudyModule();
+  const block = state.studyBlocks[data.id] || module.block;
+  const reviewed = reviewedModules();
+  app.innerHTML = `${pageHeader(escapeHtml(examLabel()) + ' · Roteiro de estudo', 'Organize sua preparação.', 'Escolha uma disciplina, consulte o programa completo e registre suas revisões. Comece pelos conhecimentos comuns e intercale com os específicos do seu cargo.')}
+    ${examBanner()}
+    <section class="study-overview" aria-label="Progresso da revisão"><div><strong>${reviewed} de ${data.modules.length}</strong><span>disciplinas marcadas como revisadas</span></div><div><strong>Programa completo</strong><span>conhecimentos comuns e específicos</span></div><progress max="${data.modules.length}" value="${reviewed}" aria-label="Disciplinas revisadas"></progress></section>
+    <section class="study-map" aria-labelledby="study-map-title"><h2 id="study-map-title">Escolha seu foco</h2><p class="study-help">A revisão dos conhecimentos comuns é compartilhada entre os cargos deste edital. As disciplinas específicas têm seu próprio acompanhamento.</p>
+    <div class="block-tabs" role="group" aria-label="Blocos da prova">${currentExam().blocks.map(b => `<button data-study-block="${b.id}" aria-pressed="${block === b.id}">${b.id} · ${escapeHtml(blockLabel(b.id))}</button>`).join('')}</div>
+    <div class="study-grid">${data.modules.filter(m => m.block === block).map(m => `<button class="study-unit ${m.id === module.id ? 'selected' : ''}" data-study-unit="${m.id}" aria-pressed="${m.id === module.id}"><span class="study-unit-top"><span aria-hidden="true">☷</span><span>${m.block}</span>${state.syllabusRead.includes(m.id) ? '<span class="study-done">✓ Revisada</span>' : ''}</span><strong>${escapeHtml(m.title)}</strong><span>Consultar programa da disciplina</span></button>`).join('')}</div></section>
+    <section class="study-detail stats-card" aria-labelledby="study-unit-title"><p class="page-kicker">${escapeHtml(blockLabel(module.block))} · item ${escapeHtml(module.section)}</p><h2 id="study-unit-title" tabindex="-1">${escapeHtml(module.title)}</h2><div class="syllabus-text">${syllabusMarkup(module)}</div><div class="edital-actions">${syllabusCheck(module)}<a class="source-link" href="${escapeHtml(examPdfUrl())}${module.sourcePage ? `#page=${module.sourcePage}` : ''}" target="_blank" rel="noreferrer">Conferir no PDF ↗</a></div><p class="stats-note">A marcação registra sua revisão, não uma avaliação de domínio. Questões e introduções conceituais ainda não foram vinculadas a esta disciplina.</p></section>`;
+}
+
+function renderSyllabusProgress(title = "Acompanhe suas revisões.") {
+  const count = reviewedModules();
+  app.innerHTML = `${pageHeader(escapeHtml(examLabel()) + ' · Progresso', title, 'Seu checklist de revisão fica salvo neste navegador, separado das lições e respostas de outros editais.')}
+    <section class="study-overview"><div><strong>${count}/${data.modules.length}</strong><span>disciplinas revisadas</span></div><div><strong>${Math.round(count / data.modules.length * 100)}%</strong><span>do checklist marcado por você</span></div><progress max="${data.modules.length}" value="${count}" aria-label="Disciplinas revisadas"></progress></section>
+    <div class="notice"><strong>Sem questões vinculadas a este cargo.</strong> Taxas de acerto e pontuação ficarão disponíveis quando houver itens para praticar. A revisão do programa não concede XP nem aprovação em lições.</div>
+    <section class="stats-card"><h2>Revisão por disciplina</h2><div class="performance-list">${data.modules.map(m => `<div class="performance-row"><div><strong>${escapeHtml(m.title)}</strong><small>${escapeHtml(blockLabel(m.block))}</small></div><button class="text-button" data-open-study="${m.id}">${state.syllabusRead.includes(m.id) ? '✓ Revisada' : 'Revisar'}</button></div>`).join('')}</div></section>`;
+}
+
+function renderSyllabusPractice() {
+  const bank = catalog.courses.find(c => c.practiceOnly);
+  app.innerHTML = `${pageHeader(escapeHtml(examLabel()) + ' · Prática', 'Prepare seu próximo treino.', escapeHtml(data.title))}
+    <section class="empty-state"><span aria-hidden="true">☷</span><h2>Sem questões vinculadas a este cargo.</h2><p>O programa completo já está disponível para organizar suas revisões. O arquivo enviado é um edital e não contém questões de prova.</p><a class="button" href="#aprender" data-view="aprender">Abrir roteiro de estudo</a></section>
+    ${bank ? `<section class="official-bank-link"><div><strong>Banco histórico da Cebraspe</strong><p>${counted(bank.total, 'questão oficial', 'questões oficiais')} de concursos para cargos de TI. Este banco ainda não está mapeado ao edital da Câmara; a seleção e as estatísticas são independentes desta trilha.</p></div><button class="button secondary" data-select-course="${bank.id}">Explorar banco histórico →</button></section>` : ''}`;
+}
+
+function examBanner() {
+  const exam = currentExam();
+  return `<section class="exam-banner" aria-label="Resumo do concurso"><div><span class="exam-label">${escapeHtml(examLabel())}</span><h2>${escapeHtml(data.title)}</h2><p>${escapeHtml(data.roleTitle || exam.roleTitle || exam.title)}</p></div><div class="exam-facts"><span><strong>${formatDate(exam.examDate)}</strong>provas previstas no edital</span>${Number.isFinite(data.vacancies) ? `<span><strong>${counted(data.vacancies, "vaga")}</strong>${Number.isFinite(data.reserveVacancies) ? `+ ${data.reserveVacancies} em cadastro de reserva` : 'nesta especialidade'}</span>` : ''}<a href="#edital" data-view="edital">Explorar edital ↗</a></div></section><p class="catalog-note">${data.syllabusOnly ? 'Edital importado: programa e checklist disponíveis. Ainda não há questões vinculadas a este cargo.' : `Banco inicial: ${data.total} exercícios autorais comentados. Concluir este banco não significa cobrir todo o edital.`}</p>`;
+}
+
+function blockLabel(id) { const block = currentExam().blocks.find(b => b.id === id); return block?.shortTitle || block?.title || id; }
 
 function defaultPracticeFilters() { return { module: "", block: "", origin: "", year: "", exam: "", status: "all", query: "" }; }
 
@@ -446,6 +501,7 @@ function filterOptions(values, selected, allLabel) {
 }
 
 function renderPractice() {
+  if (data.syllabusOnly) { renderSyllabusPractice(); return; }
   const filters = practiceFilters();
   const pool = filteredPracticeQuestions(filters);
   const metrics = performanceMetrics(courseAttempts());
@@ -457,12 +513,12 @@ function renderPractice() {
   const years = [...new Set(data.questions.map(q => q.year).filter(Boolean))].sort((a,b) => Number(b) - Number(a));
   const origins = [...new Set(data.questions.map(q => q.origin))].map(value => [value, value === "oficial" ? "Prova oficial" : "Exercício autoral"]);
   app.innerHTML = `
-    ${pageHeader(data.practiceOnly ? "Provas anteriores · Cebraspe TI" : "Questões · CGU 2026", "Treine no seu ritmo.", data.practiceOnly ? "Resolva questões das provas baixadas, confira o gabarito oficial e acompanhe seu desempenho." : "Resolva itens de Certo ou Errado. Leia a justificativa, revise seus erros e continue pelo tempo que quiser.")}
+    ${pageHeader(data.practiceOnly ? "Provas anteriores · Cebraspe TI" : "Questões · " + escapeHtml(examLabel()), "Treine no seu ritmo.", data.practiceOnly ? "Resolva questões das provas baixadas, confira o gabarito oficial e acompanhe seu desempenho." : "Resolva itens de Certo ou Errado. Leia a justificativa, revise seus erros e continue pelo tempo que quiser.")}
     ${!data.practiceOnly && officialCourse ? `<div class="official-bank-link"><div><strong>Pratique com provas anteriores da Cebraspe</strong><p>${counted(officialCourse.total, "questão oficial disponível", "questões oficiais disponíveis")} no banco de cargos de TI.</p></div><button class="button secondary" data-select-course="${officialCourse.id}">Abrir banco oficial →</button></div>` : ""}
     <div class="practice-overview"><span><strong>${metrics.total}</strong> respostas registradas</span><span><strong>${metrics.accuracy === null ? "—" : metrics.accuracy + "%"}</strong> de acerto</span><a href="#desempenho" data-view="desempenho">Ver desempenho ↗</a></div>
     <form id="practice-filters" class="filter-card"><div class="section-heading"><div><p class="page-kicker">Monte seu treino</p><h2>Filtros de questões</h2></div><button type="button" class="text-button" data-action="reset-filters">Limpar filtros</button></div>
       <div class="filter-grid">
-        ${data.practiceOnly ? `<label>Concurso<select name="exam">${filterOptions(exams, filters.exam, "Todos os concursos")}</select></label><label>Ano de referência<select name="year">${filterOptions(years.map(y => [y, y]), filters.year, "Todos os anos")}</select></label>` : `<label>Bloco da prova<select name="block">${filterOptions(catalog.exam.blocks.map(b => [b.id, b.id + " · " + b.title]), filters.block, "Todos os blocos")}</select></label>`}
+        ${data.practiceOnly ? `<label>Concurso<select name="exam">${filterOptions(exams, filters.exam, "Todos os concursos")}</select></label><label>Ano de referência<select name="year">${filterOptions(years.map(y => [y, y]), filters.year, "Todos os anos")}</select></label>` : `<label>Bloco da prova<select name="block">${filterOptions(currentExam().blocks.map(b => [b.id, b.id + " · " + b.title]), filters.block, "Todos os blocos")}</select></label>`}
         <label>Origem<select name="origin">${filterOptions(origins, filters.origin, "Todas as origens")}</select></label>
         <label>${data.practiceOnly ? "Bloco da prova" : "Disciplina"}<select name="module">${filterOptions([...data.modules].sort((a,b) => a.title.localeCompare(b.title,"pt-BR")).map(m => [m.id, m.title]), filters.module, data.practiceOnly ? "Todos os blocos" : "Todas as disciplinas")}</select></label>
         <label>Minha resolução<select name="status">${[["all","Todas as questões"],["unanswered","Ainda não respondi"],["wrong","Erros para revisar"],["answered","Já respondi"],["favorites","Favoritas"]].map(([v,l]) => `<option value="${v}" ${filters.status === v ? "selected" : ""}>${l}</option>`).join("")}</select></label>
@@ -499,6 +555,7 @@ function counted(value, singular, plural = `${singular}s`) {
 }
 
 function renderPerformance() {
+  if (data.syllabusOnly) { renderSyllabusProgress(); return; }
   const missed = new Set(state.missed);
   const attempts = courseAttempts(statsPeriod, statsMode);
   const metrics = performanceMetrics(attempts);
@@ -606,10 +663,11 @@ function advancePractice() {
 }
 
 function renderAchievements() {
+  if (data.syllabusOnly) { renderSyllabusProgress("Seus marcos de revisão."); return; }
   const answered = new Set(state.answered);
   const practiced = data.questions.filter(q => answered.has(q.id)).length;
   const achievements = [
-    ["🚀", "Primeiro passo", data.practiceOnly ? "Responda à primeira questão deste banco." : "Conclua sua primeira lição.", data.practiceOnly ? practiced > 0 : state.completed.length >= 1],
+    ["🚀", "Primeiro passo", data.practiceOnly ? "Responda à primeira questão deste banco." : "Conclua sua primeira lição.", data.practiceOnly ? practiced > 0 : completedLessons() >= 1],
     ["🔥", "Em chamas", "Mantenha uma sequência de 3 dias.", state.streak >= 3],
     ["⚡", "Em evolução", "Acumule 200 XP.", state.xp >= 200],
     ["🎯", "Precisão", "Responda 20 questões.", state.answered.length >= 20],
@@ -635,28 +693,40 @@ function renderAbout() {
   app.innerHTML = `${pageHeader("Sobre o projeto", "Concursos", "Um treino diário com questões comentadas, trilhas por edital e progresso que acompanha seu esforço.")}
   <div class="about-grid"><article class="info-card"><div class="big-number">${authoredCount}</div><h3>itens autorais únicos</h3><p>Banco inicial de Certo ou Errado. Os itens comuns aparecem nas quatro especialidades, sem duplicar o histórico.</p></article><article class="info-card"><div class="big-number">${officialCount}</div><h3>questões oficiais importadas</h3><p>Provas anteriores de cargos de TI da Cebraspe, com fonte e gabarito. Disponíveis no banco de prática.</p></article></div>
   <div class="notice"><strong>Como estudar:</strong> leia a introdução, resolva uma lição de até cinco questões e consulte a justificativa. Lições permitem até três erros por tentativa; reiniciar renova as chances. Na prática, não há limite de erros.</div>
-  <div class="notice"><strong>Origem do conteúdo:</strong> as quatro trilhas da CGU contêm exercícios, comentários e introduções autorais. O banco de provas anteriores contém questões oficiais da Cebraspe, identificadas em cada item. Quando não há comentário, a correção apresenta somente o gabarito e a fonte. Os vínculos ao programa são editoriais. O app não tem vínculo com a CGU ou o Cebraspe. A prova de 2026 ainda não foi aplicada. Este banco inicial não cobre todos os tópicos do edital, e a discursiva não possui correção automática.</div>
+  <div class="notice"><strong>Origem do conteúdo:</strong> as quatro trilhas da CGU contêm exercícios, comentários e introduções autorais. O banco de provas anteriores contém questões oficiais da Cebraspe, identificadas em cada item. Quando não há comentário, a correção apresenta somente o gabarito e a fonte. Os vínculos ao programa são editoriais. As trilhas da Câmara dos Deputados apresentam o programa do PDF enviado e um checklist, sem questões vinculadas. O app é independente das instituições e das bancas. Este banco inicial não cobre todos os tópicos do edital, e a discursiva não possui correção automática.</div>
   <div class="notice"><strong>Instalar o Concursos:</strong> use “Instalar aplicativo” no menu do Chrome ou Edge. No iPhone/iPad, Compartilhar → Adicionar à Tela de Início. O conteúdo já carregado pode ser usado offline. Seu progresso fica neste navegador e é separado do ENEM.</div>
-  <div class="notice"><strong>Fontes:</strong> <a href="${escapeHtml(catalog.exam.sourceUrl)}" class="source-link" target="_blank" rel="noreferrer">página oficial da banca</a> · <a href="/data/edital-cgu-2026.pdf" class="source-link" download>edital local em PDF</a> · <a href="/data/courses.json" class="source-link" download>baixar banco de estudo</a>. Verificação do edital: 13/10/2026. Consulte a banca para retificações.</div>`;
+  <div class="notice"><strong>Fontes:</strong> <a href="${sourceHref(currentExam().sourceUrl)}" class="source-link" target="_blank" rel="noreferrer">página da banca</a> · <a href="${escapeHtml(examPdfUrl())}" class="source-link" download>edital selecionado em PDF</a> · <a href="/data/courses.json" class="source-link" download>baixar banco de estudo</a>. Verificação do edital: 13/10/2026. Consulte a banca para retificações.</div>`;
 }
 
 function renderEdital() {
-  const exam = catalog.exam;
-  const checked = data.modules.filter(m => state.syllabusRead.includes(m.id)).length;
-  app.innerHTML = `${pageHeader("Edital nº 1 · 8 de outubro de 2026", "Conheça seu caminho.", "Programa oficial organizado por bloco. Marque as disciplinas que você já revisou e acompanhe o conteúdo disponível para treino.")}
+  const exam = currentExam();
+  const discursive = exam.discursive;
+  const hours = minutes => `${Math.floor(minutes / 60)}h${minutes % 60 ? String(minutes % 60).padStart(2, '0') : ''}`;
+  const source = sourceHref(exam.sourceUrl);
+  app.innerHTML = `${pageHeader(escapeHtml(exam.edital), "Conheça seu caminho.", "Programa organizado por bloco e cargo. Consulte as regras da seleção e marque as disciplinas que você já revisou.")}
   ${examBanner()}
-  <div class="edital-links"><a class="button" href="/data/edital-cgu-2026.pdf" target="_blank" rel="noreferrer">Abrir edital completo ↗</a><a class="button secondary" href="${escapeHtml(exam.sourceUrl)}" target="_blank" rel="noreferrer">Banca e atualizações ↗</a></div>
-  <div class="exam-summary"><p><strong>Inscrições:</strong> 10/10 a 04/11/2026.</p><p><strong>Objetivas:</strong> 170 itens C/E · 5h · manhã · até 260 pontos.</p><p><strong>Discursiva:</strong> 2 questões · 3h30 · tarde · até 100 pontos. Sem correção discursiva neste app.</p></div>
-  <div class="exam-blocks">${exam.blocks.map(b => `<article><span>${b.id}</span><h2>${b.title}</h2><strong>${b.items} itens</strong><p>Acerto +${b.correctPoints} · erro ${b.wrongPoints}<br>Mínimo: ${b.minimumPoints} pontos</p></article>`).join("")}</div>
-  <p class="stats-note">Branco e dupla marcação: 0. Mínimo total nas objetivas: 78; na discursiva: 50. Esses mínimos não garantem classificação. Confira todas as regras nos itens 8 e 9 do edital.</p>
-  <section class="stats-card"><h2>Seu edital por disciplina</h2><p id="edital-progress" aria-live="polite">${checked}/${data.modules.length} disciplinas marcadas como revisadas. Este checklist é independente das lições.</p><div class="edital-list">${data.modules.map(m => {
+  <div class="edital-links"><a class="button" href="${escapeHtml(examPdfUrl())}" target="_blank" rel="noreferrer">Abrir edital completo ↗</a>${source ? `<a class="button secondary" href="${source}" target="_blank" rel="noreferrer">Banca e atualizações ↗</a>` : ''}</div>
+  ${data.requirements ? `<details class="competency-reference"><summary>Requisitos do cargo</summary><p>${escapeHtml(data.requirements)}</p><a class="source-link" href="${escapeHtml(examPdfUrl())}#page=${data.requirementsSourcePage}" target="_blank" rel="noreferrer">Conferir requisitos no PDF ↗</a></details>` : ''}
+  <div class="exam-summary"><p><strong>Inscrições:</strong> ${formatDate(exam.registrationStart)} a ${formatDate(exam.registrationEnd)}${exam.registrationStartTime ? `, das ${escapeHtml(exam.registrationStartTime)} do primeiro dia às ${escapeHtml(exam.registrationEndTime)} do último dia (Brasília)` : ''}.</p>
+  ${exam.registrationFee ? `<p><strong>Taxa:</strong> R$ ${Number(exam.registrationFee).toFixed(2).replace('.', ',')} · pagamento até ${formatDate(exam.registrationPaymentDeadline)}.</p>` : ''}
+  <p><strong>Objetivas:</strong> ${exam.blocks.reduce((n, block) => n + block.items, 0)} itens C/E · ${hours(exam.objectiveDurationMinutes)} · ${escapeHtml(exam.objectiveShift)} · até ${exam.objectiveTotalPoints} pontos.</p>
+  <p><strong>Discursiva:</strong> ${discursive.items} itens · ${hours(discursive.durationMinutes)} · ${escapeHtml(discursive.shift)} · até ${discursive.totalPoints} pontos. Sem correção discursiva neste app.</p>
+  ${discursive.summary ? `<p>${escapeHtml(discursive.summary)}</p>` : `<ul>${discursive.questions.map((q, i) => `<li>Questão ${i+1} · ${q.block} · até ${q.maxLines} linhas · ${q.points} pontos.</li>`).join('')}</ul>`}</div>
+  <div class="exam-blocks">${exam.blocks.map(b => `<article><span>${b.id}</span><h2>${escapeHtml(b.title)}</h2><strong>${b.items} itens</strong><p>Acerto +${b.correctPoints} · erro ${b.wrongPoints}<br>Mínimo: ${b.minimumPoints} pontos</p></article>`).join("")}</div>
+  <p class="stats-note">Branco e dupla marcação: 0. Mínimo total nas objetivas: ${exam.objectiveMinimumTotal}; na discursiva: ${discursive.minimumPoints}. Esses mínimos não garantem classificação. Confira as demais condições no edital.</p>
+  ${exam.vacancyNote ? `<p class="notice">${escapeHtml(exam.vacancyNote)}</p>` : ''}
+  ${exam.schedule?.length ? `<details class="competency-reference"><summary>Cronograma completo · Anexo I</summary><p>${escapeHtml(exam.scheduleNote)}</p><dl class="schedule-list">${exam.schedule.map(item => `<div><dt>${escapeHtml(item.title)}</dt><dd>${escapeHtml(item.datesText)}</dd></div>`).join('')}</dl></details>` : ''}
+  <section class="stats-card"><h2>Seu edital por disciplina</h2><p id="edital-progress" aria-live="polite">${reviewedModules()}/${data.modules.length} disciplinas marcadas como revisadas. Este checklist é independente das lições.</p><div class="edital-list">${data.modules.map(m => {
     const count = data.questions.filter(q => q.moduleId === m.id).length;
-    return `<details><summary><span class="block-badge">${m.block}</span><strong>${escapeHtml(m.title)}</strong><span>${count} itens de treino</span></summary><p><strong>${escapeHtml(m.officialTitle)}</strong></p><div class="syllabus-text">${escapeHtml(m.syllabusText).replace(/ (?=\d+\.\d* ?[A-ZÁÉÍÓÚÂÊÔÃÕÇ])/g,"<br><br>")}</div><div class="edital-actions"><label class="check-label"><input type="checkbox" data-syllabus="${m.id}" ${state.syllabusRead.includes(m.id) ? "checked" : ""}> Já revisei esta disciplina</label><button class="button secondary" data-open-study="${m.id}">Estudar disciplina</button></div></details>`;
-  }).join("")}</div></section><p class="stats-note">Texto do item 15.2 do edital de abertura. Os títulos curtos são editoriais. A marcação de revisão não representa cobertura completa do banco. Fonte conferida em 13/10/2026.</p>`;
+    return `<details><summary><span class="block-badge">${m.block}</span><strong>${escapeHtml(m.title)}</strong><span>${data.syllabusOnly ? `${m.topLevelTopics.length} tópicos` : `${count} itens de treino`}</span></summary><p><strong>${escapeHtml(m.officialTitle)}</strong> · item ${escapeHtml(m.section)}</p><div class="syllabus-text">${syllabusMarkup(m)}</div><div class="edital-actions">${syllabusCheck(m)}<button class="button secondary" data-open-study="${m.id}">${data.syllabusOnly ? 'Abrir no roteiro' : 'Estudar disciplina'}</button>${m.sourcePage ? `<a class="source-link" href="${escapeHtml(examPdfUrl())}#page=${m.sourcePage}" target="_blank" rel="noreferrer">Página ${m.sourcePage} do PDF ↗</a>` : ''}</div></details>`;
+  }).join("")}</div></section><p class="stats-note">Programa dos itens ${escapeHtml(exam.syllabusSection)}. ${exam.sourceKind === 'user-provided-pdf' ? 'Transcrito do PDF enviado, sem incorporar retificações externas.' : 'Os títulos curtos são editoriais.'} A revisão não representa cobertura completa de questões. Fonte conferida em ${formatDate(exam.checkedAt)}.</p>`;
 }
 
 function renderPage(resetScroll = true) {
-  if (data.practiceOnly && activeView === "edital") setCourse("desenvolvimento");
+  if (data.practiceOnly && activeView === "edital") {
+    const previous = catalog.courses.find(c => c.id === state.activeSyllabusCourse && !c.practiceOnly);
+    setCourse(previous?.id || "desenvolvimento");
+  }
   if (data.practiceOnly && activeView === "aprender") { activeView = "praticar"; history.replaceState(null, "", "#praticar"); }
   document.querySelectorAll("[data-view]").forEach((item) => {
     item.classList.toggle("active", item.dataset.view === activeView);
@@ -691,7 +761,7 @@ function openModal(label) {
 
 function openIntroduction(moduleId) {
   const module = data.modules.find((item) => item.id === moduleId);
-  if (!module) return;
+  if (!module?.introduction) return;
   const intro = module.introduction;
   introModuleId = moduleId;
   const [color, dark] = modulePalette[moduleId] || module.color || modulePalette.default;
@@ -1001,6 +1071,7 @@ document.addEventListener("click", (event) => {
   if (answer) selectAnswer(answer.dataset.answer);
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "continue") {
+    if (data.syllabusOnly) { activeView = "aprender"; history.replaceState(null, "", "#aprender"); renderPage(); return; }
     if (data.practiceOnly) { activeView = "praticar"; history.replaceState(null, "", "#praticar"); renderPage(); return; }
     if (data.studyGuide) {
       const module = selectedStudyModule();
@@ -1047,8 +1118,17 @@ document.addEventListener("keydown", (event) => {
 document.addEventListener("change", (event) => {
   if (event.target.dataset.syllabus) {
     const id = event.target.dataset.syllabus;
+    if (!data.modules.some(m => m.id === id)) return;
     state.syllabusRead = event.target.checked ? [...new Set([...state.syllabusRead, id])] : state.syllabusRead.filter(x => x !== id);
-    saveState(); app.querySelector("#edital-progress").textContent = `${data.modules.filter(m => state.syllabusRead.includes(m.id)).length}/${data.modules.length} disciplinas marcadas como revisadas. Este checklist é independente das lições.`; return;
+    saveState();
+    if (data.syllabusOnly && activeView === "aprender") {
+      renderPage(false); app.querySelector(`[data-syllabus="${id}"]`)?.focus({preventScroll:true});
+    } else {
+      const progress = app.querySelector("#edital-progress");
+      if (progress) progress.textContent = `${reviewedModules()}/${data.modules.length} disciplinas marcadas como revisadas. Este checklist é independente das lições.`;
+      renderRail();
+    }
+    return;
   }
   if (event.target.id === "stats-period") { statsPeriod = event.target.value; renderPerformance(); app.querySelector("#stats-period").focus({ preventScroll: true }); return; }
   if (event.target.id === "stats-mode") { statsMode = event.target.value; renderPerformance(); app.querySelector("#stats-mode").focus({ preventScroll: true }); return; }
