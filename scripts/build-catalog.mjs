@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 const read = async p => JSON.parse(await readFile(p, 'utf8'));
 const { exam, tracks, modules: syllabus } = await read('data/syllabus.json');
 const content = await Promise.all(['common','auditoria','ti'].map(n => read(`data/${n}-content.json`)));
@@ -28,6 +28,52 @@ const courses = [...tracks].sort((a,b) => Number(b.id === "desenvolvimento") - N
   const ids = questions.filter(q => selected.some(m => m.id===q.moduleId)).map(q => q.id);
   return {...t,emoji:'✓',recommendedModule:t.id==='desenvolvimento'?'dev-engenharia':null,description:t.id==='desenvolvimento'?'Comece pelos conhecimentos específicos: engenharia de software, arquitetura, dados e desenvolvimento seguro. Intercale com os blocos comuns P1 e P2.':'Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.',studyGuide:true,modules:selected,questionIds:ids,total:ids.length};
 });
-const catalog = {schemaVersion:1,exam,total:questions.length,origin:'Banco autoral inicial. Não contém itens oficiais de provas anteriores.',courses,questions};
+let official;
+try { official = await read('data/official-content.json'); }
+catch (error) { if (error.code !== 'ENOENT') throw error; }
+if (official?.parts) {
+  if (!Array.isArray(official.parts) || official.parts.some(p => !/^official-content\/part-\d+\.json$/.test(p))) throw Error('Invalid source bank parts');
+  official.questions = (await Promise.all(official.parts.map(p => read(`data/${p}`)))).flatMap(p => p.questions);
+}
+if (official?.questions?.length) {
+  const ids = new Set(questions.map(q => q.id));
+  for (const q of official.questions) {
+    if (ids.has(q.id)) throw Error(`Duplicate question: ${q.id}`);
+    ids.add(q.id);
+    if (q.origin !== 'oficial' || q.answerKeyStatus !== 'definitivo' || !q.sourceUrl || !q.answerKeyUrl) throw Error(`Missing official provenance: ${q.id}`);
+    if (!q.alternatives.some(a => a.letter === q.correctAlternative) || q.annulled) throw Error(`Invalid official answer: ${q.id}`);
+  }
+  courses.push({
+    id:'cebraspe-ti', title:'Provas anteriores · Cebraspe TI', shortTitle:'Cebraspe TI', emoji:'▤',
+    description:'Questões originais de concursos para cargos de TI, com gabarito definitivo e páginas da prova. Pratique por concurso, ano e bloco.',
+    practiceOnly:true, studyGuide:false, modules:official.modules,
+    questionIds:official.questions.map(q => q.id), total:official.questions.length,
+  });
+  // Keep each deployable JSON below the static asset limit, and leave the bank
+  // out of the initial application download and service-worker precache.
+  const directory = 'dist/data/cebraspe-ti';
+  await mkdir(directory, {recursive:true});
+  const parts = [];
+  let batch = [], bytes = 0;
+  async function flush() {
+    if (!batch.length) return;
+    const name = `part-${String(parts.length+1).padStart(3,'0')}.json`;
+    await writeFile(`${directory}/${name}`, `{"questions":[${batch.join(',')}]}`+'\n');
+    parts.push(`/data/cebraspe-ti/${name}?v=concursos-4`);
+    batch = []; bytes = 0;
+  }
+  for (const q of official.questions) {
+    const json = JSON.stringify(q), size = Buffer.byteLength(json)+1;
+    if (bytes + size > 4*1024*1024) await flush();
+    batch.push(json); bytes += size;
+  }
+  await flush();
+  const names = new Set(parts.map(p => p.split('/').pop().split('?')[0]));
+  for (const name of await readdir(directory)) if (/^part-\d+\.json$/.test(name) && !names.has(name)) await unlink(`${directory}/${name}`);
+  await writeFile('dist/data/cebraspe-ti-questions.json', JSON.stringify({schemaVersion:1,total:official.questions.length,parts,summary:official.summary})+'\n');
+}
+const officialCount = official?.questions?.length || 0;
+const catalog = {schemaVersion:2,exam,total:questions.length+officialCount,origin:officialCount?'Questões autorais de preparação e questões oficiais de provas anteriores, identificadas pela origem.':'Banco autoral inicial. Não contém itens oficiais de provas anteriores.',courses,questions,
+  ...(officialCount ? {officialBank:{url:'/data/cebraspe-ti-questions.json?v=concursos-4',total:officialCount},importSummary:official.summary} : {})};
 await writeFile('dist/data/courses.json',JSON.stringify(catalog,null,2)+'\n');
-console.log(JSON.stringify({questions:questions.length,modules:modules.length,tracks:courses.map(c=>({id:c.id,total:c.total}))}));
+console.log(JSON.stringify({questions:catalog.total,authored:questions.length,official:officialCount,modules:modules.length,tracks:courses.map(c=>({id:c.id,total:c.total}))}));

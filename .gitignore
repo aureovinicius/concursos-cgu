@@ -4,3 +4,7 @@ site-package.tar.gz
 _site/
 .preview/
 __pycache__/
+# Original downloaded PDFs and extraction intermediates stay local.
+research/
+.import-cache/
+*.pyc
