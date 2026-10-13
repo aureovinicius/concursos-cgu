@@ -3,15 +3,17 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {gzipSync} from 'node:zlib';
+import {getDiagnosticCoverage,createDiagnosticSession,validateDiagnosticSession,scoreDiagnosticSession} from '../dist/diagnostic.js';
 const catalog = JSON.parse(readFileSync('dist/data/courses.json','utf8'));
-const source = readFileSync('dist/app.js','utf8').replace(/\ninit\(\);\s*$/,'');
-function harness(saved, customCatalog=catalog, search="", fetchImpl=async()=>{throw new Error("Offline")}) {
+const source = readFileSync('dist/app.js','utf8').replace(/^import\s*\{[^}]+\}\s*from\s*["']\.\/diagnostic\.js[^"']*["'];?\s*/,'').replace(/\ninit\(\);\s*$/,'');
+function harness(saved, customCatalog=catalog, search="", fetchImpl=async()=>{throw new Error("Offline")},savedDiagnosticStore) {
  const nodes=new Map();
  const listeners=new Map();
  const node=()=>({innerHTML:'',hidden:true,dataset:{},setAttribute(){},focus(){},matches(){return false},scrollIntoView(){},scrollTo(){},querySelector(){return node()},classList:{add(){},remove(){}}});
  const store=new Map([['fisio-progress-v1',JSON.stringify({xp:999,completed:['mecanica-1']})]]);
  if(saved) store.set('concursos-cgu-progress-v1',JSON.stringify(saved));
- const ctx=vm.createContext({fetch:fetchImpl,Blob,Response,DecompressionStream,TextDecoder,Uint8Array,document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(type,listener){if(!listeners.has(type))listeners.set(type,[]);listeners.get(type).push(listener)},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:'#aprender',search,pathname:'/concursos-cgu/'},window:{addEventListener(){},scrollTo(){}},history:{replaceState(_s,_title,url){ctx.lastReplacedUrl=url;ctx.location.search=new URL(url,"https://example.test").search;}},URLSearchParams,Intl,Date,setTimeout(){},structuredClone});
+ if(savedDiagnosticStore!==undefined) store.set('concursos-diagnostic-v1',typeof savedDiagnosticStore==='string'?savedDiagnosticStore:JSON.stringify(savedDiagnosticStore));
+ const ctx=vm.createContext({getDiagnosticCoverage,createDiagnosticSession,validateDiagnosticSession,scoreDiagnosticSession,fetch:fetchImpl,Blob,Response,DecompressionStream,TextDecoder,Uint8Array,document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(type,listener){if(!listeners.has(type))listeners.set(type,[]);listeners.get(type).push(listener)},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:'#aprender',search,pathname:'/concursos-cgu/'},window:{addEventListener(){},scrollTo(){}},history:{replaceState(_s,_title,url){ctx.lastReplacedUrl=url;ctx.location.search=new URL(url,"https://example.test").search;}},URLSearchParams,Intl,Date,setTimeout(){},structuredClone});
  vm.runInContext(source,ctx);ctx.input=structuredClone(customCatalog);vm.runInContext('catalog=input;setCourse(state.activeCourse);',ctx);
  return {run:s=>vm.runInContext(s,ctx),nodes,store,dispatch(type,event){for(const listener of listeners.get(type)||[])listener(event)}};
 }
@@ -34,6 +36,192 @@ test('fork isolates ENEM progress, and persists its own progress',()=>{
  const a=harness();assert.equal(a.run('state.xp'),0);a.run('state.xp=20;saveState()');
  assert.equal(JSON.parse(a.store.get('fisio-progress-v1')).xp,999);
  assert.equal(harness(JSON.parse(a.store.get('concursos-cgu-progress-v1'))).run('state.xp'),20);
+});
+
+function openDiagnostic(app) {
+ app.run('activeView="diagnostico";diagnosticExamId="cgu-2026";renderPage();startDiagnostic()');
+}
+function completeDiagnostic(app,answerExpression) {
+ // Exercise the same answer/navigation actions as the UI, including its final review step.
+ for(let index=0;index<40;index++) {
+  app.run(`answerDiagnostic(${answerExpression});handleDiagnosticAction("next")`);
+ }
+ assert.equal(app.run('diagnosticScreen'),'submit');
+ app.run('handleDiagnosticAction("finish")');
+}
+function restoreDiagnostic(app,customCatalog=catalog) {
+ return harness(JSON.parse(app.store.get('concursos-cgu-progress-v1')),customCatalog,'',undefined,JSON.parse(app.store.get('concursos-diagnostic-v1')));
+}
+
+test('diagnostic starts a balanced mixed CGU sample and withholds feedback until submission',()=>{
+ const a=harness();openDiagnostic(a);
+ const session=JSON.parse(a.run('JSON.stringify(savedDiagnostic().session)'));
+ assert.equal(session.entries.length,40);
+ assert.equal(new Set(session.entries.map(item=>item.questionId)).size,40);
+ for(const course of catalog.courses.filter(course=>course.examId==='cgu-2026')) {
+  const entries=session.entries.filter(item=>item.courseId===course.id);
+  assert.equal(entries.length,10);
+  for(const module of course.modules.filter(module=>module.track===course.id)) {
+   const amount=entries.filter(item=>item.moduleId===module.id).length;
+   assert.ok(amount>=2&&amount<=3,`${course.id}/${module.id}`);
+  }
+  const questions=entries.map(item=>catalog.questions.find(q=>q.id===item.questionId));
+  assert.ok(questions.every(q=>q.block==='P3'&&q.track===course.id));
+  assert.equal(questions.filter(q=>q.correctAlternative==='C').length,5);
+ }
+ for(let i=0;i<40;i+=4) assert.equal(new Set(session.entries.slice(i,i+4).map(item=>item.courseId)).size,4);
+ for(const answer of ['C','E','blank']) {
+  a.run(`answerDiagnostic(${JSON.stringify(answer)})`);
+  const html=a.nodes.get('#app').innerHTML;
+  assert.match(html,/data-diag-answer="C"/);assert.match(html,/data-diag-answer="E"/);assert.match(html,/data-diag-answer="blank"/);
+  assert.doesNotMatch(html,/class="explanation"|class="diagnostic-table"|Seu melhor resultado:|class="answer correct"|class="answer wrong"/);
+  assert.equal(a.run('scoreDiagnosticSession(catalog,savedDiagnostic().session).recommendation'),null);
+ }
+});
+
+test('diagnostic supports answer edits, pause, navigation and reload without changing the sample',()=>{
+ const a=harness();openDiagnostic(a);
+ const entries=a.run('JSON.stringify(savedDiagnostic().session.entries)');
+ a.run('answerDiagnostic("C");handleDiagnosticAction("next");answerDiagnostic("blank");handleDiagnosticAction("previous");answerDiagnostic("E");handleDiagnosticAction("next");handleDiagnosticAction("pause")');
+ assert.equal(a.run('diagnosticScreen'),'home');
+ assert.match(a.nodes.get('#app').innerHTML,/Retomar simulado/);
+ assert.equal(a.run('savedDiagnostic().session.answers.length'),2);
+ assert.equal(a.run('savedDiagnostic().session.answers.find(answer=>answer.questionId===savedDiagnostic().session.entries[0].questionId).answer'),'E');
+ const b=restoreDiagnostic(a);
+ b.run('activeView="diagnostico";renderPage();handleDiagnosticAction("resume")');
+ assert.equal(b.run('diagnosticScreen'),'questions');assert.equal(b.run('savedDiagnostic().index'),1);
+ assert.equal(b.run('JSON.stringify(savedDiagnostic().session.entries)'),entries);
+ assert.equal(b.run('savedDiagnostic().session.answers.find(answer=>answer.questionId===savedDiagnostic().session.entries[1].questionId).answer'),null);
+ assert.match(b.nodes.get('#app').innerHTML,/data-diag-answer="blank"[^>]*aria-pressed="true"/);
+ b.run('activeView="edital";renderPage();activeView="diagnostico";renderPage()');
+ assert.equal(b.run('savedDiagnostic().index'),1);assert.equal(b.run('savedDiagnostic().session.answers.length'),2);
+});
+
+test('diagnostic completion and review do not modify lesson, practice or XP progress',()=>{
+ const a=harness({xp:130,todayXp:30,streak:4,completed:['etica-1'],answered:['cgu26-autoral-etica-1'],missed:['cgu26-autoral-etica-2'],favorites:['cgu26-autoral-etica-3']});
+ const before=a.run('JSON.stringify(state)');const persisted=a.store.get('concursos-cgu-progress-v1');
+ openDiagnostic(a);
+ completeDiagnostic(a,'catalog.questions.find(q=>q.id===savedDiagnostic().session.entries[savedDiagnostic().index].questionId).correctAlternative');
+ assert.equal(a.run('diagnosticScreen'),'result');
+ assert.equal(a.run('JSON.stringify(state)'),before);
+ assert.equal(a.store.get('concursos-cgu-progress-v1'),persisted);
+ assert.equal(a.run('state.attempts.length'),0);assert.equal(a.run('quiz'),null);
+ assert.ok(a.store.has('concursos-diagnostic-v1'));
+ assert.equal(JSON.parse(a.store.get('fisio-progress-v1')).xp,999);
+});
+
+test('diagnostic finalization requires an explicit response or Não sei for every question',()=>{
+ const a=harness();openDiagnostic(a);
+ a.run('answerDiagnostic("C");savedDiagnostic().index=39;handleDiagnosticAction("next")');
+ assert.equal(a.run('diagnosticScreen'),'submit');
+ assert.match(a.nodes.get('#app').innerHTML,/39 questões ainda pendentes/);
+ assert.match(a.nodes.get('#app').innerHTML,/data-diag-action="finish" disabled/);
+ a.run('handleDiagnosticAction("finish")');
+ assert.equal(a.run('savedDiagnostic().completedAt'),null);assert.equal(a.run('diagnosticScreen'),'submit');
+ assert.doesNotMatch(a.nodes.get('#app').innerHTML,/class="explanation"|class="diagnostic-table"/);
+ a.run('handleDiagnosticAction("result")');assert.notEqual(a.run('diagnosticScreen'),'result');
+});
+
+test('diagnostic result ranks performance, reveals unique labelled explanations and survives reload',()=>{
+ const a=harness();openDiagnostic(a);
+ completeDiagnostic(a,'savedDiagnostic().session.entries[savedDiagnostic().index].courseId==="desenvolvimento" ? catalog.questions.find(q=>q.id===savedDiagnostic().session.entries[savedDiagnostic().index].questionId).correctAlternative : "blank"');
+ const html=a.nodes.get('#app').innerHTML;
+ const result=a.run('scoreDiagnosticSession(catalog,savedDiagnostic().session)');
+ assert.equal(result.recommendation.status,'recommended');assert.deepEqual(result.recommendation.courseIds,['desenvolvimento']);
+ assert.match(html,/Seu melhor resultado: TI — Desenvolvimento de Sistemas/);
+ assert.match(html,/<tbody><tr><th scope="row">TI — Desenvolvimento de Sistemas<\/th><td>10\/10<\/td>/);
+ assert.equal((html.match(/class="explanation"/g)||[]).length,40);
+ const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);
+ assert.equal(new Set(ids).size,ids.length,'review headings must not repeat element IDs');
+ assert.equal(ids.filter(id=>id.startsWith('diagnostic-explanation-')).length,40);
+ for(const id of ids.filter(id=>id.startsWith('diagnostic-explanation-'))) assert.ok(html.includes(`aria-labelledby="${id}"`));
+ assert.match(html,/não uma probabilidade de aprovação/);assert.match(html,/dificuldade não calibrada/);
+ const entry=a.run('JSON.stringify(savedDiagnostic())');
+ a.run('answerDiagnostic("E");handleDiagnosticAction("previous");handleDiagnosticAction("finish")');
+ assert.equal(a.run('JSON.stringify(savedDiagnostic())'),entry,'completed responses remain immutable');
+ const b=restoreDiagnostic(a);b.run('activeView="diagnostico";renderPage();handleDiagnosticAction("result")');
+ assert.equal(b.run('diagnosticScreen'),'result');assert.match(b.nodes.get('#app').innerHTML,/Seu melhor resultado: TI — Desenvolvimento de Sistemas/);
+});
+
+test('all unknown answers produce an inconclusive result rather than an arbitrary recommendation',()=>{
+ const a=harness();openDiagnostic(a);completeDiagnostic(a,'"blank"');
+ const html=a.nodes.get('#app').innerHTML;
+ assert.match(html,/Resultado inconclusivo/);assert.doesNotMatch(html,/Seu melhor resultado:|Seu resultado aponta um empate/);
+ const result=a.run('scoreDiagnosticSession(catalog,savedDiagnostic().session)');
+ assert.equal(result.recommendation.status,'insufficient');assert.deepEqual(result.recommendation.courseIds,[]);
+ assert.ok(result.courses.every(course=>course.blank===10&&course.netScore===0));
+ const hero=html.match(/<section class="diagnostic-result-hero">([\s\S]*?)<\/section>/)[1];
+ assert.doesNotMatch(hero,/data-diag-study/);
+});
+
+test('equal positive performances remain tied and offer all leading tracks',()=>{
+ const a=harness();openDiagnostic(a);
+ completeDiagnostic(a,'catalog.questions.find(q=>q.id===savedDiagnostic().session.entries[savedDiagnostic().index].questionId).correctAlternative');
+ const result=a.run('scoreDiagnosticSession(catalog,savedDiagnostic().session)');
+ assert.equal(result.recommendation.status,'tie');assert.equal(result.recommendation.courseIds.length,4);
+ const html=a.nodes.get('#app').innerHTML;
+ assert.match(html,/Seu resultado aponta um empate/);assert.doesNotMatch(html,/Seu melhor resultado:/);
+ const hero=html.match(/<section class="diagnostic-result-hero">([\s\S]*?)<\/section>/)[1];
+ for(const courseId of result.recommendation.courseIds) assert.ok(hero.includes(`data-diag-study="${courseId}"`));
+});
+
+test('Câmara diagnostic is unavailable and switching notices preserves the CGU session',()=>{
+ const a=harness();openDiagnostic(a);a.run('answerDiagnostic("C");handleDiagnosticAction("next");handleDiagnosticAction("pause")');
+ const original=a.run('JSON.stringify(savedDiagnostic())');
+ a.dispatch('change',{target:{id:'diagnostic-exam',value:'camara-2026',dataset:{}}});
+ assert.equal(a.run('diagnosticExamId'),'camara-2026');assert.equal(a.run('savedDiagnostic()'),null);
+ const html=a.nodes.get('#app').innerHTML;
+ assert.match(html,/Diagnóstico indisponível para Câmara/);assert.doesNotMatch(html,/data-diag-action="start"|class="diagnostic-table"/);
+ assert.match(html,/href="\/data\/edital-camara\.pdf"/);assert.doesNotMatch(html,/href="\/data\/edital-cgu-2026\.pdf"/);
+ a.run('startDiagnostic()');assert.equal(a.run('diagnosticStore.sessions["camara-2026"]'),undefined);
+ a.dispatch('change',{target:{id:'diagnostic-exam',value:'cgu-2026',dataset:{}}});
+ assert.equal(a.run('JSON.stringify(savedDiagnostic())'),original);assert.match(a.nodes.get('#app').innerHTML,/Retomar simulado/);
+ a.dispatch('change',{target:{id:'diagnostic-exam',value:'untrusted-exam',dataset:{}}});
+ assert.equal(a.run('diagnosticExamId'),'cgu-2026');
+});
+
+test('old Sobre links open the diagnostic and retain installation and content information',()=>{
+ const a=harness();
+ a.run('window.pwaRefreshes=0;window.concursosPwa={refresh(){window.pwaRefreshes++}};activeView="sobre";renderPage()');
+ assert.equal(a.run('activeView'),'diagnostico');assert.equal(a.run('lastReplacedUrl'),'#diagnostico');
+ assert.equal(a.run('window.pwaRefreshes'),1);
+ const html=a.nodes.get('#app').innerHTML;
+ assert.match(html,/Instalar aplicativo e informações do projeto/);
+ for(const name of ['install','status','instructions','offline']) assert.ok(html.includes(`data-pwa-${name}`));
+ assert.match(html,/Origem do conteúdo/);assert.match(html,/Adicione o Concursos/);assert.match(html,/não há sincronização/);
+});
+
+test('course selection keeps the diagnostic view and changes the relevant exam',async()=>{
+ const a=harness();openDiagnostic(a);a.run('answerDiagnostic("E");handleDiagnosticAction("pause")');
+ const original=a.run('JSON.stringify(savedDiagnostic())');
+ await a.run('selectCourse("camara-jornalismo")');
+ assert.equal(a.run('activeView'),'diagnostico');assert.equal(a.run('diagnosticExamId'),'camara-2026');
+ assert.match(a.nodes.get('#app').innerHTML,/Diagnóstico indisponível/);
+ await a.run('selectCourse("infra")');
+ assert.equal(a.run('activeView'),'diagnostico');assert.equal(a.run('diagnosticExamId'),'cgu-2026');
+ assert.equal(a.run('JSON.stringify(savedDiagnostic())'),original);
+});
+
+test('malformed and outdated diagnostic sessions recover without losing study progress',()=>{
+ for(const saved of ['{broken',{}, {version:1,sessions:[]}, {version:99,sessions:{}}]) {
+  const a=harness({xp:70},catalog,'',undefined,saved);
+  a.run('activeView="diagnostico";renderPage()');
+  assert.equal(a.run('state.xp'),70);assert.equal(a.run('savedDiagnostic()'),null);
+  assert.match(a.nodes.get('#app').innerHTML,/Iniciar simulado/);
+ }
+ const original=harness({xp:90});openDiagnostic(original);original.run('answerDiagnostic("C");handleDiagnosticAction("next")');
+ const missingId=original.run('savedDiagnostic().session.entries[0].questionId');
+ const updated=structuredClone(catalog);updated.questions=updated.questions.filter(q=>q.id!==missingId);
+ const recovered=restoreDiagnostic(original,updated);
+ recovered.run('activeView="diagnostico";diagnosticScreen="questions";renderPage()');
+ assert.equal(recovered.run('savedDiagnostic()'),null);assert.equal(recovered.run('diagnosticScreen'),'home');
+ assert.match(recovered.nodes.get('#app').innerHTML,/tentativa salva mudaram/);assert.equal(recovered.run('state.xp'),90);
+ recovered.run('startDiagnostic()');assert.equal(recovered.run('savedDiagnostic().session.entries.length'),40);
+ assert.equal(recovered.run(`savedDiagnostic().session.entries.some(item=>item.questionId===${JSON.stringify(missingId)})`),false);
+ const invalidAnswer=JSON.parse(original.store.get('concursos-diagnostic-v1'));
+ invalidAnswer.sessions['cgu-2026'].session.answers[0].answer='invalid';
+ const damaged=harness(undefined,catalog,'',undefined,invalidAnswer);damaged.run('activeView="diagnostico";renderPage()');
+ assert.equal(damaged.run('savedDiagnostic()'),null);assert.equal(damaged.run('diagnosticScreen'),'home');
 });
 for(const correct of [true,false])test(`C/E correction reveals justification and records once: ${correct}`,()=>{
  const a=harness();a.run('startLesson(lessons[0].id)');assert.ok(!a.nodes.get('#lesson-modal').innerHTML.includes('class="explanation"'));
@@ -234,7 +422,7 @@ function officialFixture() {
  const questions=[{...base,id:'oficial-a-51',index:51,examId:'concurso-a',examName:'Órgão A',year:2024},{...base,id:'oficial-b-52',index:52,examId:'concurso-b',examName:'Órgão B',year:2025,correctAlternative:'E'}];
  result.questions.push(...questions);
  result.courses.push({id:'cebraspe-ti',title:'Provas anteriores · Cebraspe TI',practiceOnly:true,questionIds:questions.map(q=>q.id),total:2,modules:[{id:'oficial-ti',title:'Conhecimentos de TI'}]});
- result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-7'};
+ result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-8'};
  return result;
 }
 
@@ -299,7 +487,7 @@ test('previous support pages remain available without hiding the numbered item b
 
 test('official manifest parts load atomically and without duplicate requests',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-7','/data/cebraspe-ti/part-002.json?v=concursos-7'];const calls=[];
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-8','/data/cebraspe-ti/part-002.json?v=concursos-8'];const calls=[];
  const a=harness(null,metadata,'',async url=>{calls.push(url);return {ok:true,json:async()=>url===metadata.officialBank.url?{parts,total:2}:{questions:[questions[parts.indexOf(url)]]}}});
  await Promise.all([a.run('ensureCourseData("cebraspe-ti")'),a.run('ensureCourseData("cebraspe-ti")')]);
  assert.equal(calls.length,3);assert.equal(new Set(calls).size,3);assert.equal(a.run('catalog.questions.length'),132);
@@ -307,7 +495,7 @@ test('official manifest parts load atomically and without duplicate requests',as
 
 test('missing official part never imports a partial bank and a retry stays unique',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-7','/data/cebraspe-ti/part-002.json?v=concursos-7'];let fails=true;
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-8','/data/cebraspe-ti/part-002.json?v=concursos-8'];let fails=true;
  const a=harness(null,metadata,'',async url=>({ok:!(fails&&url===parts[1]),json:async()=>url===metadata.officialBank.url?{parts}:{questions:[questions[parts.indexOf(url)]]}}));
  await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'),/parte do banco/);assert.equal(a.run('catalog.questions.length'),130);
  fails=false;await a.run('ensureCourseData("cebraspe-ti")');await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);assert.equal(a.run('new Set(catalog.questions.map(q=>q.id)).size'),132);
@@ -329,7 +517,7 @@ test('official filters identify coarse blocks and disambiguate identical exam na
 
 for (const decoded of [false,true]) test(`compressed official parts load correctly with server decoding=${decoded}`,async()=>{
  const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
- const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-7';
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-8';
  const content=JSON.stringify({questions});
  const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(decoded?content:gzipSync(content)));
  await a.run('ensureCourseData("cebraspe-ti")');
@@ -339,7 +527,7 @@ for (const decoded of [false,true]) test(`compressed official parts load correct
 
 test('a corrupted compressed part remains atomic and can be retried',async()=>{
  const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
- const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-7';let broken=true;
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-8';let broken=true;
  const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(broken?new Uint8Array([31,139,8,0]):gzipSync(JSON.stringify({questions}))));
  await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'));assert.equal(a.run('catalog.questions.length'),130);
  broken=false;await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);

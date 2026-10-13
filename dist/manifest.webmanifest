@@ -49,6 +49,11 @@
       "name": "Consultar editais",
       "short_name": "Editais",
       "url": "/#edital"
+    },
+    {
+      "name": "Descobrir meu cargo",
+      "short_name": "Diagnóstico",
+      "url": "/#diagnostico"
     }
   ]
 }

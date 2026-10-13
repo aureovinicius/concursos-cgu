@@ -70,7 +70,7 @@ function harness(options = {}) {
       get ready() { return options.readyError ? Promise.reject(new Error("Activation refused")) : Promise.resolve({}); },
     };
   }
-  const moduleUrl = options.moduleUrl || "https://example.test/concursos-cgu/pwa.js?v=concursos-7";
+  const moduleUrl = options.moduleUrl || "https://example.test/concursos-cgu/pwa.js?v=concursos-8";
   vm.runInNewContext(source.replaceAll("import.meta.url", JSON.stringify(moduleUrl)), {
     window, document, navigator, URL, console: { warn: (...args) => warnings.push(args) },
   });
@@ -188,7 +188,7 @@ test("standalone windows, iOS standalone and display-mode changes suppress redun
 
 for (const pathname of ["/", "/concursos-cgu/", "/nested/concursos-cgu/"]) {
   test(`offline support registers once with the module-relative scope ${pathname}`, async () => {
-    const app = harness({ moduleUrl: `https://example.test${pathname}pwa.js?v=concursos-7` });
+    const app = harness({ moduleUrl: `https://example.test${pathname}pwa.js?v=concursos-8` });
     assert.equal(app.registrations.length, 0);
     await app.window.dispatch("load");
     assert.deepEqual(app.registrations, [{ url: `https://example.test${pathname}sw.js`, scope: pathname, updateViaCache: "none" }]);

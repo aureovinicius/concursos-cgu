@@ -1,4 +1,5 @@
-const DATA_URL = "/data/courses.json?v=concursos-7";
+import { getDiagnosticCoverage, createDiagnosticSession, validateDiagnosticSession, scoreDiagnosticSession } from "./diagnostic.js?v=concursos-8";
+const DATA_URL = "/data/courses.json?v=concursos-8";
 const OFFICIAL_PART_PREFIX = "/data/cebraspe-ti/";
 const STORAGE_KEY = "concursos-cgu-progress-v1";
 const DAILY_GOAL = 50;
@@ -185,7 +186,7 @@ async function ensureCourseData(courseId) {
       const payload = await response.json();
       let questions = payload.questions;
       if (!Array.isArray(questions) && Array.isArray(payload.parts)) {
-        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json(?:\.gz)?\?v=concursos-7$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
+        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json(?:\.gz)?\?v=concursos-8$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
         const parts = new Array(payload.parts.length);
         let next = 0;
         let failure = null;
@@ -222,7 +223,8 @@ async function selectCourse(courseId) {
     await ensureCourseData(courseId);
     if (version !== courseSelectionVersion) return;
     setCourse(courseId);
-    if (data.practiceOnly || !["praticar", "desempenho", "edital"].includes(activeView)) activeView = data.practiceOnly ? "praticar" : "aprender";
+    if (activeView === "diagnostico") { diagnosticExamId = data.examId || null; diagnosticScreen = "home"; }
+    if (activeView !== "diagnostico" && (data.practiceOnly || !["praticar", "desempenho", "edital"].includes(activeView))) activeView = data.practiceOnly ? "praticar" : "aprender";
     history.replaceState(null, "", `#${activeView}`);
     renderPage();
     app.querySelector("#course-select")?.focus({ preventScroll: true });
@@ -687,10 +689,147 @@ function renderAchievements() {
   `;
 }
 
-function renderAbout() {
+const DIAGNOSTIC_STORAGE_KEY = "concursos-diagnostic-v1";
+let diagnosticStore = loadDiagnosticStore();
+let diagnosticExamId = null;
+let diagnosticScreen = "home";
+let diagnosticStorageWarning = false;
+
+function loadDiagnosticStore() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(DIAGNOSTIC_STORAGE_KEY));
+    return saved?.version === 1 && saved.sessions && typeof saved.sessions === "object" && !Array.isArray(saved.sessions)
+      ? saved : { version: 1, sessions: {} };
+  } catch { return { version: 1, sessions: {} }; }
+}
+function saveDiagnosticStore() {
+  try { localStorage.setItem(DIAGNOSTIC_STORAGE_KEY, JSON.stringify(diagnosticStore)); diagnosticStorageWarning = false; }
+  catch { diagnosticStorageWarning = true; showToast("Não foi possível salvar o diagnóstico. Mantenha esta página aberta para continuar."); }
+}
+function diagnosticExam() {
+  if (!catalog.exams.some(exam => exam.id === diagnosticExamId)) {
+    diagnosticExamId = data.examId || catalog.courses.find(course => course.id === state.activeSyllabusCourse)?.examId || catalog.exams[0].id;
+  }
+  return catalog.exams.find(exam => exam.id === diagnosticExamId);
+}
+function savedDiagnostic() {
+  const entry = diagnosticStore.sessions[diagnosticExam().id];
+  if (!entry || entry.session?.examId !== diagnosticExamId || !validateDiagnosticSession(catalog, entry.session).valid) return null;
+  entry.index = Number.isInteger(entry.index) ? Math.max(0, Math.min(entry.index, entry.session.entries.length - 1)) : 0;
+  if (entry.completedAt && !scoreDiagnosticSession(catalog, entry.session).complete) entry.completedAt = null;
+  return entry;
+}
+function diagnosticHeading(title, subtitle, selector = false) {
+  const exam = diagnosticExam();
+  return `${selector ? `<div class="diagnostic-exam"><label for="diagnostic-exam">Edital do diagnóstico</label><select id="diagnostic-exam">${catalog.exams.map(item => `<option value="${escapeHtml(item.id)}" ${item.id === exam.id ? 'selected' : ''}>${escapeHtml(item.shortTitle || item.title)}</option>`).join('')}</select></div>` : ''}<p class="page-kicker">Diagnóstico por cargo · ${escapeHtml(exam.shortTitle)}</p><h1 class="page-title" tabindex="-1">${title}</h1><p class="page-subtitle">${subtitle}</p>`;
+}
+function renderDiagnostic() {
+  const exam = diagnosticExam();
+  const coverage = getDiagnosticCoverage(catalog, exam.id);
+  const entry = savedDiagnostic();
+  if (entry && diagnosticScreen === 'questions' && !entry.completedAt) renderDiagnosticQuestion(entry);
+  else if (entry && diagnosticScreen === 'submit' && !entry.completedAt) renderDiagnosticSubmit(entry);
+  else if (entry?.completedAt && diagnosticScreen === 'result') renderDiagnosticResult(entry);
+  else {
+    diagnosticScreen = 'home';
+    app.innerHTML = `${diagnosticHeading('Descubra por onde começar.', 'Compare sua base de conhecimentos nas especialidades do edital e encontre um ponto de partida para os estudos.', true)}
+      <section class="diagnostic-hero"><span class="diagnostic-symbol" aria-hidden="true">◎</span><div><p class="page-kicker">Seu conhecimento como ponto de partida</p><h2>Um simulado. Todos os cargos.</h2><p>Questões específicas se misturam em uma única sessão. Ao final, você recebe uma comparação por cargo e uma sugestão baseada no seu desempenho.</p></div></section>
+      ${entry ? `<section class="diagnostic-resume"><div><strong>${entry.completedAt ? 'Seu último resultado está salvo' : 'Continue de onde parou'}</strong><p>${entry.session.answers.length} de ${entry.session.entries.length} respostas registradas neste dispositivo.</p></div><button class="button" data-diag-action="${entry.completedAt ? 'result' : 'resume'}">${entry.completedAt ? 'Ver resultado' : 'Retomar simulado'}</button></section>` : diagnosticStore.sessions[exam.id] ? '<p class="notice">As questões da tentativa salva mudaram ou a sessão está incompleta. Inicie um novo diagnóstico com o banco atual.</p>' : ''}
+      <section class="diagnostic-plan"><h2>${coverage.ready ? 'Uma comparação equilibrada' : 'Este edital ainda precisa de questões'}</h2>
+        <p>${coverage.ready ? `${coverage.total} questões · ${coverage.courses.length} cargos · ${coverage.perCourse} questões por cargo. Todos os módulos específicos participam da seleção.` : 'O diagnóstico exige questões específicas de todos os cargos. Assim, uma área com banco incompleto não gera uma recomendação distorcida.'}</p>
+        <div class="diagnostic-coverage">${coverage.courses.map(course => `<article><strong>${escapeHtml(course.title)}</strong><span>${coverage.ready ? `${coverage.perCourse} no simulado · ${course.modules.length} disciplinas` : `${course.available} questões específicas disponíveis`}</span></article>`).join('')}</div>
+        ${coverage.ready ? `<ul class="diagnostic-rules"><li>Responda <strong>Certo</strong>, <strong>Errado</strong> ou <strong>Não sei</strong>, sem consultar materiais.</li><li>Acerto vale +1, erro −1 e “Não sei” vale 0. A classificação usa o saldo dividido pelo número de questões.</li><li>Você pode voltar às respostas, pausar e retomar. Gabaritos e justificativas aparecem depois de concluir.</li></ul><p class="diagnostic-note">Amostra de questões autorais baseadas no edital. A dificuldade não foi calibrada entre cargos; o resultado é uma sugestão inicial sobre conhecimentos atuais. Considere também seus interesses, as atribuições e os requisitos da carreira.</p>${!entry || entry.completedAt ? `<button class="button diagnostic-start" data-diag-action="start">${entry ? 'Fazer novo simulado' : `Iniciar simulado · ${coverage.total} questões`}</button>` : ''}${entry?.completedAt ? '<p class="diagnostic-note">As questões podem se repetir; uma nova tentativa também reflete o que você aprendeu na revisão.</p>' : ''}` : `<div class="diagnostic-unavailable"><strong>Diagnóstico indisponível para ${escapeHtml(exam.shortTitle)}.</strong><p>O roteiro do edital continua disponível. O simulado será liberado quando todos os cargos tiverem cobertura suficiente.</p><button class="button secondary" data-diag-action="edital">Explorar roteiro do edital</button></div>`}
+      </section>${diagnosticInfoMarkup()}`;
+    window.concursosPwa?.refresh();
+  }
+  if (diagnosticStorageWarning) app.innerHTML += '<p class="notice" role="status">O navegador não conseguiu salvar esta tentativa. Continue nesta página para preservar suas respostas.</p>';
+}
+function renderDiagnosticQuestion(entry) {
+  const session = entry.session;
+  const item = session.entries[entry.index];
+  const question = catalog.questions.find(q => q.id === item.questionId);
+  const answer = session.answers.find(a => a.questionId === item.questionId);
+  app.innerHTML = `${diagnosticHeading(`Questão ${entry.index + 1} de ${session.entries.length}`, 'Julgue o item. Use “Não sei” quando ainda não tiver base para responder.')}
+    <div class="diagnostic-session-bar"><span role="status">${session.answers.length}/${session.entries.length} respostas registradas</span><button class="text-button" data-diag-action="pause">Pausar simulado</button></div>
+    <div class="progress-track" role="progressbar" aria-label="Questões respondidas" aria-valuenow="${session.answers.length}" aria-valuemin="0" aria-valuemax="${session.entries.length}"><span class="progress-fill" style="width:${session.answers.length / session.entries.length * 100}%"></span></div>
+    <section class="diagnostic-question"><p class="origin-badge">${question.origin === 'oficial' ? 'Questão oficial' : 'Questão autoral'} · Conhecimentos específicos</p>${question.origin === 'oficial' ? renderOfficialStatement(question) : `<div class="question-context">${renderMarkdown(question.context)}</div>`}
+      <div class="answers" role="group" aria-label="Sua resposta">${[['C','Certo'],['E','Errado'],['blank','Não sei']].map(([value,label]) => { const selected = answer && answer.answer === (value === 'blank' ? null : value); return `<button class="answer ${selected ? 'selected' : ''}" data-diag-answer="${value}" aria-pressed="${Boolean(selected)}"><span class="answer-letter">${value === 'blank' ? '?' : value}</span><span class="answer-text">${label}</span></button>`; }).join('')}</div>
+    </section><div class="diagnostic-actions"><button class="button secondary" data-diag-action="previous" ${entry.index === 0 ? 'disabled' : ''}>Anterior</button><button class="button" data-diag-action="next">${entry.index === session.entries.length - 1 ? 'Revisar e concluir' : 'Próxima questão'}</button></div>
+    <details class="diagnostic-map"><summary>Mapa de questões · ${session.entries.length - session.answers.length} pendentes</summary>${diagnosticQuestionMap(entry)}</details><p class="diagnostic-note">A correção será exibida ao concluir. As respostas deste diagnóstico ficam separadas das lições e da prática.</p>`;
+}
+function diagnosticQuestionMap(entry) {
+  return `<div class="diagnostic-numbers">${entry.session.entries.map((item,index) => {const answered = entry.session.answers.some(answer => answer.questionId === item.questionId);return `<button class="${answered ? 'answered' : ''}" data-diag-index="${index}" aria-label="Questão ${index + 1}, ${answered ? 'respondida' : 'pendente'}" ${index === entry.index ? 'aria-current="step"' : ''}>${index + 1}</button>`;}).join('')}</div>`;
+}
+function renderDiagnosticSubmit(entry) {
+  const pending = entry.session.entries.length - entry.session.answers.length;
+  app.innerHTML = `${diagnosticHeading('Revise antes de concluir.', 'Você pode voltar a qualquer questão. A comparação e os gabaritos serão liberados após a conclusão.')}
+    <section class="diagnostic-plan"><h2>${pending ? `${pending} questões ainda pendentes` : 'Todas as respostas foram registradas'}</h2><p>${pending ? 'Selecione uma resposta ou “Não sei” para cada item antes de concluir.' : 'Confira sua tentativa ou conclua para ver em quais cargos você teve melhor desempenho.'}</p>${diagnosticQuestionMap(entry)}<div class="diagnostic-actions"><button class="button secondary" data-diag-action="resume">Voltar ao simulado</button><button class="button" data-diag-action="finish" ${pending ? 'disabled' : ''}>Concluir e ver comparação</button></div></section>`;
+}
+function signedDiagnosticNumber(value) { return `${value > 0 ? '+' : ''}${value}`; }
+function renderDiagnosticResult(entry) {
+  const result = scoreDiagnosticSession(catalog, entry.session);
+  const ranking = [...result.courses].sort((a,b) => b.netScore - a.netScore || a.title.localeCompare(b.title,'pt-BR'));
+  const recommendation = result.recommendation;
+  const leaders = ranking.filter(course => recommendation.courseIds.includes(course.id));
+  const headline = recommendation.status === 'recommended' ? `Seu melhor resultado: ${escapeHtml(leaders[0].title)}` : recommendation.status === 'tie' ? 'Seu resultado aponta um empate.' : 'Ainda precisamos de mais evidências.';
+  const explanation = recommendation.status === 'recommended' ? `Nesta amostra, ${escapeHtml(leaders[0].title)} apresentou seu maior saldo de acertos e erros. É uma sugestão inicial de cargo para considerar e aprofundar.` : recommendation.status === 'tie' ? `${leaders.map(course => escapeHtml(course.title)).join(' e ')} tiveram o mesmo melhor saldo. Explore essas trilhas antes de decidir.` : 'Nenhum cargo se destacou com saldo positivo e respostas suficientes. Estude os fundamentos e faça uma nova tentativa; este resultado ainda não sustenta uma indicação de cargo.';
+  const closeResult = recommendation.status === 'recommended' && ranking[1] && ranking[0].netPercent - ranking[1].netPercent <= 20;
+  app.innerHTML = `${diagnosticHeading('Seu ponto de partida.', `${result.total} questões concluídas · ${escapeHtml(diagnosticExam().shortTitle)} · Conhecimentos específicos`)}
+    <section class="diagnostic-result-hero"><p class="page-kicker">${recommendation.status === 'insufficient' ? 'Resultado inconclusivo' : 'Sugestão baseada no desempenho'}</p><h2>${headline}</h2><p>${explanation}</p>${leaders.map(course => `<button class="button" data-diag-study="${escapeHtml(course.id)}">Estudar ${escapeHtml(course.title)}</button>`).join('')}${closeResult ? '<p class="diagnostic-caution">A diferença para o segundo cargo é pequena: até 20 pontos percentuais de saldo. Confirme a tendência com mais estudo e novas questões.</p>' : ''}</section>
+    <section class="diagnostic-plan"><h2>Seu desempenho por cargo</h2><p>Saldo = (acertos − erros) ÷ questões × 100. “Não sei” vale zero; a quantidade de questões é igual para todos.</p><div class="diagnostic-table-wrap"><table class="diagnostic-table"><caption>Comparação dos conhecimentos específicos</caption><thead><tr><th scope="col">Cargo</th><th scope="col">Acertos</th><th scope="col">Erros</th><th scope="col">Não sei</th><th scope="col">Saldo</th></tr></thead><tbody>${ranking.map(course => `<tr><th scope="row">${escapeHtml(course.title)}</th><td>${course.correct}/${course.total}</td><td>${course.wrong}</td><td>${course.blank}</td><td class="${course.netScore > 0 ? 'positive' : course.netScore < 0 ? 'negative' : ''}">${signedDiagnosticNumber(Math.round(course.netPercent))}%</td></tr>`).join('')}</tbody></table></div><p class="diagnostic-note">O saldo é um indicador desta amostra, não uma probabilidade de aprovação. A recomendação exige saldo positivo e pelo menos metade dos itens do cargo respondida com Certo ou Errado. Empates são mantidos.</p></section>
+    <section class="diagnostic-plan"><h2>Onde aprofundar os estudos</h2><div class="diagnostic-breakdown">${ranking.map(course => `<article><h3>${escapeHtml(course.title)}</h3><ul>${course.modules.map(module => `<li><span>${escapeHtml(module.title)}</span><strong>${module.correct}/${module.total} acertos</strong></li>`).join('')}</ul><button class="text-button" data-diag-study="${escapeHtml(course.id)}">Abrir trilha →</button></article>`).join('')}</div></section>
+    <section class="diagnostic-plan"><h2>Revisão das respostas</h2><p>Abra cada questão para conferir o cargo, o gabarito e a justificativa.</p>${entry.session.entries.map((item,index) => {const question = catalog.questions.find(q => q.id === item.questionId); const response = entry.session.answers.find(a => a.questionId === item.questionId); const course = result.courses.find(c => c.id === item.courseId);const outcome = response.answer === null ? 'Não sei' : response.answer === question.correctAlternative ? 'Acertou' : 'Errou'; return `<details class="diagnostic-review"><summary><span>Questão ${index+1} · ${escapeHtml(course.title)}</span><strong>${outcome}</strong></summary><p>Sua resposta: <strong>${response.answer === null ? 'Não sei' : escapeHtml(answerLabel(question,response.answer))}</strong></p>${question.origin === 'oficial' ? renderOfficialStatement(question) : `<div class="question-context">${renderMarkdown(question.context)}</div>`}${renderExplanation(question,`diagnostic-explanation-${index}`)}</details>`;}).join('')}</section>
+    <p class="diagnostic-note">Este simulado avalia conhecimentos atuais em uma amostra de dificuldade não calibrada entre cargos. Seus interesses profissionais, a experiência prática e os requisitos do edital também devem orientar a escolha. As questões podem se repetir em novas tentativas.</p><div class="diagnostic-actions"><button class="button" data-diag-action="start">Fazer novo simulado</button><button class="button secondary" data-diag-action="home">Escolher edital</button></div>`;
+}
+function renderDiagnosticRail() {
+  rail.innerHTML = `<section class="rail-card"><h3>Uma escolha com mais contexto</h3><p>O diagnóstico mostra em quais conhecimentos específicos você teve melhor desempenho nesta amostra.</p></section><section class="rail-card"><h3>Como funciona</h3><p>Mesmo número de questões por cargo, correção ao final e empates preservados.</p><p>Certo ou Errado: +1 por acerto, −1 por erro. “Não sei”: 0.</p></section><section class="rail-card"><h3>No seu ritmo</h3><p>Suas respostas ficam salvas neste navegador. Você pode sair e retomar sem perder a seleção de questões.</p></section>`;
+}
+function refreshDiagnostic(focus = true) {
+  renderPage(focus);
+  if (focus) app.querySelector('h1')?.focus({preventScroll:true});
+}
+function startDiagnostic() {
+  const exam = diagnosticExam();
+  try {
+    const session = createDiagnosticSession(catalog, exam.id);
+    diagnosticStore.sessions[exam.id] = {session,index:0,completedAt:null};
+    diagnosticScreen = 'questions'; saveDiagnosticStore(); refreshDiagnostic();
+  } catch (error) { showToast(error.message); }
+}
+function answerDiagnostic(value) {
+  const entry = savedDiagnostic();
+  if (!entry || entry.completedAt || !['C','E','blank'].includes(value)) return;
+  const questionId = entry.session.entries[entry.index].questionId;
+  entry.session.answers = entry.session.answers.filter(answer => answer.questionId !== questionId);
+  entry.session.answers.push({questionId,answer:value === 'blank' ? null : value});
+  saveDiagnosticStore(); refreshDiagnostic(false);
+  app.querySelector(`[data-diag-answer="${value}"]`)?.focus({preventScroll:true});
+}
+function handleDiagnosticAction(action) {
+  if (action === 'start') { startDiagnostic(); return; }
+  if (action === 'home' || action === 'pause') { diagnosticScreen='home'; refreshDiagnostic(); return; }
+  if (action === 'edital') {
+    const course = catalog.courses.find(course => course.examId === diagnosticExam().id && !course.practiceOnly);
+    if (course) { activeView='edital'; void selectCourse(course.id); }
+    return;
+  }
+  const entry = savedDiagnostic(); if (!entry) return;
+  if (action === 'result' && entry.completedAt) diagnosticScreen='result';
+  else if (action === 'resume') diagnosticScreen=entry.completedAt ? 'result' : 'questions';
+  else if (!entry.completedAt && action === 'previous') entry.index=Math.max(0,entry.index-1);
+  else if (!entry.completedAt && action === 'next') {
+    if (entry.index===entry.session.entries.length-1) diagnosticScreen='submit'; else entry.index++;
+  } else if (!entry.completedAt && action === 'finish') {
+    if (!scoreDiagnosticSession(catalog,entry.session).complete) { showToast('Responda todos os itens ou marque “Não sei”.'); return; }
+    entry.completedAt=new Date().toISOString();diagnosticScreen='result';
+  }
+  saveDiagnosticStore(); refreshDiagnostic();
+}
+
+function diagnosticInfoMarkup() {
   const authoredCount = catalog.questions.filter(q => q.origin === "autoral").length;
   const officialCount = catalog.courses.find(c => c.practiceOnly)?.total || 0;
-  app.innerHTML = `${pageHeader("Sobre o projeto", "Concursos", "Um treino diário com questões comentadas, trilhas por edital e progresso que acompanha seu esforço.")}
+  return `<details class="diagnostic-info"><summary>Instalar aplicativo e informações do projeto</summary>
   <section class="pwa-card" aria-labelledby="pwa-title">
     <div class="pwa-heading"><img src="/icons/icon-192.png" width="56" height="56" alt="" /><div><span class="eyebrow">Sempre à mão</span><h2 id="pwa-title">Seu estudo em um aplicativo</h2></div></div>
     <p>Adicione o Concursos à tela inicial ou ao computador e abra sua trilha em uma janela própria.</p>
@@ -709,8 +848,7 @@ function renderAbout() {
   <div class="about-grid"><article class="info-card"><div class="big-number">${authoredCount}</div><h3>itens autorais únicos</h3><p>Banco inicial de Certo ou Errado. Os itens comuns aparecem nas quatro especialidades, sem duplicar o histórico.</p></article><article class="info-card"><div class="big-number">${officialCount}</div><h3>questões oficiais importadas</h3><p>Provas anteriores de cargos de TI da Cebraspe, com fonte e gabarito. Disponíveis no banco de prática.</p></article></div>
   <div class="notice"><strong>Como estudar:</strong> leia a introdução, resolva uma lição de até cinco questões e consulte a justificativa. Lições permitem até três erros por tentativa; reiniciar renova as chances. Na prática, não há limite de erros.</div>
   <div class="notice"><strong>Origem do conteúdo:</strong> as quatro trilhas da CGU contêm exercícios, comentários e introduções autorais. O banco de provas anteriores contém questões oficiais da Cebraspe, identificadas em cada item. Quando não há comentário, a correção apresenta somente o gabarito e a fonte. Os vínculos ao programa são editoriais. As trilhas da Câmara dos Deputados apresentam o programa do PDF enviado e um checklist, sem questões vinculadas. O app é independente das instituições e das bancas. Este banco inicial não cobre todos os tópicos do edital, e a discursiva não possui correção automática.</div>
-  <div class="notice"><strong>Fontes:</strong> <a href="${sourceHref(currentExam().sourceUrl)}" class="source-link" target="_blank" rel="noreferrer">página da banca</a> · <a href="${escapeHtml(examPdfUrl())}" class="source-link" download>edital selecionado em PDF</a> · <a href="/data/courses.json" class="source-link" download>baixar banco de estudo</a>. Verificação do edital: 13/10/2026. Consulte a banca para retificações.</div>`;
-  window.concursosPwa?.refresh();
+  <div class="notice"><strong>Fontes:</strong> <a href="${sourceHref(diagnosticExam().sourceUrl)}" class="source-link" target="_blank" rel="noreferrer">página da banca</a> · <a href="${escapeHtml(diagnosticExam().localPdfUrl)}" class="source-link" download>edital selecionado em PDF</a> · <a href="/data/courses.json" class="source-link" download>baixar banco de estudo</a>. Verificação do edital: 13/10/2026. Consulte a banca para retificações.</div></details>`;
 }
 
 function renderEdital() {
@@ -738,6 +876,7 @@ function renderEdital() {
 }
 
 function renderPage(resetScroll = true) {
+  if (activeView === "sobre") { activeView = "diagnostico"; history.replaceState(null, "", "#diagnostico"); }
   if (data.practiceOnly && activeView === "edital") {
     const previous = catalog.courses.find(c => c.id === state.activeSyllabusCourse && !c.practiceOnly);
     setCourse(previous?.id || "desenvolvimento");
@@ -750,9 +889,9 @@ function renderPage(resetScroll = true) {
   else if (activeView === "desempenho") renderPerformance();
   else if (activeView === "conquistas") renderAchievements();
   else if (activeView === "edital") renderEdital();
-  else if (activeView === "sobre") renderAbout();
+  else if (activeView === "diagnostico") renderDiagnostic();
   else renderLearn();
-  renderRail();
+  if (activeView === "diagnostico") renderDiagnosticRail(); else renderRail();
   if (resetScroll) window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -918,16 +1057,17 @@ function renderOfficialStatement(question) {
   return `<div class="official-question"><p class="official-instruction">${escapeHtml(question.alternativesIntroduction || "Leia o enunciado e selecione a resposta.")}</p>${question.paperTitle ? `<p class="reference-note">${escapeHtml(question.paperTitle)}</p>` : ""}${question.cargo && question.cargo !== question.paperTitle ? `<details class="paper-roles"><summary>Cargos associados ao caderno</summary><p>${escapeHtml(question.cargo)}</p></details>` : ""}${images.length ? `<p class="notice compact">A página pode conter outros itens e textos de apoio. Responda somente ao <strong>item ${escapeHtml(question.index)}</strong>. Abra a imagem para ampliar.${support.length ? ' Revise o <strong>material de apoio abaixo</strong> quando o item mencionar texto, figura, tabela ou código das páginas anteriores.' : ""}</p><div class="exam-pages">${main.map(image => officialImageMarkup(image, question)).join("")}</div>${supportMarkup}${text ? `<details class="transcript"><summary>Transcrição auxiliar · item ${escapeHtml(question.index)}</summary><p class="tiny">Texto extraído do PDF, que pode incluir outros itens e textos de apoio. A página original é a referência para enunciados, fórmulas, tabelas e figuras.</p>${text}</details>` : ""}` : text}${officialSourceLinks(question)}</div>`;
 }
 
-function renderExplanation(question) {
+function renderExplanation(question, id = "explanation-title") {
+  const explanationId = escapeHtml(id);
   const explanation = question.explanation;
   if (question.origin === "oficial") {
     const hasComment = Boolean(explanation?.steps?.length);
-    return `<section class="explanation" aria-labelledby="explanation-title" tabindex="-1"><p class="page-kicker">Correção pela banca</p><h2 id="explanation-title">Gabarito oficial${question.answerKeyStatus ? ` · ${escapeHtml(question.answerKeyStatus)}` : ""}</h2><div class="correct-answer"><strong>Resposta: ${escapeHtml(answerLabel(question, question.correctAlternative))}</strong></div>${hasComment ? `<h3>${escapeHtml(explanation.label || "Comentário de estudo")}</h3><ol>${explanation.steps.map(step => `<li>${renderMathText(step)}</li>`).join("")}</ol>` : '<p>O gabarito confirma a resposta, mas não traz uma justificativa pedagógica para este item. Consulte a prova e o gabarito nas fontes abaixo.</p>'}${officialSourceLinks(question, true)}<p class="reference-note">Item ${escapeHtml(question.index)} · ${escapeHtml(question.examName || question.examId)}${question.year ? ` · ${escapeHtml(question.year)}` : ""}. Considere o contexto e as normas vigentes na data da prova.</p></section>`;
+    return `<section class="explanation" aria-labelledby="${explanationId}" tabindex="-1"><p class="page-kicker">Correção pela banca</p><h2 id="${explanationId}">Gabarito oficial${question.answerKeyStatus ? ` · ${escapeHtml(question.answerKeyStatus)}` : ""}</h2><div class="correct-answer"><strong>Resposta: ${escapeHtml(answerLabel(question, question.correctAlternative))}</strong></div>${hasComment ? `<h3>${escapeHtml(explanation.label || "Comentário de estudo")}</h3><ol>${explanation.steps.map(step => `<li>${renderMathText(step)}</li>`).join("")}</ol>` : '<p>O gabarito confirma a resposta, mas não traz uma justificativa pedagógica para este item. Consulte a prova e o gabarito nas fontes abaixo.</p>'}${officialSourceLinks(question, true)}<p class="reference-note">Item ${escapeHtml(question.index)} · ${escapeHtml(question.examName || question.examId)}${question.year ? ` · ${escapeHtml(question.year)}` : ""}. Considere o contexto e as normas vigentes na data da prova.</p></section>`;
   }
   const correctAnswer = question.alternatives.find((alternative) => alternative.letter === question.correctAlternative);
-  return `<section class="explanation" aria-labelledby="explanation-title" tabindex="-1">
+  return `<section class="explanation" aria-labelledby="${explanationId}" tabindex="-1">
     <p class="page-kicker">${renderMathText(explanation.concept)}</p>
-    <h2 id="explanation-title">Por que o item é ${escapeHtml(answerLabel(question, question.correctAlternative)).toLowerCase()}?</h2>
+    <h2 id="${explanationId}">Por que o item é ${escapeHtml(answerLabel(question, question.correctAlternative)).toLowerCase()}?</h2>
     <div class="correct-answer"><strong>Gabarito: ${escapeHtml(answerLabel(question, question.correctAlternative))}</strong>${correctAnswer.file ? `<img src="${escapeHtml(correctAnswer.file)}" alt="Resposta correta, alternativa ${question.correctAlternative}">` : ""}</div>
     <ol>${explanation.steps.map((step) => `<li>${renderMathText(step)}</li>`).join("")}</ol>
     <p class="reference-note">Tópico estudado: ${escapeHtml(question.topic)}</p>
@@ -1059,6 +1199,24 @@ function showToast(message) {
 }
 
 document.addEventListener("click", (event) => {
+  const diagnosticAction = event.target.closest("[data-diag-action]");
+  if (diagnosticAction) { handleDiagnosticAction(diagnosticAction.dataset.diagAction); return; }
+  const diagnosticAnswer = event.target.closest("[data-diag-answer]");
+  if (diagnosticAnswer) { answerDiagnostic(diagnosticAnswer.dataset.diagAnswer); return; }
+  const diagnosticIndex = event.target.closest("[data-diag-index]");
+  if (diagnosticIndex) {
+    const entry = savedDiagnostic(); const index = Number(diagnosticIndex.dataset.diagIndex);
+    if (entry && !entry.completedAt && Number.isInteger(index) && index >= 0 && index < entry.session.entries.length) {
+      entry.index=index; diagnosticScreen='questions';saveDiagnosticStore();refreshDiagnostic();
+    }
+    return;
+  }
+  const diagnosticStudy = event.target.closest("[data-diag-study]");
+  if (diagnosticStudy) {
+    const course = catalog.courses.find(course => course.id === diagnosticStudy.dataset.diagStudy && course.examId === diagnosticExam().id && !course.practiceOnly);
+    if (course) { activeView='aprender';void selectCourse(course.id); }
+    return;
+  }
   const view = event.target.closest("[data-view]");
   if (view) {
     courseSelectionVersion += 1;
@@ -1131,6 +1289,11 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("change", (event) => {
+  if (event.target.id === "diagnostic-exam") {
+    if (!catalog.exams.some(exam => exam.id === event.target.value)) return;
+    diagnosticExamId=event.target.value;diagnosticScreen='home';refreshDiagnostic(false);
+    app.querySelector('#diagnostic-exam')?.focus({preventScroll:true});return;
+  }
   if (event.target.dataset.syllabus) {
     const id = event.target.dataset.syllabus;
     if (!data.modules.some(m => m.id === id)) return;

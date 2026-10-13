@@ -67,7 +67,7 @@ export async function buildGitHubPages({ root = process.cwd(), output = "_site",
     if (!(await lstat(absolute)).isFile() || !(await realpath(absolute)).startsWith(`${sourceRoot}${path.sep}`)) throw new Error(`Only regular files inside dist can be packaged: ${trackedPath}`);
     files.set(trackedPath.slice(5), await readFile(absolute));
   }
-  for (const required of ["index.html", "app.js", "styles.css", "data/courses.json", "manifest.webmanifest", "pwa.js", "sw.js"]) {
+  for (const required of ["index.html", "app.js", "diagnostic.js", "styles.css", "data/courses.json", "manifest.webmanifest", "pwa.js", "sw.js"]) {
     if (!files.has(required)) throw new Error(`Missing tracked deployment file: dist/${required}`);
   }
   let references = 0;

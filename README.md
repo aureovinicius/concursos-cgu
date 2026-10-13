@@ -4,6 +4,14 @@ Fork independente do [Enem](https://github.com/aureovinicius/enem), com trilhas 
 
 O seletor **Edital, cargo ou banco** reúne os editais e o banco histórico. As quatro especialidades da CGU mantêm suas lições e questões; os 11 cargos da Câmara dos Deputados possuem roteiro de estudo e checklist de revisão.
 
+## Diagnóstico por cargo
+
+A aba **Diagnóstico** (`#diagnostico`, com redirecionamento de `#sobre`) substitui Sobre por um simulado de conhecimentos específicos de todos os cargos do edital escolhido. Para a CGU, são 40 itens autorais: dez por especialidade, cobrindo todas as disciplinas específicas, com distribuição semelhante por módulo. As questões são intercaladas e o cargo de cada item só aparece na revisão. O motor procura equilibrar gabaritos C/E sem sacrificar a cobertura.
+
+O candidato pode marcar Certo, Errado ou Não sei, voltar, pausar e retomar a mesma amostra. A conclusão exige resposta explícita a todos os itens e só então revela correção, justificativas, desempenho por disciplina e comparação por cargo. O saldo é `(acertos − erros) / total × 100`, com Não sei valendo zero. Empates são preservados. Uma recomendação exige saldo positivo e pelo menos metade dos itens do cargo líder respondida com C/E; resultados insuficientes ficam inconclusivos. O resultado é uma sugestão de estudo sobre conhecimento atual: a dificuldade das amostras não foi calibrada e não se mede vocação ou probabilidade de aprovação.
+
+As sessões ficam em `concursos-diagnostic-v1`, separadas de XP, lições, favoritos e estatísticas de prática. A última tentativa por edital pode ser retomada ou consultada; iniciar uma nova substitui esse diagnóstico. Questões podem se repetir e o efeito da revisão deve ser considerado. Sessões incompatíveis com um catálogo atualizado deixam de ser pontuadas. A Câmara permanece indisponível até haver cobertura suficiente em todos os cargos. Instalação PWA e informações de origem do conteúdo continuam acessíveis no painel expansível do diagnóstico.
+
 ## Câmara dos Deputados
 
 O edital nº 1, de 02/10/2026, foi importado do PDF fornecido pelo usuário, preservado em `dist/data/edital-camara.pdf`. `data/camara-syllabus.json` contém o SHA-256, requisitos, cronograma, regras por cargo e o programa integral dos itens 14.2.3 e 14.2.4: 37 disciplinas e 287 tópicos principais. A prova está prevista no arquivo para 17/01/2027. Retificações externas não estão incorporadas.
@@ -40,7 +48,7 @@ No navegador, abra `http://localhost:51946`. O manifesto e o service worker ofer
 
 ## Instalar como aplicativo (PWA)
 
-Abra https://aureovinicius.com.br/concursos-cgu/ com Chrome ou Edge e use a opção de instalação do menu do navegador. A aba **Sobre** também oferece um botão quando o navegador disponibiliza a instalação nativa. No iPhone/iPad, use Safari → Compartilhar → Adicionar à Tela de Início; no Safari do Mac, Arquivo → Adicionar ao Dock.
+Abra https://aureovinicius.com.br/concursos-cgu/ com Chrome ou Edge e use a opção de instalação do menu do navegador. Em **Diagnóstico → Instalar aplicativo e informações do projeto**, o site também oferece um botão quando o navegador disponibiliza a instalação nativa. No iPhone/iPad, use Safari → Compartilhar → Adicionar à Tela de Início; no Safari do Mac, Arquivo → Adicionar ao Dock.
 
 O manifesto define nome, ícones 192/512/maskable, janela independente e atalhos para Aprender, Praticar e Editais nos sistemas compatíveis. O build preserva a identidade e o escopo em `/concursos-cgu/`. Não é necessário publicar em uma loja de aplicativos.
 
