@@ -35621,7 +35621,8 @@
     "hasPedagogicalExplanations": false,
     "answerKeyStatus": "definitivo",
     "createdAt": "2026-10-13",
-    "imageBytes": 316142152,
-    "imageEncoding": "webp-lossless"
+    "imageBytes": 254026608,
+    "imageEncoding": "webp-lossless",
+    "imageWidth": 1150
   }
 }
