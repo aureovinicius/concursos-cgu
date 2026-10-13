@@ -1,0 +1,1362 @@
+{
+  "modules": [
+    {
+      "id": "dados-estatistica",
+      "description": "Estatística, programação em Python e preparação responsável dos dados.",
+      "emoji": "📊",
+      "introduction": {
+        "title": "Entenda os dados antes de modelar",
+        "summary": "Uma análise útil começa pela qualidade da fonte, pela pergunta e pela incerteza da resposta.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Descrição e inferência",
+            "text": "Média, mediana e dispersão descrevem uma amostra. Inferir algo sobre a população exige atenção à amostragem e aos pressupostos. Um intervalo de confiança expressa a precisão de um procedimento de estimação."
+          },
+          {
+            "title": "Código também faz parte da evidência",
+            "text": "Em Python, atribuir uma lista a outra variável não cria uma cópia independente. Transformações devem ser verificáveis, com testes de casos ausentes, duplicados e extremos. Guarde as regras utilizadas na limpeza."
+          },
+          {
+            "title": "Separe treino e avaliação",
+            "text": "Parâmetros de preparação, como médias de imputação, devem ser aprendidos no conjunto de treino. Usar o teste para escolher ou ajustar transformações pode produzir uma avaliação otimista."
+          }
+        ],
+        "example": {
+          "title": "Analisar prazos de atendimento",
+          "steps": [
+            "Compare média e mediana: poucos atendimentos muito longos podem elevar a média.",
+            "Verifique a origem dos valores extremos antes de excluir registros.",
+            "Documente a população analisada e as limitações da conclusão."
+          ]
+        },
+        "pitfall": "Significância estatística não é sinônimo de importância prática; tamanho do efeito e contexto também precisam ser avaliados."
+      }
+    },
+    {
+      "id": "dados-engenharia",
+      "description": "Arquiteturas, SQL, integração, qualidade e rastreabilidade de dados.",
+      "emoji": "🗄️",
+      "introduction": {
+        "title": "Faça o dado chegar com significado",
+        "summary": "Engenharia de dados reúne armazenamento, transformação e controles que tornam a análise confiável.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Modele as relações",
+            "text": "Chaves primárias identificam registros. Chaves estrangeiras verificam referências entre tabelas. Ao juntar conjuntos, pense na cardinalidade: uma linha da esquerda pode corresponder a várias da direita."
+          },
+          {
+            "title": "Leia a consulta por etapas",
+            "text": "Filtros, junções e agregações podem alterar o conjunto analisado. COUNT(*) conta linhas; COUNT(coluna) desconsidera valores nulos nessa coluna. Funções de janela permitem cálculos sobre grupos sem resumir tudo em uma linha por grupo."
+          },
+          {
+            "title": "Garanta rastreabilidade",
+            "text": "Registre a origem, as transformações e a versão dos dados. Uma carga que termina sem erro técnico ainda pode conter duplicações, campos ausentes ou informações semanticamente incompatíveis."
+          }
+        ],
+        "example": {
+          "title": "Totalizar pagamentos por fornecedor",
+          "steps": [
+            "Identifique a chave do fornecedor e a chave única de cada pagamento.",
+            "Verifique se a junção com cadastros multiplica pagamentos.",
+            "Concilie os totais antes e depois da transformação."
+          ]
+        },
+        "pitfall": "Mais linhas depois de uma junção não significam necessariamente mais fatos: podem ser repetições produzidas pela relação entre tabelas."
+      }
+    },
+    {
+      "id": "dados-ia",
+      "description": "Aprendizado de máquina, avaliação de modelos, linguagem natural e agentes.",
+      "emoji": "🧠",
+      "introduction": {
+        "title": "Avalie o modelo pelo problema real",
+        "summary": "Bom desempenho depende de dados adequados, validação honesta e métricas compatíveis com o uso.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "A tarefa vem primeiro",
+            "text": "Classificação prevê categorias; regressão prevê valores; agrupamento explora semelhanças sem exigir rótulos conhecidos. Comece comparando o modelo com uma solução simples."
+          },
+          {
+            "title": "Erros têm consequências diferentes",
+            "text": "Precisão observa quantos alertas positivos estavam corretos. Sensibilidade observa quantos casos positivos reais foram encontrados. Acurácia isolada pode esconder falhas em classes raras."
+          },
+          {
+            "title": "IA generativa exige verificação",
+            "text": "Recuperar documentos pode ajudar a fundamentar respostas, mas não garante que estejam corretas. Conteúdo externo deve ser tratado como dado; ele não pode conceder novas permissões ao agente."
+          }
+        ],
+        "example": {
+          "title": "Priorizar indícios para análise humana",
+          "steps": [
+            "Defina o que será considerado positivo e qual erro tem maior custo.",
+            "Separe a avaliação de modo compatível com o uso futuro, inclusive no tempo.",
+            "Examine alertas, casos perdidos e desempenho por grupos antes da implantação."
+          ]
+        },
+        "pitfall": "Uma pontuação alta não transforma uma previsão em prova de irregularidade."
+      }
+    },
+    {
+      "id": "dados-operacao",
+      "description": "MLOps, sustentação, governança e gestão de produtos de dados e IA.",
+      "emoji": "🔬",
+      "introduction": {
+        "title": "O trabalho continua depois do treinamento",
+        "summary": "Um modelo em produção precisa de versões, responsáveis, monitoramento e critérios de revisão.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Reproduza a decisão técnica",
+            "text": "Associe cada modelo ao código, aos dados e às configurações do experimento. Métricas sem contexto não permitem comparar resultados nem investigar uma mudança de comportamento."
+          },
+          {
+            "title": "Observe o sistema completo",
+            "text": "Acompanhe latência, falhas e custo de inferência, além da qualidade das previsões. Mudanças nas entradas são sinais para investigar; não demonstram sozinhas que o modelo perdeu qualidade."
+          },
+          {
+            "title": "Defina responsabilidade",
+            "text": "Registre o uso pretendido, as limitações e quem pode aprovar mudanças. Resultados técnicos devem ser relacionados aos benefícios e riscos para as pessoas afetadas."
+          }
+        ],
+        "example": {
+          "title": "Publicar uma nova versão",
+          "steps": [
+            "Registre o modelo e as evidências da avaliação antes da liberação.",
+            "Compare o comportamento em produção com os critérios de aceitação.",
+            "Mantenha uma versão anterior utilizável e um procedimento de reversão testado."
+          ]
+        },
+        "pitfall": "Guardar somente o arquivo do modelo não documenta todo o processo que produziu suas previsões."
+      }
+    },
+    {
+      "id": "infra-redes",
+      "description": "Redes, sistemas, armazenamento e sustentação de bancos de dados.",
+      "emoji": "🌐",
+      "introduction": {
+        "title": "Diagnostique por camadas",
+        "summary": "Uma aplicação depende de nomes, conectividade, serviços e dados; falhas parecidas podem ter causas diferentes.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Endereço não é nome",
+            "text": "DNS permite consultar informações associadas a nomes. DHCP pode fornecer endereços IP e parâmetros de configuração. Resolver um nome corretamente não comprova que o serviço estará acessível."
+          },
+          {
+            "title": "Disponibilidade não substitui recuperação",
+            "text": "Replicação pode reduzir indisponibilidade, mas alterações indevidas também podem ser replicadas. Cópias de segurança e testes de restauração tratam necessidades diferentes."
+          },
+          {
+            "title": "Meça antes de otimizar",
+            "text": "Planos de execução ajudam a entender consultas. Índices podem reduzir o trabalho de leitura, mas consomem espaço e têm custo de manutenção nas escritas. A escolha depende da carga."
+          }
+        ],
+        "example": {
+          "title": "Portal acessível por IP, mas não por nome",
+          "steps": [
+            "Verifique a resolução do nome e o endereço retornado.",
+            "Teste a conectividade até o destino esperado.",
+            "Consulte os registros do serviço para distinguir falha de rede e falha da aplicação."
+          ]
+        },
+        "pitfall": "Uma única medição de sucesso não prova que toda a cadeia de dependências está saudável."
+      }
+    },
+    {
+      "id": "infra-nuvem",
+      "description": "Nuvem, contêineres, virtualização, automação e migração.",
+      "emoji": "☁️",
+      "introduction": {
+        "title": "Automatize com limites claros",
+        "summary": "Nuvem muda a forma de provisionar recursos, mas exige decisões explícitas sobre responsabilidade, custo e continuidade.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Escolha o nível de serviço",
+            "text": "Em IaaS, o consumidor administra sistemas operacionais e aplicações sobre recursos fornecidos. Em PaaS, parte maior da plataforma é gerenciada pelo provedor. SaaS entrega o uso de aplicações."
+          },
+          {
+            "title": "Contêineres precisam de coordenação",
+            "text": "Orquestradores administram réplicas e verificam saúde. Em Kubernetes, um Pod pode conter contêineres que compartilham recursos de rede. Prontidão para receber tráfego é diferente de estar em execução."
+          },
+          {
+            "title": "Declare e confira o estado",
+            "text": "Automação declarativa descreve o estado desejado. Controladores procuram aproximar o estado observado desse objetivo. Versionamento, revisão e validação ajudam a tornar as mudanças repetíveis."
+          }
+        ],
+        "example": {
+          "title": "Escalar um serviço de consulta",
+          "steps": [
+            "Defina a quantidade desejada de réplicas e os recursos necessários.",
+            "Só encaminhe tráfego às instâncias prontas para atendê-lo.",
+            "Acompanhe latência e custo para confirmar que a mudança resolveu o problema."
+          ]
+        },
+        "pitfall": "Contratar uma plataforma gerenciada não transfere automaticamente todas as responsabilidades da aplicação ao provedor."
+      }
+    },
+    {
+      "id": "infra-seguranca",
+      "description": "Identidades, controles de segurança, resposta a incidentes e continuidade.",
+      "emoji": "🛡️",
+      "introduction": {
+        "title": "Proteja acesso e capacidade de recuperação",
+        "summary": "Segurança combina controles preventivos, detecção, resposta e restauração comprovada.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Não confie apenas na localização",
+            "text": "Estar na rede interna não concede confiança automática. Autenticação, autorização e menor privilégio devem acompanhar o acesso aos recursos."
+          },
+          {
+            "title": "Prepare a resposta",
+            "text": "Defina responsáveis e formas de detectar, analisar, conter e recuperar incidentes. Evidências e registros são importantes para entender o ocorrido e melhorar os controles."
+          },
+          {
+            "title": "Diferencie RTO e RPO",
+            "text": "RTO é o objetivo de tempo para recuperar a operação. RPO define o ponto ao qual os dados precisam ser recuperados, expressando a perda de dados tolerada em tempo."
+          }
+        ],
+        "example": {
+          "title": "Planejar recuperação de um cadastro",
+          "steps": [
+            "Identifique quanto tempo o serviço pode ficar indisponível.",
+            "Defina quanto trabalho recente pode ser perdido e dimensione as cópias.",
+            "Teste a restauração e compare os resultados com os objetivos estabelecidos."
+          ]
+        },
+        "pitfall": "Uma cópia concluída com sucesso não comprova, por si só, que o serviço pode ser restaurado no prazo necessário."
+      }
+    },
+    {
+      "id": "infra-operacao",
+      "description": "Observabilidade, confiabilidade, capacidade e gestão de serviços digitais.",
+      "emoji": "📡",
+      "introduction": {
+        "title": "Meça o serviço que o usuário recebe",
+        "summary": "Operar bem exige indicadores úteis, objetivos explícitos e investigação das causas das falhas.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Indicador e objetivo são diferentes",
+            "text": "Um SLI mede uma característica do serviço, como a proporção de requisições bem-sucedidas. Um SLO estabelece a meta desse indicador em uma janela definida."
+          },
+          {
+            "title": "Combine sinais",
+            "text": "Métricas sintetizam medidas; logs registram eventos; traces acompanham a passagem de uma requisição por componentes. A combinação ajuda a localizar gargalos e falhas entre dependências."
+          },
+          {
+            "title": "Aprenda com a operação",
+            "text": "Picos, capacidade e mudanças precisam ser avaliados pelo efeito no serviço. Restaurar a operação encerra a urgência, mas investigar causas e melhorar controles reduz recorrências."
+          }
+        ],
+        "example": {
+          "title": "Investigar uma consulta lenta",
+          "steps": [
+            "Observe a distribuição da latência, e não somente sua média.",
+            "Use um trace para localizar a dependência que concentrou a demora.",
+            "Verifique métricas e logs desse componente antes de escolher uma correção."
+          ]
+        },
+        "pitfall": "Ter muitos painéis não garante observabilidade útil: as medidas precisam responder a perguntas sobre o serviço."
+      }
+    },
+    {
+      "id": "dev-engenharia",
+      "description": "Programação Java, concorrência, interfaces acessíveis e manutenção.",
+      "emoji": "💻",
+      "introduction": {
+        "title": "Transforme requisitos em comportamento verificável",
+        "summary": "Corretude envolve o resultado esperado, os limites da entrada e o uso simultâneo do sistema.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Objetos têm identidade e estado",
+            "text": "Em Java, comparar referências com == não é o mesmo que comparar conteúdo por equals. Ao redefinir igualdade, respeite o contrato de hashCode usado pelas coleções baseadas em hash."
+          },
+          {
+            "title": "Concorrência muda a análise",
+            "text": "Uma operação aparentemente simples pode envolver leitura, cálculo e escrita. Se essas etapas se intercalarem entre threads, atualizações podem ser perdidas. A solução exige uma estratégia de sincronização adequada."
+          },
+          {
+            "title": "A interface também precisa funcionar",
+            "text": "Teste teclado, foco e mensagens de erro. Uma funcionalidade só operável por mouse cria uma barreira para quem utiliza outras formas de interação."
+          }
+        ],
+        "example": {
+          "title": "Contador de solicitações",
+          "steps": [
+            "Identifique se várias requisições compartilham o mesmo contador.",
+            "Verifique se a atualização é atômica ou devidamente sincronizada.",
+            "Teste execuções concorrentes para procurar resultados perdidos."
+          ]
+        },
+        "pitfall": "Passar em um teste sequencial não demonstra correção sob concorrência."
+      }
+    },
+    {
+      "id": "dev-arquitetura",
+      "description": "Arquiteturas, APIs, identidade, integração e serviços com IA.",
+      "emoji": "🔗",
+      "introduction": {
+        "title": "Integre sistemas sem perder controle",
+        "summary": "Uma integração precisa definir contratos, permissões e comportamento diante de falhas e repetições.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Separe responsabilidades",
+            "text": "Injeção de dependências permite fornecer colaboradores a um componente. Contratos claros ajudam a testar as regras de negócio sem depender de toda a infraestrutura."
+          },
+          {
+            "title": "Identidade não equivale a permissão",
+            "text": "Autenticação identifica o usuário; autorização decide o que ele pode fazer. OpenID Connect acrescenta uma camada de identidade sobre OAuth 2.0. Cada operação deve verificar os acessos necessários."
+          },
+          {
+            "title": "Prepare a integração para repetir",
+            "text": "Falhas de rede podem deixar o cliente sem saber se a operação ocorreu. Idempotência evita que repetições previstas produzam efeitos adicionais indevidos. Respostas iguais não são requisito para que uma operação seja idempotente."
+          }
+        ],
+        "example": {
+          "title": "Consultar documentos com um agente",
+          "steps": [
+            "Restrinja o agente aos documentos e ferramentas autorizados.",
+            "Trate instruções encontradas nos documentos como conteúdo externo.",
+            "Confira se a resposta é sustentada pelas fontes e atende à tarefa."
+          ]
+        },
+        "pitfall": "Uma chamada autenticada ainda pode tentar acessar um recurso para o qual o usuário não tem autorização."
+      }
+    },
+    {
+      "id": "dev-dados",
+      "description": "Persistência, SQL, processamento em lote e proteção de dados.",
+      "emoji": "💾",
+      "introduction": {
+        "title": "Persistir é preservar significado e consistência",
+        "summary": "O modelo de dados e as regras de processamento devem impedir estados incorretos e repetições indevidas.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Use restrições para proteger relações",
+            "text": "Uma chave estrangeira valida a existência da referência; ela não impede sozinha que vários registros apontem para a mesma linha. A cardinalidade desejada pode exigir restrições adicionais."
+          },
+          {
+            "title": "Consulte com atenção aos nulos",
+            "text": "SQL distingue ausência de valor e valor conhecido. Agregações e junções devem ser interpretadas considerando nulos, registros sem correspondência e possíveis multiplicações de linhas."
+          },
+          {
+            "title": "Pense na falha durante a carga",
+            "text": "Processamentos em lote podem ser organizados em etapas e transações. Para reiniciar com segurança, registre o estado e evite reaplicar efeitos já confirmados."
+          }
+        ],
+        "example": {
+          "title": "Importar uma lista de pagamentos",
+          "steps": [
+            "Defina um identificador que permita reconhecer cada pagamento.",
+            "Valide os registros e delimite as transações da carga.",
+            "Simule uma interrupção e confira se o reinício evita perdas e duplicações."
+          ]
+        },
+        "pitfall": "Reexecutar o mesmo arquivo não é automaticamente seguro: o comportamento depende das chaves, dos efeitos e do controle de execução."
+      }
+    },
+    {
+      "id": "dev-seguranca",
+      "description": "Desenvolvimento seguro, testes, entrega e gestão da qualidade.",
+      "emoji": "🔐",
+      "introduction": {
+        "title": "Construa segurança durante a entrega",
+        "summary": "Revisões, testes e controles de acesso precisam acompanhar o desenvolvimento e a operação.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Mantenha dados separados de comandos",
+            "text": "Consultas parametrizadas evitam que valores fornecidos pelo usuário sejam interpretados como parte do comando SQL. Validação de entrada e menor privilégio complementam essa proteção."
+          },
+          {
+            "title": "Teste o comportamento que importa",
+            "text": "Testes unitários, de integração e de aceitação observam aspectos diferentes. Uma métrica de cobertura mostra código executado, mas não comprova que todas as regras foram verificadas."
+          },
+          {
+            "title": "Proteja a entrega e os segredos",
+            "text": "Credenciais precisam de armazenamento e acesso controlados. O ciclo de entrega deve incluir revisão de mudanças, verificação de dependências e tratamento de vulnerabilidades."
+          }
+        ],
+        "example": {
+          "title": "Entregar uma nova consulta pública",
+          "steps": [
+            "Revise a autorização e a exposição de dados de cada operação.",
+            "Teste entradas válidas, inválidas e tentativas de acesso indevido.",
+            "Publique com observabilidade e um procedimento de reversão conhecido."
+          ]
+        },
+        "pitfall": "Ocultar um botão na interface não substitui a verificação de autorização no servidor."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "moduleId": "dados-estatistica",
+      "topic": "Média e mediana",
+      "statement": "Os prazos, em dias, de cinco atendimentos foram 2, 3, 3, 4 e 38. Nesse conjunto, a mediana é 3 e a média é 10; portanto, a média foi mais influenciada pelo atendimento de 38 dias.",
+      "correct": true,
+      "explanation": {
+        "concept": "A média utiliza a magnitude de todos os valores; a mediana depende da posição central.",
+        "steps": [
+          "A soma é 50; dividindo por cinco, a média é 10.",
+          "Na lista ordenada, o terceiro valor é 3, que corresponde à mediana."
+        ],
+        "takeaway": "Valores extremos podem afastar a média do centro ocupado pela maioria dos registros."
+      },
+      "sourceUrl": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm",
+      "sourceLabel": "Referência conceitual: NIST — medidas de posição"
+    },
+    {
+      "moduleId": "dados-estatistica",
+      "topic": "Interpretação de intervalos",
+      "statement": "Depois de calcular um intervalo de confiança frequentista de 95% para um parâmetro fixo, o analista pode afirmar que há 95% de probabilidade de o parâmetro estar naquele intervalo específico.",
+      "correct": false,
+      "explanation": {
+        "concept": "O nível de confiança caracteriza o procedimento de construção do intervalo.",
+        "steps": [
+          "Para a amostra já observada, o intervalo contém o parâmetro ou não o contém.",
+          "Em repetições sob os pressupostos do método, aproximadamente 95% dos intervalos construídos conteriam o parâmetro."
+        ],
+        "takeaway": "Confiança do procedimento não é probabilidade posterior atribuída ao parâmetro fixo."
+      },
+      "sourceUrl": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm",
+      "sourceLabel": "Referência conceitual: NIST — intervalos de confiança"
+    },
+    {
+      "moduleId": "dados-estatistica",
+      "topic": "Referências em Python",
+      "statement": "Em Python, após executar a = [1, 2], b = a e b.append(3), a lista referenciada por a passa a conter [1, 2, 3].",
+      "correct": true,
+      "explanation": {
+        "concept": "A atribuição de uma lista a outra variável compartilha a referência ao mesmo objeto.",
+        "steps": [
+          "b = a não cria uma segunda lista.",
+          "append modifica a lista compartilhada, e a mudança pode ser observada por a e por b."
+        ],
+        "takeaway": "Para uma cópia independente da lista externa, seria necessário copiá-la explicitamente."
+      },
+      "sourceUrl": "https://docs.python.org/3/tutorial/datastructures.html",
+      "sourceLabel": "Referência conceitual: Python — estruturas de dados"
+    },
+    {
+      "moduleId": "dados-estatistica",
+      "topic": "Preparação sem vazamento",
+      "statement": "Ao avaliar um classificador, calcular a média de cada atributo em toda a base, incluindo o teste, para imputar valores ausentes garante a independência do teste, porque os rótulos não foram usados.",
+      "correct": false,
+      "explanation": {
+        "concept": "O teste também pode influenciar o treinamento por meio dos atributos.",
+        "steps": [
+          "A média calculada com o teste incorpora informação que deveria permanecer reservada.",
+          "A imputação deve ser ajustada no treino e aplicada ao teste com os mesmos parâmetros."
+        ],
+        "takeaway": "Vazamento não exige acesso aos rótulos."
+      },
+      "sourceUrl": "https://scikit-learn.org/stable/common_pitfalls.html",
+      "sourceLabel": "Referência conceitual: scikit-learn — prevenção de vazamento de informação"
+    },
+    {
+      "moduleId": "dados-estatistica",
+      "topic": "Pressupostos de comparação",
+      "statement": "Antes de uma análise que pressupõe variâncias iguais entre grupos, o analista pode empregar o teste de Levene para avaliar a hipótese de igualdade dessas variâncias.",
+      "correct": true,
+      "explanation": {
+        "concept": "O teste de Levene examina a homogeneidade de variâncias.",
+        "steps": [
+          "A hipótese nula afirma que as variâncias dos grupos são iguais.",
+          "Um resultado que não rejeita a hipótese não prova igualdade; indica insuficiência de evidência para rejeitá-la naquele teste."
+        ],
+        "takeaway": "Verificar pressupostos é parte da interpretação, não uma garantia automática de validade."
+      },
+      "sourceUrl": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm",
+      "sourceLabel": "Referência conceitual: NIST — teste de Levene"
+    },
+    {
+      "moduleId": "dados-engenharia",
+      "topic": "Contagem e valores nulos",
+      "statement": "Uma tabela contém 120 linhas, das quais 15 têm valor nulo em email. A consulta SELECT COUNT(*), COUNT(email) FROM cadastro retorna, respectivamente, 120 e 105.",
+      "correct": true,
+      "explanation": {
+        "concept": "COUNT(*) conta linhas; COUNT(expressão) conta resultados não nulos.",
+        "steps": [
+          "As 120 linhas entram em COUNT(*).",
+          "Os 15 valores nulos ficam fora de COUNT(email), resultando em 105."
+        ],
+        "takeaway": "Escolha a contagem de acordo com a pergunta que deseja responder."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/functions-aggregate.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — funções de agregação"
+    },
+    {
+      "moduleId": "dados-engenharia",
+      "topic": "Funções de janela",
+      "statement": "Para exibir cada pagamento junto à soma dos pagamentos de seu fornecedor, usar SUM(valor) OVER (PARTITION BY fornecedor_id) faz a consulta reduzir obrigatoriamente o resultado a uma linha por fornecedor.",
+      "correct": false,
+      "explanation": {
+        "concept": "Uma função de janela calcula sobre um conjunto de linhas sem agrupá-las em uma única linha de saída.",
+        "steps": [
+          "Cada pagamento continua representado no resultado.",
+          "A soma da partição pode aparecer ao lado de cada linha do respectivo fornecedor."
+        ],
+        "takeaway": "OVER preserva a granularidade das linhas, diferentemente de uma agregação simples com GROUP BY."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/tutorial-window.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — funções de janela"
+    },
+    {
+      "moduleId": "dados-engenharia",
+      "topic": "Atomicidade",
+      "statement": "Duas alterações de saldo pertencem à mesma transferência e são executadas dentro de uma única transação. Se a transação for revertida antes da confirmação, nenhuma das duas alterações deverá permanecer confirmada.",
+      "correct": true,
+      "explanation": {
+        "concept": "Atomicidade trata a transação como uma unidade de confirmação ou reversão.",
+        "steps": [
+          "As duas alterações fazem parte da mesma unidade de trabalho.",
+          "O rollback desfaz as alterações ainda não confirmadas dessa transação."
+        ],
+        "takeaway": "Agrupar efeitos relacionados em uma transação evita uma transferência parcialmente confirmada."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — transações"
+    },
+    {
+      "moduleId": "dados-engenharia",
+      "topic": "Chave estrangeira",
+      "statement": "A existência de uma chave estrangeira fornecedor_id na tabela pagamento, sem outras restrições de unicidade nessa coluna, impede que dois pagamentos se refiram ao mesmo fornecedor.",
+      "correct": false,
+      "explanation": {
+        "concept": "Chave estrangeira verifica uma referência; não impõe exclusividade de uso dessa referência.",
+        "steps": [
+          "Dois pagamentos podem apontar para uma mesma chave válida de fornecedor.",
+          "Para proibir a repetição de fornecedor_id, seria necessária uma restrição de unicidade apropriada."
+        ],
+        "takeaway": "Integridade referencial e unicidade são controles diferentes."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — restrições de integridade"
+    },
+    {
+      "moduleId": "dados-engenharia",
+      "topic": "Cardinalidade de junções",
+      "statement": "Um fornecedor tem três pagamentos. Ao unir sua única linha cadastral às três linhas de pagamento por fornecedor_id, a junção interna pode produzir três linhas de resultado para esse fornecedor.",
+      "correct": true,
+      "explanation": {
+        "concept": "Uma junção produz combinações de linhas que satisfazem a condição.",
+        "steps": [
+          "A linha do fornecedor combina com cada um dos três pagamentos.",
+          "Somar um atributo cadastral repetido nessas linhas pode inflar indevidamente um total."
+        ],
+        "takeaway": "Conheça a granularidade de cada tabela antes de agregar uma junção."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/tutorial-join.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — junções"
+    },
+    {
+      "moduleId": "dados-ia",
+      "topic": "Classes desbalanceadas",
+      "statement": "Em uma base com 990 casos regulares e 10 irregulares, um modelo que prevê todos os casos como regulares obtém 99% de acurácia e, por isso, demonstra capacidade de encontrar irregularidades.",
+      "correct": false,
+      "explanation": {
+        "concept": "Acurácia elevada pode resultar apenas da predominância de uma classe.",
+        "steps": [
+          "O modelo acerta os 990 casos regulares e erra os 10 irregulares.",
+          "Sua sensibilidade para a classe irregular é zero, pois nenhum caso positivo foi encontrado."
+        ],
+        "takeaway": "Avalie a classe de interesse e os tipos de erro, além da acurácia."
+      },
+      "sourceUrl": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "sourceLabel": "Referência conceitual: scikit-learn — métricas de avaliação"
+    },
+    {
+      "moduleId": "dados-ia",
+      "topic": "Precisão dos alertas",
+      "statement": "Um modelo emite 40 alertas de irregularidade, e 30 são confirmados. Considerando irregularidade como classe positiva, a precisão desses alertas é 75%.",
+      "correct": true,
+      "explanation": {
+        "concept": "Precisão é a proporção de verdadeiros positivos entre as previsões positivas.",
+        "steps": [
+          "Há 30 verdadeiros positivos e 10 falsos positivos.",
+          "A razão 30/40 equivale a 0,75."
+        ],
+        "takeaway": "Para calcular sensibilidade também seria preciso conhecer os positivos que o modelo deixou passar."
+      },
+      "sourceUrl": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "sourceLabel": "Referência conceitual: scikit-learn — métricas de avaliação"
+    },
+    {
+      "moduleId": "dados-ia",
+      "topic": "Validação temporal",
+      "statement": "Para prever ocorrências futuras em uma série com dependência temporal, misturar livremente observações antigas e futuras entre treino e teste sempre produz uma avaliação equivalente à divisão cronológica.",
+      "correct": false,
+      "explanation": {
+        "concept": "A validação deve reproduzir a ordem de informação disponível no uso pretendido.",
+        "steps": [
+          "Uma mistura aleatória pode permitir que dados futuros influenciem o treinamento.",
+          "Separações temporais ajudam a avaliar a previsão sobre períodos posteriores ao treino."
+        ],
+        "takeaway": "Dependência temporal exige cuidado com partições aleatórias."
+      },
+      "sourceUrl": "https://scikit-learn.org/stable/modules/cross_validation.html",
+      "sourceLabel": "Referência conceitual: scikit-learn — validação cruzada"
+    },
+    {
+      "moduleId": "dados-ia",
+      "topic": "Aprendizado não supervisionado",
+      "statement": "Ao agrupar contratos por semelhança de atributos sem fornecer categorias previamente rotuladas, uma equipe está empregando uma tarefa típica de aprendizado não supervisionado.",
+      "correct": true,
+      "explanation": {
+        "concept": "Agrupamento procura estruturas de similaridade nos próprios dados.",
+        "steps": [
+          "Não há rótulos de classe usados como alvo de treinamento nesse cenário.",
+          "Os grupos encontrados ainda precisam de interpretação e avaliação para o uso pretendido."
+        ],
+        "takeaway": "Um agrupamento é uma estrutura exploratória, não uma classificação oficial dos contratos."
+      },
+      "sourceUrl": "https://scikit-learn.org/stable/modules/clustering.html",
+      "sourceLabel": "Referência conceitual: scikit-learn — agrupamento"
+    },
+    {
+      "moduleId": "dados-ia",
+      "topic": "Autorização de agentes",
+      "statement": "Um agente que consulta documentos pode tratar uma instrução encontrada em um PDF como autorização suficiente para enviar dados internos a um endereço externo, desde que o PDF tenha sido recuperado por sua ferramenta de busca.",
+      "correct": false,
+      "explanation": {
+        "concept": "Conteúdo recuperado não tem autoridade para conceder permissões ao agente.",
+        "steps": [
+          "O PDF pode conter uma instrução maliciosa misturada ao material consultado.",
+          "Ações e destinos precisam respeitar as permissões da tarefa e os controles das ferramentas."
+        ],
+        "takeaway": "Recuperar um documento não torna confiáveis suas instruções."
+      },
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+      "sourceLabel": "Referência conceitual: OWASP — prevenção de prompt injection"
+    },
+    {
+      "moduleId": "dados-operacao",
+      "topic": "Versionamento de modelos",
+      "statement": "Registrar versões de um modelo e vinculá-las às execuções de treinamento ajuda a comparar resultados e identificar qual artefato foi colocado em produção.",
+      "correct": true,
+      "explanation": {
+        "concept": "Um registro de modelos organiza versões e sua origem.",
+        "steps": [
+          "A identificação da versão evita confundir artefatos com nomes semelhantes.",
+          "A ligação ao experimento facilita consultar parâmetros e evidências da avaliação."
+        ],
+        "takeaway": "Rastreabilidade conecta o modelo implantado ao processo que o produziu."
+      },
+      "sourceUrl": "https://mlflow.org/docs/latest/ml/model-registry/",
+      "sourceLabel": "Referência conceitual: MLflow — registro e versões de modelos"
+    },
+    {
+      "moduleId": "dados-operacao",
+      "topic": "Monitoramento e mudança",
+      "statement": "Se a distribuição de um atributo de entrada muda em produção, fica automaticamente demonstrado que a taxa de erro do modelo aumentou.",
+      "correct": false,
+      "explanation": {
+        "concept": "Mudança nas entradas é um sinal de risco, não uma medição direta do erro.",
+        "steps": [
+          "O modelo pode continuar adequado, ou pode ter perdido qualidade.",
+          "É necessário investigar o contexto e avaliar resultados com evidências apropriadas, incluindo rótulos quando disponíveis."
+        ],
+        "takeaway": "Monitorar distribuição e medir desempenho são atividades complementares."
+      },
+      "sourceUrl": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "sourceLabel": "Referência conceitual: NIST — AI Risk Management Framework"
+    },
+    {
+      "moduleId": "dados-operacao",
+      "topic": "Reversão de implantação",
+      "statement": "Manter uma versão anterior identificada e disponível no registro de modelos pode apoiar a reversão de uma implantação problemática.",
+      "correct": true,
+      "explanation": {
+        "concept": "Versionamento torna possível selecionar um artefato conhecido para restaurar o serviço.",
+        "steps": [
+          "A equipe consegue distinguir a versão nova da anterior.",
+          "A reversão ainda deve considerar compatibilidade de dados, dependências e infraestrutura."
+        ],
+        "takeaway": "Ter versões disponíveis ajuda a recuperação, mas não dispensa um procedimento de implantação."
+      },
+      "sourceUrl": "https://mlflow.org/docs/latest/ml/model-registry/",
+      "sourceLabel": "Referência conceitual: MLflow — registro e versões de modelos"
+    },
+    {
+      "moduleId": "dados-operacao",
+      "topic": "Observabilidade de inferência",
+      "statement": "Guardar apenas mensagens de erro é suficiente para medir diretamente a latência de todas as inferências que terminaram com sucesso.",
+      "correct": false,
+      "explanation": {
+        "concept": "Eventos de erro não descrevem todas as requisições bem-sucedidas.",
+        "steps": [
+          "A duração dos sucessos precisa ser instrumentada ou calculada a partir de registros adequados.",
+          "Métricas e traces podem fornecer a informação que uma lista de erros não contém."
+        ],
+        "takeaway": "O sinal coletado precisa permitir responder à pergunta de operação."
+      },
+      "sourceUrl": "https://opentelemetry.io/docs/concepts/signals/",
+      "sourceLabel": "Referência conceitual: OpenTelemetry — sinais de observabilidade"
+    },
+    {
+      "moduleId": "dados-operacao",
+      "topic": "Governança de IA",
+      "statement": "Uma solução de IA com alta acurácia técnica dispensa a avaliação de riscos de uso indevido e de efeitos sobre grupos afetados.",
+      "correct": false,
+      "explanation": {
+        "concept": "A gestão de riscos considera o contexto de uso e seus efeitos, além de uma métrica técnica.",
+        "steps": [
+          "Um bom resultado agregado não descreve todos os grupos nem todas as situações.",
+          "Finalidade, limitações e impactos devem ser avaliados durante o ciclo de vida."
+        ],
+        "takeaway": "Qualidade preditiva é parte da avaliação de uma solução, não toda a avaliação."
+      },
+      "sourceUrl": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "sourceLabel": "Referência conceitual: NIST — AI Risk Management Framework"
+    },
+    {
+      "moduleId": "infra-redes",
+      "topic": "Resolução de nomes",
+      "statement": "Um computador pode ter conectividade com o endereço IP de um servidor e ainda assim falhar ao acessar o serviço pelo nome, caso sua resolução DNS esteja incorreta.",
+      "correct": true,
+      "explanation": {
+        "concept": "Resolução de nomes e comunicação com o endereço de destino são etapas distintas.",
+        "steps": [
+          "A conectividade IP não garante que o nome seja traduzido para o endereço correto.",
+          "O diagnóstico deve conferir a resposta DNS e o destino esperado."
+        ],
+        "takeaway": "Separe a investigação de nomes da investigação de conectividade."
+      },
+      "sourceUrl": "https://www.rfc-editor.org/info/rfc1034/",
+      "sourceLabel": "Referência conceitual: IETF — RFC 1034, DNS"
+    },
+    {
+      "moduleId": "infra-redes",
+      "topic": "Configuração de rede",
+      "statement": "A atribuição dinâmica de endereço IP por DHCP exige que o usuário digite manualmente esse endereço a cada renovação da concessão.",
+      "correct": false,
+      "explanation": {
+        "concept": "DHCP foi projetado para distribuir parâmetros de configuração de forma automatizada.",
+        "steps": [
+          "O cliente pode obter e renovar uma concessão por mensagens do protocolo.",
+          "A renovação normal não depende de digitação manual do endereço pelo usuário."
+        ],
+        "takeaway": "Concessões DHCP têm duração e procedimentos de renovação."
+      },
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc2131.html",
+      "sourceLabel": "Referência conceitual: IETF — RFC 2131, DHCP"
+    },
+    {
+      "moduleId": "infra-redes",
+      "topic": "Replicação e backup",
+      "statement": "Uma réplica que aplica fielmente as exclusões executadas no banco principal substitui integralmente cópias de segurança destinadas a recuperar dados apagados por engano.",
+      "correct": false,
+      "explanation": {
+        "concept": "Uma réplica pode reproduzir a mesma exclusão indevida que atingiu o principal.",
+        "steps": [
+          "Disponibilidade de outra instância não assegura a existência de uma versão anterior dos dados.",
+          "Recuperação de exclusões exige mecanismos adequados de cópia, retenção ou recuperação no tempo."
+        ],
+        "takeaway": "Redundância operacional e recuperação histórica atendem a riscos distintos."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-34 — planejamento de contingência"
+    },
+    {
+      "moduleId": "infra-redes",
+      "topic": "Custo dos índices",
+      "statement": "Criar índices em todas as colunas de uma tabela elimina custos de manutenção nas escritas e garante que toda consulta será mais rápida.",
+      "correct": false,
+      "explanation": {
+        "concept": "Índices têm custo de armazenamento e de atualização.",
+        "steps": [
+          "Inserções, exclusões e certas atualizações exigem manutenção dos índices.",
+          "O planejador pode preferir outra estratégia quando um índice não é vantajoso."
+        ],
+        "takeaway": "Crie índices conforme consultas e carga observadas, não por uma regra de indexar tudo."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/indexes-intro.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — uso e custo de índices"
+    },
+    {
+      "moduleId": "infra-redes",
+      "topic": "Filtros de agregações",
+      "statement": "Para listar apenas fornecedores cuja soma de pagamentos ultrapassa determinado valor, HAVING pode filtrar os grupos produzidos por GROUP BY.",
+      "correct": true,
+      "explanation": {
+        "concept": "HAVING permite restringir grupos a partir de resultados agregados.",
+        "steps": [
+          "GROUP BY reúne os pagamentos de cada fornecedor.",
+          "HAVING SUM(valor) > limite seleciona os grupos que atendem à condição."
+        ],
+        "takeaway": "WHERE filtra linhas antes da agregação; HAVING pode filtrar os grupos depois dela."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/tutorial-agg.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — GROUP BY e HAVING"
+    },
+    {
+      "moduleId": "infra-nuvem",
+      "topic": "Responsabilidade em IaaS",
+      "statement": "Ao contratar IaaS para executar máquinas virtuais, a organização pode continuar responsável pela administração dos sistemas operacionais e das aplicações que instala nessas máquinas.",
+      "correct": true,
+      "explanation": {
+        "concept": "IaaS entrega recursos de infraestrutura sem transferir ao provedor toda a administração do software do consumidor.",
+        "steps": [
+          "O provedor controla a infraestrutura subjacente.",
+          "O consumidor administra os componentes de software sob sua responsabilidade, como o sistema operacional convidado."
+        ],
+        "takeaway": "O modelo de serviço ajuda a delimitar responsabilidades."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/145/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-145 — modelos de computação em nuvem"
+    },
+    {
+      "moduleId": "infra-nuvem",
+      "topic": "Responsabilidade em PaaS",
+      "statement": "Usar PaaS torna o provedor automaticamente responsável por corrigir todas as falhas lógicas do código de negócio escrito pelo cliente.",
+      "correct": false,
+      "explanation": {
+        "concept": "A gestão da plataforma não equivale à autoria e correção automática da aplicação do consumidor.",
+        "steps": [
+          "O serviço gerenciado cobre a plataforma definida no contrato.",
+          "O código implantado e suas decisões de negócio continuam exigindo responsabilidade do cliente."
+        ],
+        "takeaway": "Plataforma gerenciada não elimina obrigações sobre a aplicação."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/145/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-145 — modelos de computação em nuvem"
+    },
+    {
+      "moduleId": "infra-nuvem",
+      "topic": "Comunicação em Pods",
+      "statement": "Em Kubernetes, contêineres pertencentes ao mesmo Pod compartilham o espaço de rede do Pod e podem comunicar-se por localhost.",
+      "correct": true,
+      "explanation": {
+        "concept": "O Pod é uma unidade de execução que compartilha recursos entre seus contêineres.",
+        "steps": [
+          "Seus contêineres usam o mesmo contexto de rede do Pod.",
+          "Por isso, portas e endereçamento precisam ser coordenados dentro dessa unidade."
+        ],
+        "takeaway": "Um Pod não representa necessariamente apenas um contêiner."
+      },
+      "sourceUrl": "https://kubernetes.io/docs/concepts/workloads/pods/",
+      "sourceLabel": "Referência conceitual: Kubernetes — Pods"
+    },
+    {
+      "moduleId": "infra-nuvem",
+      "topic": "Prontidão e reinício",
+      "statement": "Uma falha em uma sonda de readiness do Kubernetes tem como efeito obrigatório reiniciar imediatamente o contêiner, da mesma forma que uma falha de liveness.",
+      "correct": false,
+      "explanation": {
+        "concept": "Readiness trata a aptidão para receber tráfego; liveness pode levar ao reinício.",
+        "steps": [
+          "Uma instância não pronta deixa de ser considerada pronta nos endpoints do serviço correspondente.",
+          "A falha de readiness, por si só, não determina o reinício do contêiner."
+        ],
+        "takeaway": "Configure sondas conforme a ação desejada, pois prontidão e atividade têm funções distintas."
+      },
+      "sourceUrl": "https://kubernetes.io/docs/concepts/workloads/pods/probes/",
+      "sourceLabel": "Referência conceitual: Kubernetes — sondas de prontidão e atividade"
+    },
+    {
+      "moduleId": "infra-nuvem",
+      "topic": "Estado desejado",
+      "statement": "Um controlador declarativo que observa duas réplicas quando o estado desejado prevê três pode atuar para criar a réplica faltante.",
+      "correct": true,
+      "explanation": {
+        "concept": "Controladores procuram reconciliar o estado observado com o estado desejado.",
+        "steps": [
+          "A diferença entre duas e três réplicas indica uma divergência.",
+          "O controlador toma medidas para reduzi-la, conforme suas regras e os recursos disponíveis."
+        ],
+        "takeaway": "A reconciliação é contínua; declarar um objetivo não significa que ele já foi alcançado."
+      },
+      "sourceUrl": "https://kubernetes.io/docs/concepts/architecture/controller/",
+      "sourceLabel": "Referência conceitual: Kubernetes — controladores"
+    },
+    {
+      "moduleId": "infra-seguranca",
+      "topic": "Zero trust",
+      "statement": "Na arquitetura zero trust, um dispositivo conectado à rede interna recebe confiança implícita suficiente para acessar qualquer recurso corporativo.",
+      "correct": false,
+      "explanation": {
+        "concept": "Zero trust não concede confiança apenas pela localização de rede.",
+        "steps": [
+          "A origem interna não substitui avaliação de identidade e autorização.",
+          "O acesso ao recurso deve seguir políticas e verificações adequadas ao contexto."
+        ],
+        "takeaway": "Estar dentro da rede não equivale a ter permissão irrestrita."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-207 — arquitetura zero trust"
+    },
+    {
+      "moduleId": "infra-seguranca",
+      "topic": "Menor privilégio",
+      "statement": "Uma conta de serviço que precisa somente consultar um conjunto de dados deve receber permissões compatíveis com essa necessidade, evitando concessões administrativas desnecessárias.",
+      "correct": true,
+      "explanation": {
+        "concept": "Menor privilégio limita o acesso ao necessário para a função.",
+        "steps": [
+          "Privilégios excedentes ampliam os efeitos possíveis de falhas ou comprometimento.",
+          "As permissões devem ser definidas e revistas conforme o uso autorizado."
+        ],
+        "takeaway": "Conceda acesso pela necessidade demonstrada, não por conveniência."
+      },
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "sourceLabel": "Referência conceitual: OWASP — autorização e menor privilégio"
+    },
+    {
+      "moduleId": "infra-seguranca",
+      "topic": "Objetivo de ponto de recuperação",
+      "statement": "Definir RPO de quinze minutos significa exigir que o serviço seja restaurado em no máximo quinze minutos, independentemente da perda de dados.",
+      "correct": false,
+      "explanation": {
+        "concept": "RPO expressa o ponto de recuperação dos dados, não o prazo de restauração do serviço.",
+        "steps": [
+          "Quinze minutos de RPO representam a perda temporal de dados tolerada no planejamento.",
+          "O objetivo de tempo de recuperação é tratado pelo RTO."
+        ],
+        "takeaway": "RPO trata dados; RTO trata tempo de recuperação."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-34 — planejamento de contingência"
+    },
+    {
+      "moduleId": "infra-seguranca",
+      "topic": "Objetivo de tempo de recuperação",
+      "statement": "Se o RTO de um serviço é de duas horas, o planejamento deve buscar recuperá-lo dentro desse intervalo após a interrupção, e os testes ajudam a verificar se esse objetivo é viável.",
+      "correct": true,
+      "explanation": {
+        "concept": "RTO orienta o prazo desejado para recuperação operacional.",
+        "steps": [
+          "O objetivo influencia recursos, procedimentos e dependências de recuperação.",
+          "Exercícios e restaurações testadas fornecem evidência sobre a capacidade real."
+        ],
+        "takeaway": "Um objetivo documentado precisa ser sustentado por capacidade comprovada."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-34 — planejamento de contingência"
+    },
+    {
+      "moduleId": "infra-seguranca",
+      "topic": "Resposta a incidentes",
+      "statement": "Uma vez restaurado um serviço afetado por incidente, torna-se desnecessário analisar as causas e incorporar melhorias, pois essas atividades não integram a gestão da resposta.",
+      "correct": false,
+      "explanation": {
+        "concept": "Resposta a incidentes também gera aprendizado para reduzir riscos futuros.",
+        "steps": [
+          "Restaurar a disponibilidade resolve a urgência operacional.",
+          "Análise e melhoria ajudam a tratar causas, lacunas de detecção e falhas de controle."
+        ],
+        "takeaway": "Recuperar o serviço não encerra todo o trabalho de aprendizado."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/61/r3/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-61 — resposta a incidentes"
+    },
+    {
+      "moduleId": "infra-operacao",
+      "topic": "SLI e SLO",
+      "statement": "A proporção observada de requisições bem-sucedidas é, por si só, um SLO completo, mesmo sem meta ou período de avaliação definidos.",
+      "correct": false,
+      "explanation": {
+        "concept": "O indicador observado é um SLI; o SLO estabelece um objetivo para esse indicador.",
+        "steps": [
+          "A proporção descreve o comportamento medido.",
+          "Para formular o objetivo, é preciso definir a meta e como ela será avaliada em uma janela."
+        ],
+        "takeaway": "Medida e meta são conceitos diferentes."
+      },
+      "sourceUrl": "https://sre.google/sre-book/service-level-objectives/",
+      "sourceLabel": "Referência conceitual: Google SRE — indicadores e objetivos de serviço"
+    },
+    {
+      "moduleId": "infra-operacao",
+      "topic": "Rastreamento distribuído",
+      "statement": "Em uma requisição que passa por vários serviços, um trace pode ajudar a identificar qual etapa concentrou a demora observada pelo usuário.",
+      "correct": true,
+      "explanation": {
+        "concept": "Rastreamento distribuído relaciona etapas de uma operação entre componentes.",
+        "steps": [
+          "Os spans registram operações e sua duração no contexto da requisição.",
+          "A comparação das etapas permite investigar a contribuição de cada dependência."
+        ],
+        "takeaway": "Um trace dá contexto de percurso que uma contagem agregada isolada não oferece."
+      },
+      "sourceUrl": "https://opentelemetry.io/docs/concepts/signals/",
+      "sourceLabel": "Referência conceitual: OpenTelemetry — sinais de observabilidade"
+    },
+    {
+      "moduleId": "infra-operacao",
+      "topic": "Disponibilidade por requisições",
+      "statement": "Em uma janela com 10.000 requisições válidas, 9.990 tiveram sucesso. Se a disponibilidade for definida como sucessos divididos por requisições válidas, o resultado será 99,99%.",
+      "correct": false,
+      "explanation": {
+        "concept": "O indicador deve seguir a razão definida no enunciado.",
+        "steps": [
+          "A razão 9.990/10.000 é 0,999.",
+          "Convertendo em percentual, o resultado é 99,9%, e não 99,99%."
+        ],
+        "takeaway": "Identifique o denominador e converta corretamente a razão em percentual."
+      },
+      "sourceUrl": "https://sre.google/sre-book/service-level-objectives/",
+      "sourceLabel": "Referência conceitual: Google SRE — indicadores e objetivos de serviço"
+    },
+    {
+      "moduleId": "infra-operacao",
+      "topic": "Latência e distribuição",
+      "statement": "Se a latência média diária está dentro da meta, fica garantido que nenhum grupo de usuários sofreu requisições muito lentas durante o dia.",
+      "correct": false,
+      "explanation": {
+        "concept": "A média pode esconder uma cauda de requisições lentas e diferenças entre grupos.",
+        "steps": [
+          "Muitas respostas rápidas podem compensar poucas respostas muito demoradas na média.",
+          "Percentis e segmentações ajudam a observar essa distribuição."
+        ],
+        "takeaway": "Uma média satisfatória não descreve sozinha toda a experiência do usuário."
+      },
+      "sourceUrl": "https://sre.google/sre-book/service-level-objectives/",
+      "sourceLabel": "Referência conceitual: Google SRE — indicadores e objetivos de serviço"
+    },
+    {
+      "moduleId": "infra-operacao",
+      "topic": "Melhoria após incidentes",
+      "statement": "Depois de conter uma indisponibilidade, analisar os fatores que a causaram e ajustar controles pode reduzir a chance de recorrência.",
+      "correct": true,
+      "explanation": {
+        "concept": "A resposta deve alimentar a melhoria da gestão de riscos.",
+        "steps": [
+          "A contenção limita o impacto imediato.",
+          "A investigação produz evidências para correções e aperfeiçoamento da detecção e da recuperação."
+        ],
+        "takeaway": "A experiência de operação deve orientar melhorias verificáveis."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/61/r3/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-61 — resposta a incidentes"
+    },
+    {
+      "moduleId": "dev-engenharia",
+      "topic": "Igualdade em Java",
+      "statement": "Em Java, duas instâncias distintas de uma classe sempre terão o mesmo resultado em uma comparação por == e em uma chamada a equals, mesmo quando equals foi sobrescrito para comparar conteúdo.",
+      "correct": false,
+      "explanation": {
+        "concept": "== compara referências; equals pode definir uma igualdade lógica.",
+        "steps": [
+          "Objetos distintos possuem referências distintas.",
+          "Uma implementação de equals pode considerá-los iguais pelo conteúdo relevante."
+        ],
+        "takeaway": "Escolha a comparação conforme identidade ou igualdade lógica."
+      },
+      "sourceUrl": "https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html",
+      "sourceLabel": "Referência conceitual: Java — contratos de equals e hashCode"
+    },
+    {
+      "moduleId": "dev-engenharia",
+      "topic": "Condição de corrida",
+      "statement": "Duas threads que incrementam sem sincronização um mesmo contador inteiro podem perder atualizações, porque a operação de incremento pode envolver leitura, cálculo e escrita intercalados.",
+      "correct": true,
+      "explanation": {
+        "concept": "Uma atualização composta pode sofrer interferência entre threads.",
+        "steps": [
+          "Ambas podem ler o mesmo valor antes de qualquer escrita.",
+          "Se ambas gravarem o mesmo resultado incrementado, um dos incrementos será perdido."
+        ],
+        "takeaway": "A correção exige uma estratégia de sincronização ou uma operação atômica adequada."
+      },
+      "sourceUrl": "https://docs.oracle.com/javase/tutorial/essential/concurrency/interfere.html",
+      "sourceLabel": "Referência conceitual: Java — interferência entre threads"
+    },
+    {
+      "moduleId": "dev-engenharia",
+      "topic": "Despacho polimórfico",
+      "statement": "Uma variável Java declarada com um tipo de superclasse impede que, ao chamar um método de instância sobrescrito, seja executada a implementação da subclasse do objeto referenciado.",
+      "correct": false,
+      "explanation": {
+        "concept": "O despacho de métodos de instância sobrescritos considera o objeto em tempo de execução.",
+        "steps": [
+          "A referência pode ter tipo da superclasse e apontar para um objeto da subclasse.",
+          "A implementação sobrescrita da subclasse pode ser selecionada na chamada."
+        ],
+        "takeaway": "Tipo da referência e implementação executada não são sempre a mesma coisa."
+      },
+      "sourceUrl": "https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html",
+      "sourceLabel": "Referência conceitual: Java — polimorfismo"
+    },
+    {
+      "moduleId": "dev-engenharia",
+      "topic": "Acessibilidade por teclado",
+      "statement": "Um formulário cujos campos e botão de envio funcionam apenas por cliques do mouse atende ao requisito de operação por teclado, desde que o texto esteja legível.",
+      "correct": false,
+      "explanation": {
+        "concept": "Legibilidade não substitui a possibilidade de operar a funcionalidade por teclado.",
+        "steps": [
+          "Usuários podem depender do teclado ou de tecnologias assistivas equivalentes.",
+          "Campos, comandos e sequência de foco precisam permitir concluir a interação."
+        ],
+        "takeaway": "Acessibilidade envolve operação, além de apresentação visual."
+      },
+      "sourceUrl": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard",
+      "sourceLabel": "Referência conceitual: W3C — WCAG, operação por teclado"
+    },
+    {
+      "moduleId": "dev-engenharia",
+      "topic": "Contrato de hashCode",
+      "statement": "Se duas instâncias são consideradas iguais por equals, o contrato de Java exige que elas retornem o mesmo hashCode; o inverso não é obrigatório.",
+      "correct": true,
+      "explanation": {
+        "concept": "Objetos iguais devem ter códigos hash iguais, mas colisões entre objetos diferentes são permitidas.",
+        "steps": [
+          "Coleções baseadas em hash dependem desse contrato para localizar elementos.",
+          "Um mesmo código hash não basta para concluir igualdade por equals."
+        ],
+        "takeaway": "Ao redefinir equals, mantenha hashCode consistente com a igualdade."
+      },
+      "sourceUrl": "https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html",
+      "sourceLabel": "Referência conceitual: Java — contratos de equals e hashCode"
+    },
+    {
+      "moduleId": "dev-arquitetura",
+      "topic": "Injeção de dependências",
+      "statement": "Receber um repositório pelo construtor de um serviço, em vez de instanciá-lo diretamente dentro do serviço, é uma forma de injeção de dependências que permite fornecer outro colaborador compatível nos testes.",
+      "correct": true,
+      "explanation": {
+        "concept": "A dependência é fornecida ao componente em vez de ser criada internamente por ele.",
+        "steps": [
+          "O serviço explicita de qual colaborador precisa.",
+          "Um teste pode fornecer uma implementação compatível controlada para exercitar o comportamento."
+        ],
+        "takeaway": "A injeção facilita separar a construção dos objetos do uso de suas dependências."
+      },
+      "sourceUrl": "https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html",
+      "sourceLabel": "Referência conceitual: Spring Framework — injeção de dependências"
+    },
+    {
+      "moduleId": "dev-arquitetura",
+      "topic": "OAuth e OpenID Connect",
+      "statement": "OAuth 2.0 e OpenID Connect têm necessariamente a mesma finalidade: ambos são definidos exclusivamente como protocolos de autenticação do usuário, sem relação com autorização.",
+      "correct": false,
+      "explanation": {
+        "concept": "OpenID Connect acrescenta uma camada de identidade sobre OAuth 2.0.",
+        "steps": [
+          "OAuth 2.0 trata autorização delegada de acesso.",
+          "OpenID Connect permite ao cliente obter informações sobre a autenticação do usuário."
+        ],
+        "takeaway": "Diferencie autorização de acesso e autenticação da identidade."
+      },
+      "sourceUrl": "https://openid.net/specs/openid-connect-core-1_0.html",
+      "sourceLabel": "Referência conceitual: OpenID Foundation — OpenID Connect Core"
+    },
+    {
+      "moduleId": "dev-arquitetura",
+      "topic": "Idempotência HTTP",
+      "statement": "Uma operação HTTP idempotente pode retornar códigos de resposta diferentes em duas chamadas idênticas, desde que o efeito pretendido no servidor ao repeti-la seja equivalente ao de executá-la uma vez.",
+      "correct": true,
+      "explanation": {
+        "concept": "Idempotência refere-se ao efeito pretendido da repetição, não à igualdade de todas as respostas.",
+        "steps": [
+          "Uma exclusão pode remover o recurso na primeira chamada e encontrá-lo ausente na seguinte.",
+          "Essas respostas diferentes não implicam um novo efeito adicional de exclusão."
+        ],
+        "takeaway": "Avalie os efeitos da operação, não apenas o corpo ou o código da resposta."
+      },
+      "sourceUrl": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "sourceLabel": "Referência conceitual: IETF — RFC 9110, semântica HTTP"
+    },
+    {
+      "moduleId": "dev-arquitetura",
+      "topic": "Conteúdo recuperado por IA",
+      "statement": "Uma integração que fornece documentos a um modelo de linguagem elimina o risco de prompt injection, pois somente instruções digitadas diretamente pelo usuário podem induzir ações indevidas.",
+      "correct": false,
+      "explanation": {
+        "concept": "Instruções maliciosas também podem aparecer em conteúdo externo recuperado.",
+        "steps": [
+          "Um documento pode misturar informação útil e comandos direcionados ao modelo.",
+          "A integração precisa separar dados de instruções e limitar ferramentas e permissões."
+        ],
+        "takeaway": "Fontes externas são uma superfície de entrada que precisa de controles."
+      },
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+      "sourceLabel": "Referência conceitual: OWASP — prevenção de prompt injection"
+    },
+    {
+      "moduleId": "dev-arquitetura",
+      "topic": "Controle de acesso a objetos",
+      "statement": "Uma API que recebe o identificador de um relatório deve verificar se o usuário autenticado pode acessar aquele relatório, mesmo que o identificador não seja fácil de adivinhar.",
+      "correct": true,
+      "explanation": {
+        "concept": "A autorização deve ser validada para o recurso solicitado.",
+        "steps": [
+          "Autenticação identifica o usuário, mas não concede acesso a todos os relatórios.",
+          "Identificadores pouco previsíveis não substituem a verificação de permissões."
+        ],
+        "takeaway": "Conhecer um identificador não prova autorização para acessar seu objeto."
+      },
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "sourceLabel": "Referência conceitual: OWASP — autorização e menor privilégio"
+    },
+    {
+      "moduleId": "dev-dados",
+      "topic": "Integridade referencial",
+      "statement": "Se uma chave estrangeira válida liga pagamento.fornecedor_id a fornecedor.id, uma inserção com fornecedor_id não nulo que não corresponda a nenhum fornecedor deve ser rejeitada pela verificação dessa restrição.",
+      "correct": true,
+      "explanation": {
+        "concept": "A restrição exige uma referência existente para valores não nulos sujeitos à chave estrangeira.",
+        "steps": [
+          "O valor deve encontrar uma chave correspondente na tabela referenciada.",
+          "Sem correspondência, a verificação da restrição falha."
+        ],
+        "takeaway": "Integridade referencial impede referências órfãs dentro das regras declaradas."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — restrições de integridade"
+    },
+    {
+      "moduleId": "dev-dados",
+      "topic": "Junção externa",
+      "statement": "Um LEFT JOIN entre fornecedores e pagamentos exclui necessariamente do resultado os fornecedores que ainda não possuem pagamento.",
+      "correct": false,
+      "explanation": {
+        "concept": "LEFT JOIN preserva linhas da tabela à esquerda mesmo sem correspondência à direita.",
+        "steps": [
+          "O fornecedor sem pagamento continua no resultado.",
+          "As colunas correspondentes do lado direito aparecem como nulas nessa linha."
+        ],
+        "takeaway": "A preservação do lado esquerdo distingue a junção externa da junção interna."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/tutorial-join.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — junções"
+    },
+    {
+      "moduleId": "dev-dados",
+      "topic": "COUNT e ausência de valores",
+      "statement": "Em uma tabela com cinco linhas e valor nulo em todas elas na coluna telefone, SELECT COUNT(telefone) retorna 5.",
+      "correct": false,
+      "explanation": {
+        "concept": "COUNT(coluna) não conta os valores nulos.",
+        "steps": [
+          "As cinco linhas existem, mas nenhuma contém valor não nulo em telefone.",
+          "COUNT(telefone) retorna zero; COUNT(*) retornaria cinco."
+        ],
+        "takeaway": "Contar linhas e contar valores preenchidos produz resultados diferentes."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/functions-aggregate.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — funções de agregação"
+    },
+    {
+      "moduleId": "dev-dados",
+      "topic": "Janela e detalhamento",
+      "statement": "Uma consulta pode exibir cada venda e, na mesma linha, a soma das vendas de seu cliente utilizando uma função de janela, sem eliminar o detalhamento de cada venda.",
+      "correct": true,
+      "explanation": {
+        "concept": "Funções de janela permitem combinar linhas detalhadas e cálculos sobre uma partição.",
+        "steps": [
+          "Cada venda continua como linha da consulta.",
+          "A partição por cliente define o grupo usado para calcular a soma exibida."
+        ],
+        "takeaway": "Uma janela acrescenta contexto analítico sem exigir reduzir as linhas a um resumo."
+      },
+      "sourceUrl": "https://www.postgresql.org/docs/current/tutorial-window.html",
+      "sourceLabel": "Referência conceitual: PostgreSQL — funções de janela"
+    },
+    {
+      "moduleId": "dev-dados",
+      "topic": "Processamento em blocos",
+      "statement": "No processamento orientado a chunks do Spring Batch, um conjunto de itens pode ser lido, processado e escrito com confirmação ao final do bloco, em vez de confirmar obrigatoriamente cada item de forma isolada.",
+      "correct": true,
+      "explanation": {
+        "concept": "O chunk delimita uma unidade de processamento e confirmação transacional.",
+        "steps": [
+          "Itens são acumulados conforme a configuração do processamento.",
+          "A escrita e a confirmação seguem a fronteira transacional definida para o bloco."
+        ],
+        "takeaway": "O tamanho e a transação do bloco influenciam desempenho e recuperação após falhas."
+      },
+      "sourceUrl": "https://docs.spring.io/spring-batch/reference/step/chunk-oriented-processing.html",
+      "sourceLabel": "Referência conceitual: Spring Batch — processamento em blocos transacionais"
+    },
+    {
+      "moduleId": "dev-seguranca",
+      "topic": "Consultas parametrizadas",
+      "statement": "Ao consultar um usuário por nome, fornecer o nome como parâmetro de uma consulta preparada reduz o risco de ele ser interpretado como parte do comando SQL.",
+      "correct": true,
+      "explanation": {
+        "concept": "Parametrização separa a estrutura do comando dos valores fornecidos.",
+        "steps": [
+          "O valor é tratado como dado dentro do mecanismo de parâmetros.",
+          "Concatenar texto não confiável ao comando pode permitir que ele altere a consulta."
+        ],
+        "takeaway": "Use parâmetros para os valores e controles adequados para partes estruturais da consulta."
+      },
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+      "sourceLabel": "Referência conceitual: OWASP — prevenção de SQL injection"
+    },
+    {
+      "moduleId": "dev-seguranca",
+      "topic": "Autorização na interface",
+      "statement": "Remover da página o botão de excluir um registro impede por si só uma exclusão não autorizada, mesmo que a API aceite a requisição sem verificar permissão.",
+      "correct": false,
+      "explanation": {
+        "concept": "A interface não é uma fronteira suficiente de autorização.",
+        "steps": [
+          "Uma requisição pode ser enviada diretamente à API.",
+          "O servidor deve verificar se a identidade tem permissão para a operação solicitada."
+        ],
+        "takeaway": "Controles visuais não substituem autorização no ponto que executa a ação."
+      },
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "sourceLabel": "Referência conceitual: OWASP — autorização e menor privilégio"
+    },
+    {
+      "moduleId": "dev-seguranca",
+      "topic": "Segredos no código",
+      "statement": "Manter uma credencial de produção fora do código-fonte e disponibilizá-la por um mecanismo de segredos com acesso controlado ajuda a reduzir sua exposição e facilita a gestão de seu ciclo de vida.",
+      "correct": true,
+      "explanation": {
+        "concept": "Segredos exigem armazenamento, distribuição e acesso controlados.",
+        "steps": [
+          "Credenciais incluídas no repositório podem se espalhar em cópias e históricos.",
+          "Um mecanismo apropriado permite controlar o acesso e apoiar rotação e revogação."
+        ],
+        "takeaway": "A aplicação precisa do segredo em execução, mas ele não precisa integrar seu código."
+      },
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html",
+      "sourceLabel": "Referência conceitual: OWASP — gestão de segredos"
+    },
+    {
+      "moduleId": "dev-seguranca",
+      "topic": "Limites da cobertura",
+      "statement": "Uma suíte de testes com 100% de cobertura de linhas garante que o sistema não possui falhas de segurança e que todos os requisitos foram corretamente implementados.",
+      "correct": false,
+      "explanation": {
+        "concept": "Executar todas as linhas não demonstra a qualidade das verificações nem cobre todas as situações.",
+        "steps": [
+          "Um teste pode executar uma linha sem verificar o resultado correto.",
+          "Caminhos, estados, entradas e requisitos ainda podem deixar de ser examinados."
+        ],
+        "takeaway": "Cobertura é um indicador auxiliar; segurança e corretude exigem evidências adicionais."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/218/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-218 — desenvolvimento seguro"
+    },
+    {
+      "moduleId": "dev-seguranca",
+      "topic": "Segurança no ciclo de vida",
+      "statement": "Incorporar práticas de desenvolvimento seguro ao ciclo de vida do software pode reduzir vulnerabilidades e melhorar sua identificação e tratamento, sem representar garantia de ausência total de falhas.",
+      "correct": true,
+      "explanation": {
+        "concept": "O SSDF propõe práticas integradas para mitigar riscos de vulnerabilidades.",
+        "steps": [
+          "Preparação, produção, proteção e resposta precisam de atividades consistentes.",
+          "Revisões e testes reduzem riscos, mas não eliminam toda possibilidade de defeito."
+        ],
+        "takeaway": "Segurança é uma prática contínua sustentada por controles e evidências."
+      },
+      "sourceUrl": "https://csrc.nist.gov/pubs/sp/800/218/final",
+      "sourceLabel": "Referência conceitual: NIST SP 800-218 — desenvolvimento seguro"
+    }
+  ]
+}

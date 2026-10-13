@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f4ec" />
+    <meta name="application-name" content="Concursos" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Concursos" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta
+      name="description"
+      content="Estude para a CGU 2026 com trilhas por edital, questões de Certo ou Errado comentadas e estatísticas."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="/styles.css?v=concursos-2" />
+    <title>Concursos — CGU 2026</title>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" aria-label="Navegação principal">
+        <a class="brand" href="#aprender" aria-label="Concursos — início">
+          <span class="brand-mark concours-mark" aria-hidden="true">✓</span>
+          <span>concursos</span>
+        </a>
+
+        <nav class="nav-list">
+          <a class="nav-item active" href="#aprender" data-view="aprender">
+            <span class="nav-icon">⌂</span><span>Aprender</span>
+          </a>
+          <a class="nav-item" href="#praticar" data-view="praticar">
+            <span class="nav-icon">↻</span><span>Praticar</span>
+          </a>
+          <a class="nav-item" href="#desempenho" data-view="desempenho">
+            <span class="nav-icon">▥</span><span>Desempenho</span>
+          </a>
+          <a class="nav-item" href="#conquistas" data-view="conquistas">
+            <span class="nav-icon">★</span><span>Conquistas</span>
+          </a>
+          <a class="nav-item" href="#edital" data-view="edital"><span class="nav-icon">☷</span><span>Edital CGU</span></a>
+          <a class="nav-item" href="#sobre" data-view="sobre">
+            <span class="nav-icon">i</span><span>Sobre</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-card">
+          <div class="mini-spark">✦</div>
+          <p><strong>Um pouco todo dia.</strong></p>
+          <p>Resolva uma lição curta e mantenha a sequência acesa.</p>
+        </div>
+      </aside>
+
+      <main id="app" class="main-content" tabindex="-1"></main>
+
+      <aside id="right-rail" class="right-rail" aria-label="Seu progresso"></aside>
+    </div>
+
+    <div id="lesson-modal" class="modal" role="dialog" aria-modal="true" aria-label="Lição" hidden></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="/vendor/katex/katex.min.js"></script>
+    <script type="module" src="/app.js?v=concursos-2"></script>
+    <script type="module" src="/pwa.js?v=concursos-2"></script>
+  </body>
+</html>

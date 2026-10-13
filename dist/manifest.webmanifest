@@ -1,0 +1,37 @@
+{
+  "id": "/",
+  "name": "Concursos — CGU 2026",
+  "short_name": "Concursos",
+  "description": "Estudo por edital, questões comentadas e prática para concursos.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "/#aprender",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f7fb",
+  "theme_color": "#3659c9",
+  "categories": [
+    "education"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

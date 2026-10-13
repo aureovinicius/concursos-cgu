@@ -1,0 +1,571 @@
+{
+  "modules": [
+    {
+      "id": "aud-governamental",
+      "description": "Planeje testes, interprete evidências e transforme achados em melhorias.",
+      "emoji": "🔎",
+      "introduction": {
+        "title": "Da pergunta à conclusão de auditoria",
+        "summary": "Um trabalho útil começa com uma pergunta delimitada e termina com uma conclusão que os registros permitem sustentar.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Escolha a atuação",
+            "text": "A avaliação examina evidências e apresenta uma opinião independente. A consultoria ajuda a aperfeiçoar a gestão, com escopo acordado, preservando as decisões do gestor. A apuração aprofunda fatos e indícios de irregularidades dentro das competências institucionais."
+          },
+          {
+            "title": "Construa o achado",
+            "text": "Compare a situação encontrada com um critério adequado. Investigue causas e consequências e registre de onde vieram as evidências. A quantidade de documentos não compensa fontes pouco confiáveis ou sem relação com a pergunta."
+          },
+          {
+            "title": "Acompanhe a mudança",
+            "text": "Uma recomendação deve responder ao problema identificado. No monitoramento, diferencie a promessa de executar uma ação, sua implementação e o resultado observado. Registrar um plano de ação não demonstra, por si só, redução do risco."
+          }
+        ],
+        "example": {
+          "title": "Exemplo: pagamentos repetidos",
+          "steps": [
+            "Um cruzamento de dados aponta duas cobranças iguais: é um sinal que merece exame.",
+            "Compare contrato, notas fiscais, comprovantes de entrega e pagamentos para confirmar se houve duplicidade.",
+            "Se a falha for confirmada, relate as evidências e acompanhe medidas que previnam sua repetição."
+          ]
+        },
+        "pitfall": "Não transforme um alerta automatizado em conclusão de fraude sem examinar os fatos e os limites da evidência."
+      }
+    },
+    {
+      "id": "aud-financas",
+      "description": "Conecte orçamento, execução da despesa e registros contábeis.",
+      "emoji": "💰",
+      "introduction": {
+        "title": "Siga o caminho do recurso público",
+        "summary": "Para examinar uma despesa, descubra o que foi autorizado, o que foi entregue e o que efetivamente foi pago.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Empenhar não é pagar",
+            "text": "O empenho compromete o crédito orçamentário para a despesa. Ele pode envolver uma obrigação ainda dependente de condição e não comprova, sozinho, o recebimento do bem ou serviço."
+          },
+          {
+            "title": "Confira a liquidação",
+            "text": "A liquidação verifica o direito do credor: origem e objeto da obrigação, valor exato e destinatário do pagamento. No fornecimento de bens, contrato, nota de empenho e comprovação da entrega sustentam essa verificação."
+          },
+          {
+            "title": "Leia os saldos no tempo",
+            "text": "Despesas empenhadas e não pagas até 31 de dezembro podem compor restos a pagar conforme as regras aplicáveis. Para interpretar a execução, separe autorização orçamentária, liquidação, pagamento e situação patrimonial."
+          }
+        ],
+        "example": {
+          "title": "Exemplo: compra de equipamentos",
+          "steps": [
+            "Há dotação e empenho para 20 equipamentos.",
+            "Antes de liquidar a despesa, confira o contrato e os comprovantes de recebimento das unidades devidas.",
+            "Após a liquidação regular e a ordem competente, acompanhe o pagamento e sua correspondência com os registros."
+          ]
+        },
+        "pitfall": "Saldo na conta bancária e dotação orçamentária representam informações diferentes; um não substitui o outro."
+      }
+    },
+    {
+      "id": "aud-politicas",
+      "description": "Avalie resultados, comparações e limites da inferência causal.",
+      "emoji": "📊",
+      "introduction": {
+        "title": "Da entrega ao impacto",
+        "summary": "Uma política pode executar todas as atividades previstas e ainda assim não produzir a mudança social esperada.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Desenhe a cadeia de resultados",
+            "text": "Relacione os recursos utilizados, as atividades realizadas, os produtos entregues e as mudanças esperadas. Essa sequência explicita hipóteses que precisam ser verificadas, como a ligação entre oferecer um curso e melhorar a inserção no trabalho."
+          },
+          {
+            "title": "Escolha a comparação",
+            "text": "Para investigar impacto, interessa saber o que teria acontecido sem a intervenção. Comparar participantes antes e depois pode misturar o efeito do programa com mudanças econômicas, seleção dos participantes e outros fatores."
+          },
+          {
+            "title": "Use evidências complementares",
+            "text": "Registros quantitativos ajudam a medir padrões; entrevistas e observação ajudam a entender mecanismos e barreiras. A combinação deve responder à pergunta da avaliação e explicitar limitações, sem prometer mais do que os dados permitem."
+          }
+        ],
+        "example": {
+          "title": "Exemplo: curso de qualificação",
+          "steps": [
+            "O programa realizou 40 turmas: esse número descreve uma entrega.",
+            "Verifique aprendizagem, acesso e emprego dos participantes ao longo do tempo.",
+            "Para atribuir mudanças ao curso, examine um desenho comparativo adequado e os fatores que também afetam o emprego."
+          ]
+        },
+        "pitfall": "Uma melhora observada depois da intervenção não demonstra, sozinha, que a intervenção causou a melhora."
+      }
+    },
+    {
+      "id": "aud-contratacoes",
+      "description": "Examine planejamento, preço, entrega e fiscalização dos contratos.",
+      "emoji": "📋",
+      "introduction": {
+        "title": "Do problema da compra à entrega comprovada",
+        "summary": "A análise de uma contratação acompanha a necessidade pública, as escolhas do processo e o cumprimento do objeto.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Comece pela necessidade",
+            "text": "Verifique o problema que a contratação deve resolver e se as especificações e quantidades são justificadas. Na pesquisa de preços, a comparação precisa considerar características, escala, local e condições de execução."
+          },
+          {
+            "title": "Acompanhe a execução",
+            "text": "A fiscalização registra ocorrências, verifica entregas e encaminha decisões que ultrapassem sua competência. Contratar apoio técnico não transfere ao particular as atribuições exclusivas do fiscal."
+          },
+          {
+            "title": "Confronte sinais com evidências",
+            "text": "Valores atípicos, documentos repetidos ou concentração de fornecedores orientam o exame. A conclusão exige verificar o contexto, o regime aplicável e os registros que comprovam quantidade, qualidade e preço."
+          }
+        ],
+        "example": {
+          "title": "Exemplo: manutenção de equipamentos",
+          "steps": [
+            "O contrato prevê manutenção de 50 máquinas, com critérios de medição definidos.",
+            "Confronte a cobrança com ordens de serviço, registros de execução e verificações pertinentes.",
+            "Registre divergências e encaminhe a correção antes de aceitar como comprovada uma entrega não demonstrada."
+          ]
+        },
+        "pitfall": "Uma nota fiscal descreve uma cobrança; ela não substitui a verificação da execução contratual."
+      }
+    },
+    {
+      "id": "aud-integridade",
+      "description": "Distinga prevenção, acesso à informação e responsabilização.",
+      "emoji": "🛡️",
+      "introduction": {
+        "title": "Proteja a integridade com evidências e garantias",
+        "summary": "A atuação de controle combina prevenção de falhas, transparência e respostas proporcionais aos fatos apurados.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Avalie o funcionamento",
+            "text": "Um programa de integridade precisa operar na prática: liderança comprometida, controles proporcionais aos riscos, canais de relato e resposta a problemas. Ter políticas escritas não demonstra, isoladamente, aplicação e efetividade."
+          },
+          {
+            "title": "Dê acesso com proteção",
+            "text": "Um documento pode reunir informações públicas e trechos legalmente protegidos. Avalie o fundamento da restrição e a possibilidade de fornecer a parte acessível. Transparência e proteção exigem análise do conteúdo e da finalidade."
+          },
+          {
+            "title": "Separe os regimes de responsabilidade",
+            "text": "Na Lei Anticorrupção, a pessoa jurídica responde objetivamente nas esferas administrativa e civil pelos atos lesivos legalmente previstos, praticados em seu interesse ou benefício. Isso não dispensa demonstrar o ato e seus requisitos, nem torna automática a responsabilização das pessoas naturais."
+          }
+        ],
+        "example": {
+          "title": "Exemplo: programa que só existe no papel",
+          "steps": [
+            "Uma empresa apresenta um código de ética e afirma que seu programa é efetivo.",
+            "Verifique treinamento, funcionamento do canal, respostas às ocorrências e controles relacionados aos riscos reais.",
+            "Registre o que foi comprovado e o que ainda depende de evidência, distinguindo existência documental de aplicação."
+          ]
+        },
+        "pitfall": "Responsabilidade objetiva não significa responsabilidade sem demonstração dos fatos previstos na lei."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "moduleId": "aud-governamental",
+      "topic": "Consultoria e responsabilidade gerencial",
+      "statement": "Uma equipe de auditoria foi convidada a facilitar uma oficina sobre riscos. Ela pode apoiar a análise das alternativas, desde que a escolha e a implementação dos controles permaneçam sob responsabilidade dos gestores.",
+      "correct": true,
+      "explanation": {
+        "concept": "A consultoria auxilia a gestão sem assumir suas decisões.",
+        "steps": [
+          "Facilitar a identificação de riscos é compatível com o papel consultivo.",
+          "A decisão sobre quais controles adotar e a execução desses controles pertencem à administração."
+        ],
+        "takeaway": "Apoiar a decisão não significa decidir pelo gestor."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas.pdf",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas, seção 1.2"
+    },
+    {
+      "moduleId": "aud-governamental",
+      "topic": "Suficiência e qualidade da evidência",
+      "statement": "Um achado é sustentado apenas por cem cópias do mesmo relato sem documentação de apoio. A multiplicação das cópias torna a evidência suficiente e confiável, dispensando outras verificações.",
+      "correct": false,
+      "explanation": {
+        "concept": "Evidências repetidas não são confirmações independentes.",
+        "steps": [
+          "As cem cópias têm a mesma origem e repetem a mesma informação.",
+          "A equipe precisa avaliar a confiabilidade do relato e buscar evidências adequadas ao fato examinado."
+        ],
+        "takeaway": "Volume de arquivos não equivale a força da prova."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas.pdf",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas, seção 5.3"
+    },
+    {
+      "moduleId": "aud-governamental",
+      "topic": "Critério e condição",
+      "statement": "Uma norma exige conciliação mensal, mas os registros mostram que ela só ocorreu a cada trimestre. Nesse achado, a frequência exigida funciona como critério, e a frequência efetivamente constatada corresponde à condição.",
+      "correct": true,
+      "explanation": {
+        "concept": "O achado confronta o que se esperava com o que foi observado.",
+        "steps": [
+          "A regra mensal fornece a referência usada no exame.",
+          "Os registros trimestrais descrevem a situação real encontrada."
+        ],
+        "takeaway": "Critério é a referência; condição é o fato comprovado."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas.pdf",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas, seção 5.4"
+    },
+    {
+      "moduleId": "aud-governamental",
+      "topic": "Monitoramento de recomendações",
+      "statement": "O gestor enviou um cronograma para corrigir falhas de acesso ao sistema. Esse envio, sem evidência de execução, já permite registrar que os acessos indevidos foram eliminados.",
+      "correct": false,
+      "explanation": {
+        "concept": "Planejar, implementar e produzir resultados são etapas distintas.",
+        "steps": [
+          "O cronograma registra uma intenção e seus prazos.",
+          "A redução dos acessos indevidos exige verificar a aplicação dos controles e seus efeitos."
+        ],
+        "takeaway": "Um plano aceito ainda precisa ser executado e avaliado."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas.pdf",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas, capítulo 7"
+    },
+    {
+      "moduleId": "aud-governamental",
+      "topic": "Procedimentos analíticos",
+      "statement": "Uma análise encontrou um aumento atípico das despesas de uma unidade. Antes de concluir que existe irregularidade, a equipe deve investigar explicações possíveis e confrontar o alerta com outras evidências.",
+      "correct": true,
+      "explanation": {
+        "concept": "Variações inesperadas orientam testes adicionais.",
+        "steps": [
+          "O aumento pode decorrer de mudança legítima na demanda ou de erro nos dados.",
+          "Procedimentos adicionais ajudam a distinguir essas hipóteses de uma irregularidade."
+        ],
+        "takeaway": "Um padrão atípico é ponto de investigação, não veredito."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas.pdf",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas, seção 4.3.4.6.7"
+    },
+    {
+      "moduleId": "aud-financas",
+      "topic": "Liquidação da despesa",
+      "statement": "Uma unidade recebeu materiais previstos em contrato. A conferência da entrega, do valor devido e da identificação do credor integra a liquidação da despesa, antes do pagamento regular.",
+      "correct": true,
+      "explanation": {
+        "concept": "A liquidação verifica o direito do credor.",
+        "steps": [
+          "O art. 63 da Lei nº 4.320/1964 exige a verificação da obrigação e do valor a pagar.",
+          "Nos fornecimentos, a comprovação da entrega integra a base documental dessa etapa."
+        ],
+        "takeaway": "Receber, conferir e liquidar precedem o pagamento regular."
+      },
+      "sourceUrl": "https://planalto.gov.br/ccivil_03/leis/l4320compilado.htm",
+      "sourceLabel": "Lei nº 4.320/1964, arts. 62 e 63"
+    },
+    {
+      "moduleId": "aud-financas",
+      "topic": "Empenho e entrega",
+      "statement": "Uma nota de empenho foi emitida para adquirir computadores ainda não entregues. A emissão desse documento, por si só, comprova a entrega e substitui a liquidação.",
+      "correct": false,
+      "explanation": {
+        "concept": "O empenho não comprova o cumprimento da obrigação pelo fornecedor.",
+        "steps": [
+          "A nota registra o compromisso orçamentário e seus elementos.",
+          "A liquidação do fornecimento também depende dos documentos que comprovam a entrega."
+        ],
+        "takeaway": "Não confunda reserva do crédito com recebimento do objeto."
+      },
+      "sourceUrl": "https://planalto.gov.br/ccivil_03/leis/l4320compilado.htm",
+      "sourceLabel": "Lei nº 4.320/1964, arts. 58, 61 e 63"
+    },
+    {
+      "moduleId": "aud-financas",
+      "topic": "Restos a pagar",
+      "statement": "Uma despesa válida foi empenhada e regularmente liquidada em dezembro, mas permaneceu sem pagamento em 31 de dezembro. Ela não pode ser classificada como resto a pagar, pois já foi liquidada.",
+      "correct": false,
+      "explanation": {
+        "concept": "Restos a pagar também abrangem despesas já liquidadas.",
+        "steps": [
+          "O art. 36 trata das despesas empenhadas e não pagas até 31 de dezembro.",
+          "A lei distingue restos a pagar processados e não processados; a liquidação não exclui a primeira categoria."
+        ],
+        "takeaway": "Uma despesa liquidada pode continuar pendente de pagamento."
+      },
+      "sourceUrl": "https://planalto.gov.br/ccivil_03/leis/l4320compilado.htm",
+      "sourceLabel": "Lei nº 4.320/1964, art. 36"
+    },
+    {
+      "moduleId": "aud-financas",
+      "topic": "Limite do crédito",
+      "statement": "Uma unidade dispõe de R$ 80 mil de crédito orçamentário e pretende empenhar R$ 95 mil nessa dotação. A existência de dinheiro em caixa não autoriza superar o crédito concedido.",
+      "correct": true,
+      "explanation": {
+        "concept": "Disponibilidade financeira não amplia o crédito orçamentário.",
+        "steps": [
+          "O empenho proposto excede em R$ 15 mil o crédito informado.",
+          "O art. 59 proíbe que o empenho ultrapasse o limite dos créditos concedidos."
+        ],
+        "takeaway": "Verifique separadamente orçamento disponível e caixa disponível."
+      },
+      "sourceUrl": "https://planalto.gov.br/ccivil_03/leis/l4320compilado.htm",
+      "sourceLabel": "Lei nº 4.320/1964, art. 59"
+    },
+    {
+      "moduleId": "aud-financas",
+      "topic": "Pagamento e liquidação",
+      "statement": "Em uma compra comum, sem regime legal excepcional de antecipação, a urgência administrativa permite pagar ao fornecedor antes da regular liquidação, desde que exista empenho.",
+      "correct": false,
+      "explanation": {
+        "concept": "A urgência não elimina a verificação do direito do credor.",
+        "steps": [
+          "O cenário não apresenta hipótese legal especial de antecipação.",
+          "Pela regra do art. 62, o pagamento é ordenado após a regular liquidação; o empenho isolado não basta."
+        ],
+        "takeaway": "A pressa não substitui a etapa de liquidação."
+      },
+      "sourceUrl": "https://planalto.gov.br/ccivil_03/leis/l4320compilado.htm",
+      "sourceLabel": "Lei nº 4.320/1964, arts. 62 e 63"
+    },
+    {
+      "moduleId": "aud-politicas",
+      "topic": "Produtos e resultados",
+      "statement": "Um programa de qualificação informou que ofertou todas as vagas previstas. Esse dado, isoladamente, comprova que o programa aumentou o emprego dos participantes.",
+      "correct": false,
+      "explanation": {
+        "concept": "Cumprimento de entregas não prova impacto no problema público.",
+        "steps": [
+          "Ofertar vagas informa sobre um produto do programa.",
+          "O efeito sobre o emprego exige dados de resultados e uma análise capaz de considerar outras explicações."
+        ],
+        "takeaway": "Vagas ofertadas e empregos gerados são medidas diferentes."
+      },
+      "sourceUrl": "https://www.gov.br/planejamento/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/cmap/publicacoes/guias/avaliacao_de_politicas_publicas_expost.pdf",
+      "sourceLabel": "Governo Federal — Guia Prático de Análise Ex Post, modelo lógico e avaliação de impacto"
+    },
+    {
+      "moduleId": "aud-politicas",
+      "topic": "Comparação antes e depois",
+      "statement": "Após um programa de renda, a pobreza caiu entre os beneficiários. Sem considerar outras mudanças ocorridas no período, a comparação antes e depois é insuficiente para atribuir toda a queda ao programa.",
+      "correct": true,
+      "explanation": {
+        "concept": "Atribuição causal exige enfrentar explicações alternativas.",
+        "steps": [
+          "A economia e outras políticas também podem afetar a renda no mesmo período.",
+          "O desenho de avaliação precisa construir uma comparação plausível com a situação sem a intervenção."
+        ],
+        "takeaway": "Depois de uma política não significa necessariamente por causa dela."
+      },
+      "sourceUrl": "https://www.gov.br/planejamento/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/cmap/publicacoes/guias/avaliacao_de_politicas_publicas_expost.pdf",
+      "sourceLabel": "Governo Federal — Guia Prático de Análise Ex Post, avaliação de impacto"
+    },
+    {
+      "moduleId": "aud-politicas",
+      "topic": "Diferenças em diferenças",
+      "statement": "Ao usar diferenças em diferenças, uma equipe pode ignorar a hipótese sobre a evolução que os grupos teriam sem o programa, pois a existência de dados anteriores e posteriores garante, por si só, a validade causal.",
+      "correct": false,
+      "explanation": {
+        "concept": "O método depende de hipóteses sobre a comparação entre os grupos.",
+        "steps": [
+          "Dispor de dois períodos permite calcular a diferença das mudanças.",
+          "Interpretar essa diferença como efeito causal exige, entre outros cuidados, justificar a hipótese de tendências paralelas na ausência do tratamento."
+        ],
+        "takeaway": "Uma fórmula calculável não garante uma comparação causal válida."
+      },
+      "sourceUrl": "https://www.gov.br/planejamento/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/cmap/publicacoes/guias/avaliacao_de_politicas_publicas_expost.pdf",
+      "sourceLabel": "Governo Federal — Guia Prático de Análise Ex Post, diferenças em diferenças"
+    },
+    {
+      "moduleId": "aud-politicas",
+      "topic": "Métodos mistos",
+      "statement": "Registros mostram baixa adesão a um serviço, mas não explicam as razões. Entrevistas com usuários e não usuários podem complementar os dados, ajudando a identificar barreiras de acesso sem substituir a avaliação de representatividade.",
+      "correct": true,
+      "explanation": {
+        "concept": "Métodos qualitativos podem esclarecer os mecanismos por trás dos números.",
+        "steps": [
+          "Os registros mostram a adesão; as entrevistas podem revelar dificuldades de transporte, informação ou atendimento.",
+          "A seleção de entrevistados e os limites de generalização ainda precisam ser documentados."
+        ],
+        "takeaway": "Combine fontes para explicar o problema e declare o alcance das conclusões."
+      },
+      "sourceUrl": "https://www.gov.br/planejamento/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/cmap/publicacoes/guias/avaliacao_de_politicas_publicas_expost.pdf",
+      "sourceLabel": "Governo Federal — Guia Prático de Análise Ex Post, avaliação de implementação"
+    },
+    {
+      "moduleId": "aud-politicas",
+      "topic": "Custo-efetividade",
+      "statement": "Duas intervenções usam a mesma medida de resultado: casos adicionais evitados de uma doença. Comparar o custo por caso evitado pode apoiar a escolha, desde que as estimativas e condições de aplicação sejam comparáveis.",
+      "correct": true,
+      "explanation": {
+        "concept": "Custo-efetividade relaciona custos a uma medida comum de resultado.",
+        "steps": [
+          "A unidade de comparação permanece a mesma nas duas intervenções.",
+          "Diferenças no público, nos custos incluídos ou na qualidade das estimativas precisam ser consideradas."
+        ],
+        "takeaway": "Compare custos e resultados equivalentes, com suas incertezas."
+      },
+      "sourceUrl": "https://www.gov.br/planejamento/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/cmap/publicacoes/guias/avaliacao_de_politicas_publicas_expost.pdf",
+      "sourceLabel": "Governo Federal — Guia Prático de Análise Ex Post, análise de custo-efetividade"
+    },
+    {
+      "moduleId": "aud-contratacoes",
+      "topic": "Pesquisa de preços",
+      "statement": "Em uma contratação regida pela Lei nº 14.133/2021, o valor estimado deve considerar quantidades e condições do local de execução. Uma cotação de pequeno volume, tomada em contexto diferente, não deve ser tratada automaticamente como comparação equivalente.",
+      "correct": true,
+      "explanation": {
+        "concept": "A estimativa precisa refletir as condições relevantes da contratação.",
+        "steps": [
+          "Escala, localização e características do objeto podem alterar os preços.",
+          "O art. 23 exige compatibilidade com o mercado, considerando quantidades, economia de escala e peculiaridades locais."
+        ],
+        "takeaway": "Preço comparável depende de objeto e condições comparáveis."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
+      "sourceLabel": "Lei nº 14.133/2021, art. 23"
+    },
+    {
+      "moduleId": "aud-contratacoes",
+      "topic": "Contratação direta",
+      "statement": "Uma contratação foi enquadrada em hipótese legal de dispensa de licitação. Por esse motivo, o processo pode omitir a justificativa do preço e a razão da escolha do contratado.",
+      "correct": false,
+      "explanation": {
+        "concept": "Dispensa de licitação não elimina a instrução da contratação direta.",
+        "steps": [
+          "A dispensa afasta a disputa nas condições previstas em lei.",
+          "O art. 72 mantém, entre os documentos do processo, a razão da escolha do contratado e a justificativa do preço."
+        ],
+        "takeaway": "Contratar diretamente também exige motivação documentada."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
+      "sourceLabel": "Lei nº 14.133/2021, art. 72, VI e VII"
+    },
+    {
+      "moduleId": "aud-contratacoes",
+      "topic": "Registros da fiscalização",
+      "statement": "Ao identificar defeitos na execução, o fiscal de um contrato regido pela Lei nº 14.133/2021 deve registrar as ocorrências. Se a solução exigir decisão fora de sua competência, deve informar os superiores em tempo hábil.",
+      "correct": true,
+      "explanation": {
+        "concept": "A fiscalização combina registro, providências e encaminhamento competente.",
+        "steps": [
+          "O registro permite acompanhar o problema e a regularização.",
+          "Questões além da competência do fiscal precisam ser levadas aos superiores, conforme o art. 117."
+        ],
+        "takeaway": "Documente a ocorrência e encaminhe a decisão ao responsável."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
+      "sourceLabel": "Lei nº 14.133/2021, art. 117, §§ 1º e 2º"
+    },
+    {
+      "moduleId": "aud-contratacoes",
+      "topic": "Apoio de terceiros",
+      "statement": "Uma autarquia contratou uma empresa para apoiar a fiscalização. A empresa passa a exercer as atribuições exclusivas do fiscal do contrato, que fica dispensado de responsabilidade pelas informações que recebe.",
+      "correct": false,
+      "explanation": {
+        "concept": "Apoio técnico não substitui o fiscal público.",
+        "steps": [
+          "O art. 117 permite assistência de terceiros, mas veda que exerçam atribuição própria e exclusiva do fiscal.",
+          "A contratação de apoio não exonera o fiscal de sua responsabilidade nos limites das informações recebidas."
+        ],
+        "takeaway": "Assistência especializada complementa a fiscalização, sem transferi-la integralmente."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
+      "sourceLabel": "Lei nº 14.133/2021, art. 117, § 4º"
+    },
+    {
+      "moduleId": "aud-contratacoes",
+      "topic": "Contratação emergencial",
+      "statement": "Uma situação emergencial autoriza a dispensa de licitação nas condições legais. Nesse caso, a Administração fica liberada de observar os preços de mercado, já que a rapidez torna irrelevante a comparação de valores.",
+      "correct": false,
+      "explanation": {
+        "concept": "A emergência não afasta o controle dos preços.",
+        "steps": [
+          "O art. 75, § 6º, exige observar os valores praticados pelo mercado na contratação emergencial nele prevista.",
+          "A urgência deve ser atendida com motivação e controles compatíveis, sem transformar qualquer preço em aceitável."
+        ],
+        "takeaway": "Urgência exige resposta rápida e preço justificável."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
+      "sourceLabel": "Lei nº 14.133/2021, art. 75, § 6º"
+    },
+    {
+      "moduleId": "aud-integridade",
+      "topic": "Efetividade do programa de integridade",
+      "statement": "Uma empresa apresenta código de ética, mas não demonstra treinamento, tratamento de relatos ou aplicação de controles. A simples existência do documento não basta para concluir que o programa de integridade funciona efetivamente.",
+      "correct": true,
+      "explanation": {
+        "concept": "Existência documental e aplicação prática são dimensões distintas.",
+        "steps": [
+          "O Decreto nº 11.129/2022 trata da aplicação efetiva e da adaptação do programa aos riscos.",
+          "A avaliação de existência e aplicação abrange elementos além do código escrito."
+        ],
+        "takeaway": "Verifique práticas e evidências, além das políticas formalizadas."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/decreto/d11129.htm",
+      "sourceLabel": "Decreto nº 11.129/2022, arts. 56 e 57"
+    },
+    {
+      "moduleId": "aud-integridade",
+      "topic": "Responsabilidade da pessoa jurídica",
+      "statement": "Para responsabilizar administrativamente uma pessoa jurídica pela Lei nº 12.846/2013, é sempre indispensável comprovar a culpa pessoal de um diretor e sua condenação anterior.",
+      "correct": false,
+      "explanation": {
+        "concept": "O regime da pessoa jurídica é objetivo e independente da responsabilização individual.",
+        "steps": [
+          "O art. 2º estabelece responsabilidade objetiva por atos lesivos praticados em interesse ou benefício da pessoa jurídica.",
+          "O art. 3º, § 1º, prevê sua responsabilização independentemente da individual."
+        ],
+        "takeaway": "Não imponha à pessoa jurídica uma exigência de condenação prévia do dirigente."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12846.htm",
+      "sourceLabel": "Lei nº 12.846/2013, arts. 2º e 3º, § 1º"
+    },
+    {
+      "moduleId": "aud-integridade",
+      "topic": "Acesso parcial à informação",
+      "statement": "Um relatório contém trechos públicos e um anexo legalmente sigiloso, separáveis entre si. A presença do anexo autoriza negar integralmente o acesso ao relatório sem examinar a possibilidade de disponibilização parcial.",
+      "correct": false,
+      "explanation": {
+        "concept": "O sigilo parcial não torna todo o documento inacessível.",
+        "steps": [
+          "A LAI assegura acesso à parte não sigilosa quando o acesso integral não é autorizado.",
+          "Certidão, extrato ou cópia com ocultação podem viabilizar esse acesso."
+        ],
+        "takeaway": "Proteja o trecho restrito e forneça o conteúdo acessível."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm",
+      "sourceLabel": "Lei nº 12.527/2011, art. 7º, § 2º"
+    },
+    {
+      "moduleId": "aud-integridade",
+      "topic": "Diligência baseada em risco",
+      "statement": "Ao contratar intermediários que atuarão perante o poder público, uma empresa deve ajustar sua diligência aos riscos envolvidos, em vez de presumir que um procedimento idêntico para qualquer terceiro é sempre suficiente.",
+      "correct": true,
+      "explanation": {
+        "concept": "Diligências proporcionais permitem concentrar atenção nos riscos relevantes.",
+        "steps": [
+          "O art. 57 inclui diligências baseadas em risco na contratação e, conforme o caso, supervisão de terceiros.",
+          "O perfil e a atuação do intermediário podem exigir verificações mais aprofundadas."
+        ],
+        "takeaway": "A intensidade da verificação deve acompanhar o risco da relação."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/decreto/d11129.htm",
+      "sourceLabel": "Decreto nº 11.129/2022, art. 57, XIII"
+    },
+    {
+      "moduleId": "aud-integridade",
+      "topic": "Requisitos da responsabilidade objetiva",
+      "statement": "Mesmo sob responsabilidade objetiva da pessoa jurídica, é necessário demonstrar que houve ato lesivo previsto na Lei nº 12.846/2013 e que ele foi praticado em seu interesse ou benefício, exclusivo ou não.",
+      "correct": true,
+      "explanation": {
+        "concept": "Objetividade afasta a exigência de culpa da pessoa jurídica, sem eliminar os elementos legais do ilícito.",
+        "steps": [
+          "O art. 2º vincula a responsabilidade aos atos lesivos previstos na lei.",
+          "O mesmo artigo exige a relação de interesse ou benefício; ela não desaparece pelo caráter objetivo do regime."
+        ],
+        "takeaway": "Objetiva não significa automática ou sem prova dos requisitos legais."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12846.htm",
+      "sourceLabel": "Lei nº 12.846/2013, art. 2º"
+    }
+  ]
+}

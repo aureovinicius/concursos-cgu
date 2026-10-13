@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+site-package.tar.gz
+_site/
+.preview/
+__pycache__/

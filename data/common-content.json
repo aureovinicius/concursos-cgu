@@ -1,0 +1,1023 @@
+{
+  "modules": [
+    {
+      "id": "estado",
+      "description": "Poder, democracia, direitos e limites da atuação estatal.",
+      "emoji": "🏛️",
+      "introduction": {
+        "title": "Quem decide e quem controla?",
+        "summary": "Distinga as instituições permanentes, a direção política e a execução administrativa.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Estado, governo e administração",
+            "text": "O Estado é a organização política e jurídica; o governo define a direção política; a administração executa funções públicas. A troca de governantes não extingue as instituições nem os direitos."
+          },
+          {
+            "title": "Democracia e federalismo",
+            "text": "Representação, participação e fiscalização convivem. União, estados, Distrito Federal e municípios possuem autonomia constitucional; cooperação não os transforma em repartições de um único ente."
+          },
+          {
+            "title": "Valor público e integridade",
+            "text": "Uma ação pública deve ser examinada pelos resultados e pelo respeito a direitos. Eficiência não dispensa imparcialidade, justificativa e controle. Prevenir corrupção envolve instituições, incentivos e transparência."
+          }
+        ],
+        "example": {
+          "title": "Um serviço mais rápido, mas para poucos",
+          "steps": [
+            "Uma prefeitura reduz o tempo médio de atendimento ao tornar o cadastro exclusivamente digital.",
+            "Verifique se a economia de tempo veio acompanhada de barreiras para pessoas sem internet.",
+            "Avalie o resultado considerando acesso, direitos e alternativas de atendimento, além da velocidade."
+          ]
+        },
+        "pitfall": "Não confunda aprovação eleitoral com autorização para agir fora dos limites constitucionais."
+      }
+    },
+    {
+      "id": "sociedade",
+      "description": "Desigualdades, diversidade, acessibilidade e leitura da realidade brasileira.",
+      "emoji": "🤝",
+      "introduction": {
+        "title": "Enxergue quem a média esconde",
+        "summary": "Analise diferenças entre grupos e as barreiras que afetam o acesso a direitos.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Indicadores têm recortes",
+            "text": "Uma média nacional resume situações muito diferentes. Comparar renda, educação ou trabalho exige observar período, território, população e método de cálculo."
+          },
+          {
+            "title": "Desigualdades se combinam",
+            "text": "Raça, gênero, deficiência, idade e território podem produzir barreiras simultâneas. A análise interseccional observa essas combinações sem pressupor que todas as pessoas de um grupo vivam a mesma situação."
+          },
+          {
+            "title": "Acesso exige condições reais",
+            "text": "Disponibilizar um serviço não garante que todos consigam utilizá-lo. Linguagem, acessibilidade, conexão e documentos exigidos podem excluir justamente o público que deveria ser atendido."
+          }
+        ],
+        "example": {
+          "title": "Um formulário que seleciona sem querer",
+          "steps": [
+            "Uma pesquisa sobre serviços públicos é divulgada apenas em aplicativo.",
+            "As respostas descrevem quem conseguiu acessar e responder; pessoas sem conexão podem estar ausentes.",
+            "Compare o perfil da amostra com o público do serviço antes de generalizar a satisfação medida."
+          ]
+        },
+        "pitfall": "Não conclua que uma desigualdade desapareceu apenas porque o indicador agregado melhorou."
+      }
+    },
+    {
+      "id": "etica",
+      "description": "Imparcialidade, conflito de interesses e responsabilidade nas relações de trabalho.",
+      "emoji": "⚖️",
+      "introduction": {
+        "title": "Reconheça o conflito antes de decidir",
+        "summary": "A conduta ética começa na prevenção e no cuidado com pessoas e informações.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Responsabilidade profissional",
+            "text": "A diligência exige verificar fatos e registrar decisões. Hierarquia não elimina responsabilidade pessoal; ordens manifestamente ilegais não integram o dever de obediência do servidor federal."
+          },
+          {
+            "title": "Interesse privado e função pública",
+            "text": "Um interesse privado pode comprometer a imparcialidade mesmo sem prejuízo financeiro consumado. Havendo dúvida sobre conflito de interesses, procure a instância competente; impedimento processual exige comunicação e abstenção."
+          },
+          {
+            "title": "Escuta e proteção",
+            "text": "Acolher um relato requer respeito e discrição. Apurar fatos e atribuir responsabilidade são etapas distintas, com competências e garantias próprias. Proteção não equivale a condenação antecipada."
+          }
+        ],
+        "example": {
+          "title": "O parecer sobre a própria empresa",
+          "steps": [
+            "Uma servidora recebe processo que pode beneficiar empresa da qual é sócia.",
+            "Ela identifica interesse direto na matéria e comunica o impedimento à autoridade competente.",
+            "Abstém-se de atuar no processo, permitindo sua redistribuição e o registro da situação."
+          ]
+        },
+        "pitfall": "A ausência de vantagem recebida não prova que a decisão esteja livre de conflito de interesses."
+      }
+    },
+    {
+      "id": "administracao",
+      "description": "Organização administrativa, ciclo de políticas, planejamento e serviços.",
+      "emoji": "🧭",
+      "introduction": {
+        "title": "Ligue o problema público à entrega",
+        "summary": "Organize a análise: problema, alternativas, recursos, execução e resultados.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Organização e responsabilidades",
+            "text": "Desconcentração distribui tarefas entre órgãos da mesma pessoa jurídica. Descentralização envolve outra pessoa, como uma autarquia. Identificar quem executa e quem supervisiona evita confundir suas responsabilidades."
+          },
+          {
+            "title": "Políticas ao longo do tempo",
+            "text": "A formulação escolhe instrumentos para um problema; a implementação os coloca em funcionamento. Monitorar acompanha a execução. Avaliar investiga mérito, funcionamento ou efeitos, sem tratar essas atividades como etapas isoladas e inflexíveis."
+          },
+          {
+            "title": "Planejamento e capacidade",
+            "text": "PPA, LDO e LOA cumprem funções diferentes e precisam de coerência. Uma meta requer recursos, pessoas, coordenação e mecanismos de acompanhamento; a previsão em um plano não assegura sua execução."
+          }
+        ],
+        "example": {
+          "title": "Vagas oferecidas não são aprendizagem",
+          "steps": [
+            "Um programa entrega cursos a mil participantes.",
+            "O número de vagas e concluintes ajuda a acompanhar entregas, mas não informa sozinho o ganho de aprendizagem.",
+            "Defina indicadores de resultado e um desenho de avaliação compatível com a pergunta que se deseja responder."
+          ]
+        },
+        "pitfall": "Não confunda dinheiro gasto ou atividade executada com problema público resolvido."
+      }
+    },
+    {
+      "id": "governanca",
+      "description": "Direção, riscos, controles e efetividade da integridade.",
+      "emoji": "🛡️",
+      "introduction": {
+        "title": "Controle é resposta a um risco",
+        "summary": "Entenda responsabilidades e escolha controles proporcionais ao problema.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Governar e gerir",
+            "text": "A governança orienta e acompanha a organização. A gestão transforma as diretrizes em planos e operações. A distinção ajuda a identificar quem decide prioridades e quem organiza sua execução."
+          },
+          {
+            "title": "Do objetivo ao controle",
+            "text": "Comece pelo objetivo, identifique o que pode impedi-lo e examine causas e consequências. Um controle reduz probabilidade ou impacto; risco residual é o que permanece após a resposta."
+          },
+          {
+            "title": "Integridade em funcionamento",
+            "text": "Um código publicado é apenas parte do programa. Liderança, orientação, canais confiáveis, controles e acompanhamento precisam operar juntos. A avaliação deve verificar práticas e resultados, além da documentação."
+          }
+        ],
+        "example": {
+          "title": "Pagamento sem conferência independente",
+          "steps": [
+            "O mesmo agente cadastra fornecedor, atesta recebimento e autoriza pagamento.",
+            "A concentração permite que um erro ou favorecimento percorra todo o fluxo sem revisão independente.",
+            "Separe funções incompatíveis ou adote controles compensatórios adequados, acompanhando o risco que permanece."
+          ]
+        },
+        "pitfall": "Mais controles não significa automaticamente melhor controle; avalie custo, risco e funcionamento."
+      }
+    },
+    {
+      "id": "transparencia",
+      "description": "Acesso à informação, dados pessoais, ouvidoria e participação.",
+      "emoji": "🔎",
+      "introduction": {
+        "title": "Abra a informação e proteja as pessoas",
+        "summary": "Combine publicidade, acesso parcial e tratamento responsável das manifestações.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Ativa ou passiva",
+            "text": "Publicar informações de interesse coletivo sem pedido caracteriza transparência ativa. Responder a uma solicitação individual caracteriza transparência passiva. Ambas favorecem fiscalização e acesso a direitos."
+          },
+          {
+            "title": "Proteção sem bloqueio indiscriminado",
+            "text": "Dados pessoais exigem finalidade e proteção. A existência de uma parte protegida não torna necessariamente todo o documento inacessível; pode ser possível entregar uma cópia com ocultação justificada."
+          },
+          {
+            "title": "Escutar, encaminhar e melhorar",
+            "text": "Uma manifestação pode revelar barreiras e falhas recorrentes. Recebê-la não comprova todos os fatos narrados. A ouvidoria trata e encaminha o relato, preservando informações e distinguindo sua função da apuração."
+          }
+        ],
+        "example": {
+          "title": "Pedido de relatório com dado pessoal",
+          "steps": [
+            "Um cidadão solicita relatório que contém gastos públicos e telefone pessoal de um beneficiário.",
+            "Analise o fundamento da proteção do dado e se sua divulgação é necessária.",
+            "Quando cabível, forneça a parte pública com o telefone ocultado e explique a restrição aplicada."
+          ]
+        },
+        "pitfall": "Não use a proteção de dados como justificativa genérica para negar acesso a documentos inteiros."
+      }
+    },
+    {
+      "id": "direito",
+      "description": "Motivação, processo, controles e limites da responsabilização.",
+      "emoji": "📜",
+      "introduction": {
+        "title": "Uma conclusão precisa de fundamento",
+        "summary": "Separe indícios, apuração, decisão e sanção, observando competências e garantias.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Decisão administrativa",
+            "text": "Identifique quem pode decidir, qual finalidade a lei permite e quais fatos foram demonstrados. Motivação liga esses fatos ao fundamento jurídico, permitindo compreensão e controle da decisão."
+          },
+          {
+            "title": "Processo e garantias",
+            "text": "Investigar obtém informações; sancionar exige o procedimento adequado. Uma suspeita orienta a apuração, mas não substitui prova e oportunidade de defesa quando exigidas."
+          },
+          {
+            "title": "Controles complementares",
+            "text": "Controle interno, externo e social possuem posições institucionais diferentes. No plano federal, o controle externo cabe ao Congresso Nacional com auxílio do TCU; não se confunde com a atuação da CGU no Executivo."
+          }
+        ],
+        "example": {
+          "title": "Alerta sobre contratação",
+          "steps": [
+            "Um sistema aponta semelhança incomum entre propostas de fornecedores.",
+            "A equipe confirma a origem dos documentos e examina explicações alternativas antes de concluir sobre a ocorrência.",
+            "Se houver elementos, encaminha o caso à instância competente, sem tratar o alerta como sanção automática."
+          ]
+        },
+        "pitfall": "Um achado de auditoria não transfere automaticamente ao auditor a competência para aplicar qualquer sanção."
+      }
+    },
+    {
+      "id": "evidencias",
+      "description": "Indicadores, inferência, rastreabilidade e uso responsável de IA.",
+      "emoji": "📊",
+      "introduction": {
+        "title": "Da informação à conclusão",
+        "summary": "Pergunte o que os dados permitem afirmar — e o que ainda permanece incerto.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "A pergunta orienta a fonte",
+            "text": "Defina o problema antes de buscar números. Uma base pode ser adequada para contar atendimentos e inadequada para medir satisfação. Registre origem, período, população e limitações."
+          },
+          {
+            "title": "Comparar exige denominadores",
+            "text": "Contagens e taxas respondem a perguntas diferentes. Considere o tamanho da população, mudanças no registro e seleção da amostra. Associação temporal ou estatística não demonstra sozinha uma relação causal."
+          },
+          {
+            "title": "IA como apoio verificável",
+            "text": "Uma resposta fluente pode conter erros e referências inexistentes. Confira fontes, proteja informações e mantenha responsabilidade humana pela análise. Resultados automatizados precisam de contexto e possibilidade de revisão."
+          }
+        ],
+        "example": {
+          "title": "Reclamações que dobraram",
+          "steps": [
+            "Um serviço passa de 20 reclamações em mil atendimentos para 40 em quatro mil.",
+            "A quantidade duplicou, mas a proporção caiu de 2% para 1%.",
+            "Antes de avaliar a qualidade, verifique também acesso ao canal, perfil dos usuários e critérios de registro."
+          ]
+        },
+        "pitfall": "Nem aumento de denúncias prova aumento de irregularidades, nem ausência de denúncias prova integridade."
+      }
+    },
+    {
+      "id": "auditoria-fundamentos",
+      "description": "Papéis, planejamento, evidências e acompanhamento da auditoria governamental.",
+      "emoji": "🗂️",
+      "introduction": {
+        "title": "Transforme evidência em melhoria",
+        "summary": "Planeje perguntas, sustente achados e acompanhe o que mudou após a recomendação.",
+        "duration": "3 min",
+        "sections": [
+          {
+            "title": "Papéis preservados",
+            "text": "A auditoria oferece avaliação e consultoria para melhorar a organização. A decisão de gerir e executar permanece com o gestor. Independência e objetividade ajudam a sustentar uma opinião técnica confiável."
+          },
+          {
+            "title": "Trabalho orientado",
+            "text": "Objetivo define o que se pretende responder; escopo delimita o trabalho; critério estabelece a referência de comparação. Planejamento baseado em riscos direciona recursos às questões relevantes."
+          },
+          {
+            "title": "Conclusão e acompanhamento",
+            "text": "A conclusão precisa de evidência compatível com sua força. Recomendações devem dialogar com causas e riscos. Receber um plano de ação não comprova que a ação foi executada ou que produziu benefício."
+          }
+        ],
+        "example": {
+          "title": "Controle anunciado, problema persistente",
+          "steps": [
+            "Após uma auditoria, a gestão apresenta plano para revisar pagamentos duplicados.",
+            "A equipe acompanha evidências de implementação e verifica se o novo controle funciona.",
+            "A conclusão sobre benefício depende dos resultados observados, não apenas da promessa de revisão."
+          ]
+        },
+        "pitfall": "Ceticismo profissional é examinar criticamente a evidência, sem presumir previamente culpa ou inocência."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "moduleId": "estado",
+      "topic": "3.1 — Autonomia e cooperação federativa",
+      "statement": "Ao organizar uma ação conjunta de saúde, União e municípios podem pactuar formas de cooperação. Essa coordenação, por si só, não elimina a autonomia constitucional dos municípios.",
+      "correct": true,
+      "explanation": {
+        "concept": "Autonomia não exclui cooperação",
+        "steps": [
+          "O art. 18 reconhece autonomia aos entes federativos; cooperar não os converte em órgãos uns dos outros.",
+          "A saúde integra o campo de competências comuns, permitindo atuação coordenada dentro da repartição constitucional."
+        ],
+        "takeaway": "Coordenação federativa deve respeitar as competências e a autonomia dos entes."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+      "sourceLabel": "Constituição Federal — arts. 18 e 23"
+    },
+    {
+      "moduleId": "estado",
+      "topic": "2.1 — Representação e participação",
+      "statement": "Após a eleição dos representantes, consultas públicas e outras formas de participação cidadã tornam-se incompatíveis com o modelo constitucional brasileiro.",
+      "correct": false,
+      "explanation": {
+        "concept": "Representação e participação podem coexistir",
+        "steps": [
+          "A Constituição admite exercício do poder por representantes e diretamente, nos termos constitucionais.",
+          "A escolha de representantes não impede mecanismos de escuta e participação na vida pública."
+        ],
+        "takeaway": "Democracia representativa não esgota as formas legítimas de participação."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+      "sourceLabel": "Constituição Federal — art. 1º, parágrafo único"
+    },
+    {
+      "moduleId": "estado",
+      "topic": "5.1 — Eficiência, equidade e garantias",
+      "statement": "Um órgão poderá restringir o direito de defesa em processo administrativo sancionador exclusivamente porque isso reduzirá o tempo de tramitação e o custo do processo.",
+      "correct": false,
+      "explanation": {
+        "concept": "Eficiência possui limites constitucionais",
+        "steps": [
+          "A redução de tempo e custo é um objetivo de gestão, não autorização geral para suprimir garantias.",
+          "A Constituição assegura contraditório e ampla defesa aos litigantes em processo administrativo e aos acusados em geral."
+        ],
+        "takeaway": "Rapidez não legitima a supressão das garantias de defesa."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+      "sourceLabel": "Constituição Federal — arts. 5º, LV, e 37"
+    },
+    {
+      "moduleId": "estado",
+      "topic": "6.2 — Corrupção e conflito de interesses",
+      "statement": "Um agente sem ganho financeiro comprovado pode, ainda assim, estar em situação de conflito de interesses. A ausência de vantagem recebida não basta para afastar esse conflito.",
+      "correct": true,
+      "explanation": {
+        "concept": "Conflito é uma situação de risco à função pública",
+        "steps": [
+          "A Lei nº 12.813 define conflito pelo confronto entre interesses públicos e privados capaz de comprometer o interesse coletivo.",
+          "Seu art. 4º, § 2º, dispensa lesão ao patrimônio ou vantagem recebida para caracterizar a ocorrência."
+        ],
+        "takeaway": "Conflito de interesses não depende de enriquecimento do agente."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12813.htm",
+      "sourceLabel": "Lei nº 12.813/2013 — arts. 3º e 4º"
+    },
+    {
+      "moduleId": "estado",
+      "topic": "8.2 — Respostas à corrupção",
+      "statement": "Um programa de enfrentamento da corrupção pode combinar medidas de prevenção, detecção e responsabilização, pois elas atuam sobre dimensões diferentes do problema.",
+      "correct": true,
+      "explanation": {
+        "concept": "Respostas complementares",
+        "steps": [
+          "Orientação e controles podem reduzir oportunidades; canais e análises ajudam a identificar ocorrências.",
+          "A responsabilização trata condutas apuradas, e seu funcionamento não dispensa medidas preventivas nem melhoria institucional."
+        ],
+        "takeaway": "Enfrentar corrupção exige ações complementares, não uma única medida."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/plano-de-integridade-e-combate-a-corrupcao-2025-2027",
+      "sourceLabel": "CGU — Plano de Integridade e Combate à Corrupção 2025–2027"
+    },
+    {
+      "moduleId": "sociedade",
+      "topic": "5.1 — Leitura contextual de indicadores",
+      "statement": "Dois municípios apresentam a mesma renda média por habitante. Com essa informação isolada, é possível afirmar que possuem a mesma distribuição de renda e a mesma incidência de pobreza.",
+      "correct": false,
+      "explanation": {
+        "concept": "Média não descreve toda a distribuição",
+        "steps": [
+          "Rendas muito diferentes entre pessoas podem produzir a mesma média em dois municípios.",
+          "Para analisar pobreza e desigualdade, são necessários dados sobre a distribuição e critérios explícitos de mensuração."
+        ],
+        "takeaway": "A mesma média pode esconder condições sociais muito distintas."
+      },
+      "sourceUrl": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9221-sintese-de-indicadores-sociais.html",
+      "sourceLabel": "IBGE — Síntese de Indicadores Sociais"
+    },
+    {
+      "moduleId": "sociedade",
+      "topic": "4.1 — Interseccionalidade",
+      "statement": "Uma avaliação de acesso ao trabalho compara simultaneamente sexo e cor ou raça dos participantes. Esse cruzamento pode revelar desigualdades que ficam ocultas quando cada característica é examinada apenas de forma agregada.",
+      "correct": true,
+      "explanation": {
+        "concept": "Recortes combinados ampliam a análise",
+        "steps": [
+          "Uma média para todas as mulheres ou todos os homens reúne pessoas em posições sociais diferentes.",
+          "Cruzar recortes permite observar combinações de desigualdades, sem assumir que cada grupo seja internamente homogêneo."
+        ],
+        "takeaway": "Considere os cruzamentos entre grupos, além dos resultados agregados."
+      },
+      "sourceUrl": "https://www.ibge.gov.br/estatisticas/sociais/saude/25844-desigualdades-sociais-por-cor-ou-raca.html",
+      "sourceLabel": "IBGE — Desigualdades Sociais por Cor ou Raça"
+    },
+    {
+      "moduleId": "sociedade",
+      "topic": "4.1 — Acessibilidade e barreiras digitais",
+      "statement": "Um órgão disponibiliza serviço apenas em página incompatível com leitores de tela. A existência dessa barreira pode comprometer a igualdade de acesso de pessoas com deficiência visual.",
+      "correct": true,
+      "explanation": {
+        "concept": "Acesso formal e acesso efetivo",
+        "steps": [
+          "Estar na internet não torna o serviço utilizável por todas as pessoas.",
+          "A Lei Brasileira de Inclusão prevê acessibilidade em sítios de órgãos de governo; a incompatibilidade descrita é uma barreira ao acesso."
+        ],
+        "takeaway": "Serviço digital precisa ser acessível para permitir participação efetiva."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm",
+      "sourceLabel": "Lei Brasileira de Inclusão — art. 63"
+    },
+    {
+      "moduleId": "sociedade",
+      "topic": "3.1 — População e envelhecimento",
+      "statement": "Se a população de um território envelhece, o planejamento dos serviços de cuidado deve ignorar essa mudança, pois necessidades coletivas independem da composição etária.",
+      "correct": false,
+      "explanation": {
+        "concept": "Perfil populacional orienta planejamento",
+        "steps": [
+          "Mudanças na distribuição etária alteram a demanda potencial por tipos de serviço, inclusive cuidado e atenção à saúde.",
+          "Isso não determina automaticamente uma solução, mas constitui informação relevante para dimensionar e comparar alternativas."
+        ],
+        "takeaway": "Planejamento social deve considerar o perfil e as necessidades da população."
+      },
+      "sourceUrl": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9221-sintese-de-indicadores-sociais.html",
+      "sourceLabel": "IBGE — Síntese de Indicadores Sociais"
+    },
+    {
+      "moduleId": "sociedade",
+      "topic": "5.1 — Desigualdades e proteção social",
+      "statement": "O aumento da renda média, considerado isoladamente, é suficiente para demonstrar que todos os grupos sociais passaram a ter melhor acesso a saneamento, saúde e educação.",
+      "correct": false,
+      "explanation": {
+        "concept": "Dimensões do desenvolvimento",
+        "steps": [
+          "Renda é uma dimensão relevante, mas não mede diretamente a cobertura e a qualidade desses serviços.",
+          "Além disso, uma mudança na média não revela como os ganhos foram distribuídos entre grupos e territórios."
+        ],
+        "takeaway": "Desenvolvimento e acesso a direitos exigem indicadores de várias dimensões."
+      },
+      "sourceUrl": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9221-sintese-de-indicadores-sociais.html",
+      "sourceLabel": "IBGE — Síntese de Indicadores Sociais"
+    },
+    {
+      "moduleId": "etica",
+      "topic": "3.1 — Prevenção de conflitos de interesses",
+      "statement": "Um servidor federal abrangido pela Lei nº 12.813/2013 tem dúvida sobre a compatibilidade de uma atividade privada com suas funções. Consultar a CGU ou a Comissão de Ética Pública, conforme a competência, é uma medida prevista em lei.",
+      "correct": true,
+      "explanation": {
+        "concept": "Consulta preventiva",
+        "steps": [
+          "O art. 4º determina agir para prevenir ou impedir conflito e resguardar informação privilegiada.",
+          "Em caso de dúvida, a lei prevê consulta à instância competente, em vez de tratar a incerteza como autorização automática."
+        ],
+        "takeaway": "Dúvidas sobre conflito devem ser encaminhadas à instância competente."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12813.htm",
+      "sourceLabel": "Lei nº 12.813/2013 — art. 4º, § 1º"
+    },
+    {
+      "moduleId": "etica",
+      "topic": "3.2 — Impedimento no processo administrativo",
+      "statement": "Uma autoridade tem interesse direto na matéria de processo administrativo federal sob sua análise. Para continuar decidindo, basta declarar no processo que acredita conseguir agir com imparcialidade.",
+      "correct": false,
+      "explanation": {
+        "concept": "Impedimento exige abstenção",
+        "steps": [
+          "O interesse direto na matéria constitui hipótese de impedimento do art. 18 da Lei nº 9.784.",
+          "Pelo art. 19, a autoridade deve comunicar o fato e abster-se; uma declaração de confiança em si mesma não substitui essa providência."
+        ],
+        "takeaway": "Reconhecer impedimento significa comunicar e deixar de atuar no processo."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/leis/l9784.htm",
+      "sourceLabel": "Lei nº 9.784/1999 — arts. 18 e 19"
+    },
+    {
+      "moduleId": "etica",
+      "topic": "2.1 — Limites da obediência hierárquica",
+      "statement": "O dever de cumprir ordens superiores do servidor público federal não inclui a execução de ordens manifestamente ilegais.",
+      "correct": true,
+      "explanation": {
+        "concept": "Obediência com responsabilidade",
+        "steps": [
+          "A Lei nº 8.112 estabelece dever de cumprir ordens superiores com ressalva expressa para as manifestamente ilegais.",
+          "Assim, a hierarquia não transforma uma ilegalidade evidente em conduta obrigatória."
+        ],
+        "takeaway": "Subordinação hierárquica não elimina o dever de observar a legalidade."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/leis/l8112cons.htm",
+      "sourceLabel": "Lei nº 8.112/1990 — art. 116, IV"
+    },
+    {
+      "moduleId": "etica",
+      "topic": "4.2 — Acolhimento e atribuição de responsabilidade",
+      "statement": "Ao acolher relato de assédio, uma unidade deve tratar a pessoa com respeito e cuidado; esse acolhimento equivale, por si só, à confirmação dos fatos e à responsabilização da pessoa apontada.",
+      "correct": false,
+      "explanation": {
+        "concept": "Acolher não é condenar",
+        "steps": [
+          "Escutar e proteger a pessoa são finalidades diferentes da apuração dos fatos narrados.",
+          "A atribuição de responsabilidade requer atuação da instância competente e observância das garantias aplicáveis."
+        ],
+        "takeaway": "Respeito no acolhimento convive com imparcialidade na apuração."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/assuntos/ouvidoria/faq-denuncias",
+      "sourceLabel": "CGU — Orientações sobre denúncias"
+    },
+    {
+      "moduleId": "etica",
+      "topic": "2.1 — Uso de informação privilegiada",
+      "statement": "Agente público divulga a terceiro informação privilegiada obtida em razão de suas funções para favorecer negócio privado. Essa conduta pode configurar conflito de interesses mesmo que o próprio agente não receba pagamento.",
+      "correct": true,
+      "explanation": {
+        "concept": "Proteção da informação funcional",
+        "steps": [
+          "O art. 5º, I, abrange divulgação ou uso de informação privilegiada em benefício próprio ou de terceiro.",
+          "O favorecimento não deixa de ser relevante pelo simples fato de não haver pagamento ao agente."
+        ],
+        "takeaway": "O dever de resguardar informação também impede favorecimento de terceiros."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12813.htm",
+      "sourceLabel": "Lei nº 12.813/2013 — arts. 4º e 5º, I"
+    },
+    {
+      "moduleId": "administracao",
+      "topic": "1.1 — Descentralização e desconcentração",
+      "statement": "Um ministério distribui atribuições entre departamentos da própria estrutura, sem criar outra pessoa jurídica. Essa distribuição interna é exemplo de descentralização por criação de autarquia.",
+      "correct": false,
+      "explanation": {
+        "concept": "Distribuição interna de competências",
+        "steps": [
+          "O caso descreve órgãos da mesma pessoa jurídica, característica de desconcentração.",
+          "Uma autarquia é entidade com personalidade jurídica própria; sua criação representa situação diferente da simples reorganização de departamentos."
+        ],
+        "takeaway": "Órgão interno e entidade com personalidade própria não são equivalentes."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/decreto-lei/del0200.htm",
+      "sourceLabel": "Decreto-Lei nº 200/1967 — arts. 4º e 5º"
+    },
+    {
+      "moduleId": "administracao",
+      "topic": "3.1 — Monitoramento e avaliação",
+      "statement": "O painel de um programa informa quantos atendimentos ocorreram a cada mês. Esses dados podem apoiar o monitoramento, mas, sozinhos, não demonstram que o programa causou melhora na saúde dos usuários.",
+      "correct": true,
+      "explanation": {
+        "concept": "Entrega observada e efeito causal",
+        "steps": [
+          "Contar atendimentos permite acompanhar uma entrega do programa.",
+          "Atribuir uma mudança de saúde à intervenção exige uma análise que considere fatores externos e o que ocorreria sem ela."
+        ],
+        "takeaway": "Acompanhar entregas é diferente de demonstrar impacto."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/guiaexpost.pdf",
+      "sourceLabel": "Governo Federal — Guia prático de análise ex post"
+    },
+    {
+      "moduleId": "administracao",
+      "topic": "4.1 — Planejamento e orçamento",
+      "statement": "PPA, LDO e LOA são instrumentos com funções distintas. A LDO orienta a elaboração da LOA, e não substitui a autorização orçamentária anual apenas por enunciar prioridades.",
+      "correct": true,
+      "explanation": {
+        "concept": "Articulação entre instrumentos",
+        "steps": [
+          "O art. 165 organiza os três instrumentos e atribui à LDO a orientação da elaboração da lei orçamentária anual.",
+          "Indicar diretrizes e prioridades não converte a LDO na própria LOA."
+        ],
+        "takeaway": "Planejamento, orientação e orçamento anual possuem papéis complementares."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+      "sourceLabel": "Constituição Federal — art. 165"
+    },
+    {
+      "moduleId": "administracao",
+      "topic": "3.1 — Formulação de políticas",
+      "statement": "Ao formular uma política, identificar previamente o problema público é dispensável se a tecnologia escolhida for inovadora e já estiver disponível para contratação.",
+      "correct": false,
+      "explanation": {
+        "concept": "O problema deve orientar a solução",
+        "steps": [
+          "A disponibilidade de uma ferramenta não demonstra sua adequação à necessidade que se quer enfrentar.",
+          "A análise deve explicitar problema, objetivos e alternativas antes de justificar a escolha do instrumento."
+        ],
+        "takeaway": "Inovação é um meio possível; a finalidade pública precisa ser demonstrada."
+      },
+      "sourceUrl": "https://www.gov.br/casacivil/pt-br/assuntos/governanca/avaliacao-de-politicas",
+      "sourceLabel": "Casa Civil — Avaliação de políticas públicas"
+    },
+    {
+      "moduleId": "administracao",
+      "topic": "5.1 — Transformação digital e orientação ao usuário",
+      "statement": "Ao avaliar um novo serviço digital, basta medir a redução do custo interno do órgão; dificuldades dos usuários para compreender o formulário são irrelevantes para a qualidade do serviço.",
+      "correct": false,
+      "explanation": {
+        "concept": "Transformação orientada a quem usa",
+        "steps": [
+          "O custo interno informa apenas uma parte do desempenho do serviço.",
+          "Uma solução difícil de compreender pode gerar exclusão, erros e retrabalho; por isso, a análise também precisa considerar necessidades e acesso dos usuários."
+        ],
+        "takeaway": "Economia interna deve ser examinada junto com acesso e qualidade da entrega."
+      },
+      "sourceUrl": "https://portal.tcu.gov.br/data/files/FB/B6/FB/85/1CD4671023455957E18818A8/Referencial_basico_governanca_organizacional_3_edicao.pdf",
+      "sourceLabel": "TCU — Referencial Básico de Governança Organizacional, 3ª edição"
+    },
+    {
+      "moduleId": "governanca",
+      "topic": "1.1 — Governança e gestão",
+      "statement": "Um conselho estabelece prioridades institucionais e acompanha resultados; uma equipe organiza as tarefas e executa o plano. A situação é compatível com a distinção entre governança e gestão.",
+      "correct": true,
+      "explanation": {
+        "concept": "Direção e execução possuem papéis distintos",
+        "steps": [
+          "Definir direção e acompanhar resultados corresponde a funções de governança.",
+          "A gestão operacionaliza essa direção por planejamento e execução, sem que os papéis sejam confundidos."
+        ],
+        "takeaway": "Governança orienta e acompanha; gestão organiza e executa."
+      },
+      "sourceUrl": "https://portal.tcu.gov.br/data/files/FB/B6/FB/85/1CD4671023455957E18818A8/Referencial_basico_governanca_organizacional_3_edicao.pdf",
+      "sourceLabel": "TCU — Referencial Básico de Governança Organizacional, 3ª edição"
+    },
+    {
+      "moduleId": "governanca",
+      "topic": "2.1 — Risco residual",
+      "statement": "Depois de implantar uma revisão de pagamentos, a organização identifica que ainda podem ocorrer falhas não detectadas. Esse risco remanescente é incompatível com a própria existência de um controle.",
+      "correct": false,
+      "explanation": {
+        "concept": "Controle não garante risco zero",
+        "steps": [
+          "Controles podem reduzir probabilidade ou impacto sem eliminar todas as possibilidades de ocorrência.",
+          "O risco que permanece após as respostas é residual e deve ser avaliado e acompanhado."
+        ],
+        "takeaway": "A existência de controle não equivale à eliminação completa do risco."
+      },
+      "sourceUrl": "https://portal.tcu.gov.br/publicacoes-institucionais/cartilha-manual-ou-tutorial/referencial-basico-de-gestao-de-riscos",
+      "sourceLabel": "TCU — Referencial Básico de Gestão de Riscos"
+    },
+    {
+      "moduleId": "governanca",
+      "topic": "2.1 — Segregação de funções",
+      "statement": "Em um fluxo de compras, separar a autorização do pagamento da conferência do recebimento pode reduzir o risco decorrente de uma mesma pessoa controlar etapas incompatíveis.",
+      "correct": true,
+      "explanation": {
+        "concept": "Revisões independentes reduzem vulnerabilidades",
+        "steps": [
+          "Quando uma pessoa concentra etapas incompatíveis, um erro ou favorecimento pode não encontrar verificação independente.",
+          "A separação proposta introduz uma barreira, cuja efetividade ainda depende das atribuições e do funcionamento do controle."
+        ],
+        "takeaway": "Segregar funções reduz concentração de poder, mas requer controle efetivo."
+      },
+      "sourceUrl": "https://portal.tcu.gov.br/publicacoes-institucionais/cartilha-manual-ou-tutorial/referencial-basico-de-gestao-de-riscos",
+      "sourceLabel": "TCU — Referencial Básico de Gestão de Riscos"
+    },
+    {
+      "moduleId": "governanca",
+      "topic": "4.2 — Existência e efetividade de integridade",
+      "statement": "Uma empresa estatal publicou código de conduta e criou endereço eletrônico para denúncias. Essas duas providências, sem verificar seu funcionamento, comprovam a efetividade integral do programa de integridade.",
+      "correct": false,
+      "explanation": {
+        "concept": "Documento não comprova funcionamento",
+        "steps": [
+          "A publicação demonstra a existência de elementos formais do programa.",
+          "Efetividade requer verificar se são conhecidos, utilizados e acompanhados, e se os mecanismos respondem aos riscos da organização."
+        ],
+        "takeaway": "Avalie o uso e os resultados, além da presença de documentos."
+      },
+      "sourceUrl": "https://wiki.cgu.gov.br/index.php/Guia_%E2%80%93_Implanta%C3%A7%C3%A3o_de_Programa_de_Integridade_em_Empresas_Estatais",
+      "sourceLabel": "CGU — Guia de implantação de programa de integridade em empresas estatais"
+    },
+    {
+      "moduleId": "governanca",
+      "topic": "5.3 — Baixa ocorrência e baixa detecção",
+      "statement": "Uma instituição recebeu poucas denúncias no ano. Para interpretar esse dado, é pertinente verificar se as pessoas conhecem o canal e se confiam na proteção contra retaliações.",
+      "correct": true,
+      "explanation": {
+        "concept": "Denúncias dependem de acesso e confiança",
+        "steps": [
+          "O volume recebido não depende apenas de quantas irregularidades ocorreram.",
+          "Desconhecimento, barreiras ou receio podem reduzir relatos; examinar o canal ajuda a interpretar o número observado."
+        ],
+        "takeaway": "Poucos relatos podem refletir baixa ocorrência ou dificuldade de detecção."
+      },
+      "sourceUrl": "https://wiki.cgu.gov.br/index.php/Guia_%E2%80%93_Implanta%C3%A7%C3%A3o_de_Programa_de_Integridade_em_Empresas_Estatais",
+      "sourceLabel": "CGU — Guia de implantação de programa de integridade em empresas estatais"
+    },
+    {
+      "moduleId": "transparencia",
+      "topic": "1.1 — Transparência ativa e passiva",
+      "statement": "Um órgão divulga espontaneamente em seu portal informações de interesse coletivo sobre despesas e contratos. Essa iniciativa é transparência passiva porque a sociedade poderá consultá-las.",
+      "correct": false,
+      "explanation": {
+        "concept": "O que distingue é a iniciativa da divulgação",
+        "steps": [
+          "A disponibilização sem requerimento específico caracteriza transparência ativa.",
+          "Na transparência passiva, o acesso é provocado por um pedido; a possibilidade de consultar o portal não altera a natureza da divulgação."
+        ],
+        "takeaway": "Publicação espontânea é ativa; resposta a pedido é passiva."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm",
+      "sourceLabel": "Lei de Acesso à Informação — arts. 8º e 10"
+    },
+    {
+      "moduleId": "transparencia",
+      "topic": "1.2 — Acesso parcial",
+      "statement": "Se apenas parte de um documento estiver protegida por sigilo, a LAI assegura acesso à parte não sigilosa, por meio adequado que oculte o conteúdo protegido.",
+      "correct": true,
+      "explanation": {
+        "concept": "Proteção delimitada à informação restrita",
+        "steps": [
+          "O art. 7º, § 2º, prevê acesso à parte não sigilosa por certidão, extrato ou cópia com ocultação.",
+          "A presença de trecho protegido não autoriza, por si só, negar indiscriminadamente todo o documento."
+        ],
+        "takeaway": "Analise a possibilidade de acesso parcial antes da negativa integral."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm",
+      "sourceLabel": "Lei de Acesso à Informação — art. 7º, § 2º"
+    },
+    {
+      "moduleId": "transparencia",
+      "topic": "2.2 — Dados pessoais sensíveis",
+      "statement": "Uma planilha que relaciona nomes de usuários aos respectivos diagnósticos de saúde contém dados pessoais sensíveis para fins da LGPD.",
+      "correct": true,
+      "explanation": {
+        "concept": "Informação de saúde vinculada à pessoa",
+        "steps": [
+          "O nome permite identificar a pessoa, e o diagnóstico acrescenta informação referente à saúde.",
+          "A LGPD inclui dados referentes à saúde, quando vinculados a pessoa natural, na categoria de dados pessoais sensíveis."
+        ],
+        "takeaway": "Informações de saúde identificáveis exigem proteção compatível com sua sensibilidade."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+      "sourceLabel": "Lei Geral de Proteção de Dados — art. 5º, II"
+    },
+    {
+      "moduleId": "transparencia",
+      "topic": "2.2 — Anonimização e reidentificação",
+      "statement": "Após remover apenas os nomes de uma base, o órgão pode considerá-la automaticamente anonimizada, ainda que a combinação de endereço, idade e ocupação permita identificar os indivíduos.",
+      "correct": false,
+      "explanation": {
+        "concept": "Ausência de nome não basta",
+        "steps": [
+          "Outros atributos podem, em conjunto, permitir identificação indireta da pessoa.",
+          "A avaliação de anonimização precisa considerar meios razoáveis de identificação, e não somente a retirada de um campo."
+        ],
+        "takeaway": "Avalie o risco de reidentificação pelas combinações de dados."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+      "sourceLabel": "Lei Geral de Proteção de Dados — arts. 5º, XI, e 12"
+    },
+    {
+      "moduleId": "transparencia",
+      "topic": "3.3 — Recebimento, apuração e decisão",
+      "statement": "O recebimento de denúncia por uma ouvidoria comprova a irregularidade narrada e dispensa encaminhamento à área competente para apurar os fatos.",
+      "correct": false,
+      "explanation": {
+        "concept": "Relato e fato comprovado são categorias diferentes",
+        "steps": [
+          "A denúncia apresenta uma narrativa que deve ser tratada e analisada quanto aos elementos disponíveis.",
+          "Encaminhamento e apuração pela instância competente não são substituídos pelo simples registro da manifestação."
+        ],
+        "takeaway": "Registrar a denúncia inicia seu tratamento; não representa conclusão sancionadora."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/assuntos/ouvidoria/faq-denuncias",
+      "sourceLabel": "CGU — Orientações sobre denúncias"
+    },
+    {
+      "moduleId": "direito",
+      "topic": "1.1 — Motivação",
+      "statement": "Ao negar um pedido em processo administrativo federal, a autoridade deve indicar os fatos e fundamentos jurídicos pertinentes. A mera expressão “por interesse público”, sem explicação do caso, não satisfaz automaticamente esse dever.",
+      "correct": true,
+      "explanation": {
+        "concept": "Motivação permite compreender e controlar",
+        "steps": [
+          "A Lei nº 9.784 exige motivação dos atos que neguem ou limitem direitos ou interesses.",
+          "Uma fórmula genérica não demonstra a relação entre os fatos do processo e a razão jurídica da negativa."
+        ],
+        "takeaway": "Fundamentar exige conectar o caso concreto à razão da decisão."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/leis/l9784.htm",
+      "sourceLabel": "Lei nº 9.784/1999 — art. 50, I, e § 1º"
+    },
+    {
+      "moduleId": "direito",
+      "topic": "2.1 — Contraditório e defesa",
+      "statement": "Em processo administrativo sancionador, o interesse em punir rapidamente torna dispensáveis o contraditório e a ampla defesa.",
+      "correct": false,
+      "explanation": {
+        "concept": "Garantias não são opcionais",
+        "steps": [
+          "O art. 5º, LV, protege a defesa no processo administrativo e os acusados em geral.",
+          "A finalidade de responsabilizar não autoriza afastar as garantias aplicáveis em nome da rapidez."
+        ],
+        "takeaway": "A sanção deve resultar de processo com as garantias exigidas."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+      "sourceLabel": "Constituição Federal — art. 5º, LV"
+    },
+    {
+      "moduleId": "direito",
+      "topic": "3.3 — Controle interno e externo",
+      "statement": "No âmbito federal, o controle externo a cargo do Congresso Nacional é exercido com o auxílio do TCU. Essa posição institucional difere do controle interno do Poder Executivo.",
+      "correct": true,
+      "explanation": {
+        "concept": "Localização institucional dos controles",
+        "steps": [
+          "O art. 71 atribui ao Congresso o controle externo com auxílio do TCU.",
+          "O art. 74 disciplina sistemas de controle interno; suas finalidades se articulam com o controle externo, mas não tornam os dois idênticos."
+        ],
+        "takeaway": "Controles interno e externo são distintos e complementares."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+      "sourceLabel": "Constituição Federal — arts. 71 e 74"
+    },
+    {
+      "moduleId": "direito",
+      "topic": "1.1 — Competência administrativa",
+      "statement": "Uma autoridade federal pode delegar a edição de atos normativos a outra autoridade sempre que considerar a delegação conveniente, pois não existem matérias legalmente indelegáveis.",
+      "correct": false,
+      "explanation": {
+        "concept": "Conveniência não afasta proibição legal",
+        "steps": [
+          "A delegação é admitida dentro dos limites da Lei nº 9.784.",
+          "Seu art. 13 veda delegar edição de atos normativos, decisão de recursos administrativos e matérias de competência exclusiva."
+        ],
+        "takeaway": "Verifique as vedações legais antes de justificar a conveniência da delegação."
+      },
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/leis/l9784.htm",
+      "sourceLabel": "Lei nº 9.784/1999 — arts. 12 e 13"
+    },
+    {
+      "moduleId": "direito",
+      "topic": "4.1 — Indício e responsabilidade",
+      "statement": "Um alerta de possível pagamento em duplicidade pode justificar exame adicional dos documentos. Isoladamente, ele não demonstra todos os elementos necessários para atribuir responsabilidade a um agente.",
+      "correct": true,
+      "explanation": {
+        "concept": "A força da conclusão depende da evidência",
+        "steps": [
+          "O alerta aponta situação a verificar; pode decorrer de falha de registro ou de uma duplicidade efetiva.",
+          "Atribuir responsabilidade exige apurar o caso e seus elementos, observando competência, prova e garantias aplicáveis."
+        ],
+        "takeaway": "Sinal de risco orienta a apuração; não substitui sua conclusão."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas-2017.pdf/@@download/file",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas de Auditoria Interna Governamental"
+    },
+    {
+      "moduleId": "evidencias",
+      "topic": "2.1 — Denominadores e taxas",
+      "statement": "Um serviço registrou 20 reclamações em mil atendimentos e, no período seguinte, 40 reclamações em quatro mil atendimentos. A proporção de reclamações aumentou de 2% para 4%.",
+      "correct": false,
+      "explanation": {
+        "concept": "Contagem e proporção respondem a perguntas diferentes",
+        "steps": [
+          "No primeiro período, 20 dividido por 1.000 corresponde a 2%.",
+          "No segundo, 40 dividido por 4.000 corresponde a 1%; a quantidade duplicou, mas a proporção caiu pela metade."
+        ],
+        "takeaway": "Compare numerador e denominador antes de interpretar a variação."
+      },
+      "sourceUrl": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9221-sintese-de-indicadores-sociais.html",
+      "sourceLabel": "IBGE — Síntese de Indicadores Sociais"
+    },
+    {
+      "moduleId": "evidencias",
+      "topic": "3.1 — Associação e causalidade",
+      "statement": "Após a implantação de um programa, um indicador melhorou. Sem examinar outras explicações e uma comparação adequada, a sequência temporal não basta para atribuir causalmente a melhora ao programa.",
+      "correct": true,
+      "explanation": {
+        "concept": "Depois não significa por causa de",
+        "steps": [
+          "Fatores externos ou mudanças já em curso também podem alterar o indicador.",
+          "A avaliação de impacto procura estimar o que ocorreria sem a intervenção, apoiando uma atribuição causal fundamentada."
+        ],
+        "takeaway": "Mudança observada e impacto da política não são sinônimos."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/guiaexpost.pdf",
+      "sourceLabel": "Governo Federal — Guia prático de análise ex post"
+    },
+    {
+      "moduleId": "evidencias",
+      "topic": "3.1 — Seleção e representatividade",
+      "statement": "Uma pesquisa voluntária em aplicativo pode excluir pessoas sem acesso digital. Antes de generalizar seus resultados para todos os usuários do serviço, é necessário examinar esse possível viés de seleção.",
+      "correct": true,
+      "explanation": {
+        "concept": "Quem respondeu pode diferir de quem não respondeu",
+        "steps": [
+          "A possibilidade de participar depende de acesso ao aplicativo e da decisão de responder.",
+          "Se essas condições se relacionam à experiência com o serviço, o conjunto de respostas pode não representar toda a população de interesse."
+        ],
+        "takeaway": "A forma de selecionar participantes limita a generalização dos resultados."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/guiaexpost.pdf",
+      "sourceLabel": "Governo Federal — Guia prático de análise ex post"
+    },
+    {
+      "moduleId": "evidencias",
+      "topic": "5.3 — Verificação de fontes de IA",
+      "statement": "Uma ferramenta de IA apresenta texto fluente e uma referência com aparência de citação legal. Essas características tornam desnecessário conferir a existência e o conteúdo da norma na fonte oficial.",
+      "correct": false,
+      "explanation": {
+        "concept": "Fluência não garante veracidade",
+        "steps": [
+          "Modelos generativos podem produzir informações imprecisas e referências não verificadas.",
+          "A análise de uma norma exige conferir texto, vigência e pertinência em fonte oficial antes de usar a resposta."
+        ],
+        "takeaway": "Confira as referências; a aparência de autoridade não é evidência."
+      },
+      "sourceUrl": "https://www.gov.br/governodigital/pt-br/infraestrutura-nacional-de-dados/inteligencia-artificial-1/publicacoes/guia-ia-generativa",
+      "sourceLabel": "SGD e Serpro — Guia de IA generativa"
+    },
+    {
+      "moduleId": "evidencias",
+      "topic": "2.2 — Denúncias e ocorrência",
+      "statement": "Se o número de denúncias recebidas por um órgão dobrou, a quantidade real de irregularidades necessariamente dobrou na mesma proporção, independentemente de mudanças no acesso ao canal.",
+      "correct": false,
+      "explanation": {
+        "concept": "Registros dependem também da capacidade de detecção",
+        "steps": [
+          "Uma campanha, maior confiança ou melhoria do canal pode aumentar os relatos sem duplicar a ocorrência real.",
+          "Para interpretar a série, examine mudanças no registro, acesso e disposição para denunciar."
+        ],
+        "takeaway": "Dados de denúncias não medem diretamente toda a ocorrência de irregularidades."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/assuntos/ouvidoria/faq-denuncias",
+      "sourceLabel": "CGU — Orientações sobre denúncias"
+    },
+    {
+      "moduleId": "auditoria-fundamentos",
+      "topic": "1.1 — Contribuição da auditoria",
+      "statement": "Ao avaliar os controles de um programa e apresentar recomendações fundamentadas, a auditoria pode contribuir para melhorar governança e resultados, preservando a responsabilidade de gestão sobre decisões e execução.",
+      "correct": true,
+      "explanation": {
+        "concept": "Auditoria apoia sem substituir a gestão",
+        "steps": [
+          "A avaliação identifica oportunidades de melhoria e comunica resultados à organização.",
+          "As decisões gerenciais e sua execução permanecem com quem possui essa responsabilidade."
+        ],
+        "takeaway": "Recomendação de auditoria não transfere a função de gestor ao auditor."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas-2017.pdf/@@download/file",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas de Auditoria Interna Governamental"
+    },
+    {
+      "moduleId": "auditoria-fundamentos",
+      "topic": "1.4 — Objetividade e ceticismo",
+      "statement": "Exercer ceticismo profissional significa partir da certeza de que todo gestor auditado praticou irregularidade e selecionar apenas evidências que confirmem essa convicção.",
+      "correct": false,
+      "explanation": {
+        "concept": "Exame crítico não é presunção de culpa",
+        "steps": [
+          "O ceticismo orienta uma avaliação cuidadosa da informação e de explicações alternativas.",
+          "Selecionar apenas confirmações de uma convicção prévia prejudica a objetividade e a qualidade da conclusão."
+        ],
+        "takeaway": "Examine criticamente evidências favoráveis e contrárias à hipótese."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas-2017.pdf/@@download/file",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas de Auditoria Interna Governamental"
+    },
+    {
+      "moduleId": "auditoria-fundamentos",
+      "topic": "2.2 — Planejamento baseado em riscos",
+      "statement": "Uma unidade de auditoria dispõe de recursos limitados. Considerar riscos e relevância dos objetos é compatível com a priorização de trabalhos que possam contribuir mais para os objetivos da organização.",
+      "correct": true,
+      "explanation": {
+        "concept": "Recursos de auditoria exigem prioridades",
+        "steps": [
+          "O planejamento baseado em riscos examina onde há maior exposição a ameaças aos objetivos.",
+          "Essa informação orienta a seleção de trabalhos, em vez de presumir que todos os objetos merecem esforço idêntico."
+        ],
+        "takeaway": "Priorize de forma fundamentada onde a auditoria pode agregar mais valor."
+      },
+      "sourceUrl": "https://wiki.cgu.gov.br/index.php/Orienta%C3%A7%C3%A3o_pr%C3%A1tica_PABR",
+      "sourceLabel": "CGU — Orientação prática: plano de auditoria baseado em riscos"
+    },
+    {
+      "moduleId": "auditoria-fundamentos",
+      "topic": "4.2 — Plano, implementação e benefício",
+      "statement": "O envio de um plano de ação pela gestão comprova que a recomendação foi implementada e que o benefício esperado já foi alcançado.",
+      "correct": false,
+      "explanation": {
+        "concept": "Compromisso não equivale a resultado",
+        "steps": [
+          "Um plano descreve ações pretendidas; sua execução precisa ser acompanhada por evidências.",
+          "Mesmo a implementação de uma ação não demonstra automaticamente o benefício esperado, que depende dos resultados verificados."
+        ],
+        "takeaway": "Distinga planejar, executar e produzir benefício."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas-2017.pdf/@@download/file",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas de Auditoria Interna Governamental"
+    },
+    {
+      "moduleId": "auditoria-fundamentos",
+      "topic": "3.2 — Evidência e proporcionalidade",
+      "statement": "Quando a equipe encontra apenas um sinal de risco ainda não corroborado, deve explicitar a limitação e buscar evidência adicional antes de afirmar como comprovada uma irregularidade.",
+      "correct": true,
+      "explanation": {
+        "concept": "Conclusão proporcional ao suporte disponível",
+        "steps": [
+          "O sinal indica uma hipótese que precisa de exame; sua existência não encerra a verificação.",
+          "Comunicar a incerteza e aprofundar os procedimentos evita atribuir à evidência mais força do que ela possui."
+        ],
+        "takeaway": "A força da conclusão deve acompanhar a força da evidência."
+      },
+      "sourceUrl": "https://www.gov.br/cgu/pt-br/centrais-de-conteudo/publicacoes/auditoria-e-fiscalizacao/arquivos/manual-de-orientacoes-tecnicas-2017.pdf/@@download/file",
+      "sourceLabel": "CGU — Manual de Orientações Técnicas de Auditoria Interna Governamental"
+    }
+  ]
+}
