@@ -932,3 +932,37 @@ select:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px 
   .study-unit-top { font-size:10px; }
   .answers:has(.answer:nth-child(2):last-child) { grid-template-columns:1fr; }
 }
+
+/* Official examination pages keep their original diagrams and shared texts. */
+.official-bank-link { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:22px; margin:0 0 22px; border:1px solid #bdd7cd; border-radius:16px; background:var(--green-soft); }
+.official-bank-link p { margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
+.official-bank-link .button { flex-shrink:0; }
+.origin-badge.official { background:#e6efff; color:#28499a; }
+.official-instruction { font-size:16px; line-height:1.6; }
+.official-sources { display:flex; flex-wrap:wrap; gap:10px 22px; margin:18px 0; font-size:13px; }
+.official-question .notice.compact { padding:14px 16px; margin:16px 0; font-size:13px; line-height:1.6; }
+.exam-pages { display:grid; gap:20px; }
+.exam-pages figure { margin:0; }
+.exam-pages a { display:block; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:white; }
+.exam-pages a:focus-visible { outline:3px solid var(--blue); outline-offset:4px; }
+.exam-pages img { display:block; width:100%; height:auto; }
+.exam-pages figcaption { margin:7px 0; color:var(--muted); font-size:12px; text-align:center; }
+.transcript { margin:20px 0; border:1px solid var(--line); border-radius:12px; padding:14px 18px; }
+.transcript summary { cursor:pointer; font-weight:800; font-size:14px; }
+.transcript .tiny { margin:14px 0; }
+.official-transcript { overflow-wrap:anywhere; font-family:inherit; }
+@media(max-width:760px) {
+  .official-bank-link { align-items:stretch; flex-direction:column; }
+  .official-bank-link .button { align-self:flex-start; }
+  .official-sources { flex-direction:column; }
+}
+.exam-pages a { position:relative; }
+.exam-item-marker { position:absolute; border:2px solid #ce6500; border-radius:3px; background:rgba(255,201,47,.2); box-shadow:0 0 0 2px rgba(255,255,255,.7); pointer-events:none; }
+
+.exam-support { margin:20px 0; border:1px solid #bccde6; border-radius:12px; padding:14px 18px; background:#f4f7fc; }
+.exam-support summary { cursor:pointer; font-weight:800; font-size:14px; }
+.exam-support .tiny { margin:14px 0; line-height:1.6; }
+
+.paper-roles { margin:12px 0; color:var(--muted); font-size:12px; line-height:1.6; }
+.paper-roles summary { cursor:pointer; font-weight:700; }
+.paper-roles p { margin:8px 0; overflow-wrap:anywhere; }

@@ -1,4 +1,5 @@
-const DATA_URL = "/data/courses.json?v=concursos-3";
+const DATA_URL = "/data/courses.json?v=concursos-4";
+const OFFICIAL_PART_PREFIX = "/data/cebraspe-ti/";
 const STORAGE_KEY = "concursos-cgu-progress-v1";
 const DAILY_GOAL = 50;
 const MAX_LESSON_ERRORS = 3;
@@ -21,6 +22,8 @@ let quiz = null;
 let statsPeriod = "30";
 let statsMode = "all";
 let storageWarning = false;
+let officialBankPromise = null;
+let courseSelectionVersion = 0;
 
 function localDay() {
   return new Intl.DateTimeFormat("en-CA", {
@@ -134,6 +137,7 @@ function renderMarkdown(value = "", proseOnly = false) {
 }
 
 function makeLessons() {
+  if (data.practiceOnly) { lessons = []; return; }
   let globalIndex = 0;
   lessons = data.modules.flatMap((module, moduleIndex) => {
     const questions = data.questions.filter((question) => question.moduleId === module.id);
@@ -159,6 +163,66 @@ function isUnlocked(lesson) {
   return state.completed.includes(lesson.id) || lesson.index === 0 || state.completed.includes(lessons[lesson.globalIndex - 1]?.id);
 }
 
+async function ensureCourseData(courseId) {
+  const course = catalog.courses.find(c => c.id === courseId);
+  if (!course?.practiceOnly) return;
+  const loaded = new Set(catalog.questions.map(q => q.id));
+  if (course.questionIds.every(id => loaded.has(id))) return;
+  if (!catalog.officialBank?.url) throw new Error("O banco oficial não está disponível nesta versão.");
+  if (!officialBankPromise) {
+    officialBankPromise = (async () => {
+      const response = await fetch(catalog.officialBank.url, { cache: "no-cache" });
+      if (!response.ok) throw new Error("Não foi possível baixar o banco oficial. Conecte-se à internet e tente novamente.");
+      const payload = await response.json();
+      let questions = payload.questions;
+      if (!Array.isArray(questions) && Array.isArray(payload.parts)) {
+        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json\?v=concursos-4$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
+        const parts = new Array(payload.parts.length);
+        let next = 0;
+        let failure = null;
+        await Promise.all(Array.from({ length: Math.min(4, payload.parts.length) }, async () => {
+          while (next < payload.parts.length && !failure) {
+            const index = next++;
+            try {
+              const partResponse = await fetch(payload.parts[index], { cache: "no-cache" });
+              if (!partResponse.ok) throw new Error("Uma parte do banco oficial não pôde ser baixada. Tente novamente quando estiver conectado.");
+              const part = await partResponse.json();
+              if (!Array.isArray(part.questions)) throw new Error("Uma parte do banco oficial está incompleta.");
+              parts[index] = part.questions;
+            } catch (error) { failure = error; }
+          }
+        }));
+        if (failure) throw failure;
+        questions = parts.flat();
+      }
+      if (!Array.isArray(questions) || questions.some(q => !q || typeof q.id !== "string")) throw new Error("O arquivo de questões oficiais está incompleto.");
+      const imported = new Map(questions.map(q => [q.id, q]));
+      if (imported.size !== questions.length || course.questionIds.some(id => !loaded.has(id) && !imported.has(id))) throw new Error("O banco oficial e o catálogo têm versões diferentes. Recarregue a página.");
+      for (const question of questions) if (!loaded.has(question.id)) catalog.questions.push(question);
+    })().catch(error => { officialBankPromise = null; throw error; });
+  }
+  await officialBankPromise;
+}
+
+async function selectCourse(courseId) {
+  const version = ++courseSelectionVersion;
+  const requested = catalog.courses.find(c => c.id === courseId);
+  if (!requested) return;
+  app.innerHTML = `<div class="loading" role="status"><div><div class="loader"></div>Carregando ${escapeHtml(requested.title)}…</div></div>`;
+  try {
+    await ensureCourseData(courseId);
+    if (version !== courseSelectionVersion) return;
+    setCourse(courseId);
+    if (data.practiceOnly || !["praticar", "desempenho", "edital"].includes(activeView)) activeView = data.practiceOnly ? "praticar" : "aprender";
+    history.replaceState(null, "", `#${activeView}`);
+    renderPage();
+    app.querySelector("#course-select")?.focus({ preventScroll: true });
+  } catch (error) {
+    if (version !== courseSelectionVersion) return;
+    app.innerHTML = `${pageHeader("Banco de questões", "Não foi possível abrir o banco.", escapeHtml(error.message))}<button class="button" data-select-course="${escapeHtml(courseId)}">Tentar novamente</button>`;
+  }
+}
+
 function setCourse(courseId) {
   const course = catalog.courses.find((c) => c.id === courseId) || catalog.courses[0];
   const byId = new Map(catalog.questions.map((q) => [q.id, q]));
@@ -167,7 +231,7 @@ function setCourse(courseId) {
     if (!course.integrated) return question;
     const module = course.modules.find((m) => course.integratedBy === "subject" ? m.subjectId === question.subjectId : m.competency === question.competency);
     return { ...question, moduleId: module.id, moduleTitle: module.title };
-  }) };
+  }).filter(Boolean) };
   state.activeCourse = course.id;
   makeLessons();
   if (!data.modules.some(m => m.id === state.studyUnits[data.id]) && data.recommendedModule) {
@@ -191,7 +255,7 @@ function completedLessons() {
 }
 
 function courseSwitcher() {
-  return `<div class="course-switcher"><label for="course-select">Especialidade</label><select id="course-select" aria-label="Especialidade">${catalog.courses.map(course => `<option value="${course.id}" ${course.id === data.id ? "selected" : ""}>${escapeHtml(course.title)}</option>`).join("")}</select><span>CGU 2026 · AFFC</span></div>`;
+  return `<div class="course-switcher"><label for="course-select">Trilha ou banco</label><select id="course-select" aria-label="Trilha ou banco de questões">${catalog.courses.map(course => `<option value="${course.id}" ${course.id === data.id ? "selected" : ""}>${escapeHtml(course.title)}</option>`).join("")}</select><span>${data.practiceOnly ? "Provas anteriores · Cebraspe" : "CGU 2026 · AFFC"}</span></div>`;
 }
 
 function referenceMarkup(module) {
@@ -212,7 +276,9 @@ function statMarkup() {
 function renderRail() {
   const goal = Math.min(100, (state.todayXp / DAILY_GOAL) * 100);
   const completed = completedLessons();
-  const course = Math.round((data.studyGuide ? studiedQuestionIds().size / Math.max(data.total, 1) : completed / Math.max(lessons.length, 1)) * 100);
+  const answered = new Set(state.answered);
+  const practiced = data.questions.filter(q => answered.has(q.id)).length;
+  const course = Math.round((data.practiceOnly ? practiced / Math.max(data.total, 1) : data.studyGuide ? studiedQuestionIds().size / Math.max(data.total, 1) : completed / Math.max(lessons.length, 1)) * 100);
   rail.innerHTML = `
     <div class="stat-strip">${statMarkup()}</div>
     <section class="rail-card">
@@ -222,15 +288,15 @@ function renderRail() {
       <div class="progress-track"><div class="progress-fill" style="width:${goal}%"></div></div>
     </section>
     <section class="rail-card">
-      <h3>Seu curso</h3>
-      <p>${data.studyGuide ? `${studiedQuestionIds().size} de ${data.total} questões em lições concluídas.` : `${completed} de ${lessons.length} lições concluídas.`}</p>
+      <h3>${data.practiceOnly ? "Seu banco de questões" : "Seu curso"}</h3>
+      <p>${data.practiceOnly ? `${practiced} de ${data.total} questões respondidas.` : data.studyGuide ? `${studiedQuestionIds().size} de ${data.total} questões em lições concluídas.` : `${completed} de ${lessons.length} lições concluídas.`}</p>
       <div class="progress-row"><span>${escapeHtml(data.title)}</span><span>${course}%</span></div>
       <div class="progress-track"><div class="progress-fill" style="width:${course}%;background:var(--green)"></div></div>
-      <button class="button" data-action="continue">${data.studyGuide ? "Estudar tema" : "Continuar"}</button>
+      <button class="button" data-action="continue">${data.practiceOnly ? "Escolher questões" : data.studyGuide ? "Estudar tema" : "Continuar"}</button>
     </section>
     <section class="rail-card">
       <h3>Estudo dirigido</h3>
-      <p class="tiny">${data.total} itens autorais de Certo ou Errado nesta especialidade, com explicação e fonte. Banco inicial em expansão.</p>
+      <p class="tiny">${data.practiceOnly ? `${data.total} questões de provas anteriores, com gabarito oficial e acesso às fontes. Treino de acertos, sem a ponderação da CGU.` : `${data.total} itens autorais de Certo ou Errado nesta especialidade, com explicação e fonte. Banco inicial em expansão.`}</p>
       <p class="tiny" style="margin-top:9px"><a class="source-link" href="${escapeHtml(catalog.exam.sourceUrl)}" target="_blank" rel="noreferrer">Edital CGU 2026 ↗</a></p>
     </section>
   `;
@@ -330,7 +396,7 @@ function renderStudyTrail() {
     </section>`;
 }
 
-function renderLearn() { renderStudyTrail(); }
+function renderLearn() { if (data.practiceOnly) renderPractice(); else renderStudyTrail(); }
 
 function examBanner() {
   return `<section class="exam-banner" aria-label="Resumo do concurso"><div><span class="exam-label">SEU OBJETIVO</span><h2>CGU · ${escapeHtml(data.title)}</h2><p>Auditor Federal de Finanças e Controle</p></div><div class="exam-facts"><span><strong>13 dez 2026</strong>provas previstas</span><span><strong>${data.vacancies} vagas</strong>nesta especialidade</span><a href="#edital" data-view="edital">Explorar edital ↗</a></div></section><p class="catalog-note">Banco inicial: ${data.total} exercícios autorais comentados. Concluir este banco não significa cobrir todo o edital.</p>`;
@@ -338,29 +404,33 @@ function examBanner() {
 
 function blockLabel(id) { return ({P1:"Básicos", P2:"Complementares", P3:"Específicos"})[id] || id; }
 
-function defaultPracticeFilters() { return { module: "", block: "", status: "all", query: "" }; }
+function defaultPracticeFilters() { return { module: "", block: "", origin: "", year: "", exam: "", status: "all", query: "" }; }
 
 function practiceFilters() {
   return { ...defaultPracticeFilters(), ...state.practiceFilters[data.id] };
 }
 
-function questionMatches(question, filters) {
+function questionMatches(question, filters, history = null) {
   if (filters.module && question.moduleId !== filters.module) return false;
   if (filters.block && question.block !== filters.block) return false;
-  if (filters.status === "unanswered" && state.answered.includes(question.id)) return false;
-  if (filters.status === "answered" && !state.answered.includes(question.id)) return false;
-  if (filters.status === "wrong" && !state.missed.includes(question.id)) return false;
-  if (filters.status === "favorites" && !state.favorites.includes(question.id)) return false;
+  if (filters.origin && question.origin !== filters.origin) return false;
+  if (filters.year && String(question.year) !== String(filters.year)) return false;
+  if (filters.exam && question.examId !== filters.exam) return false;
+  if (filters.status === "unanswered" && (history ? history.answered.has(question.id) : state.answered.includes(question.id))) return false;
+  if (filters.status === "answered" && !(history ? history.answered.has(question.id) : state.answered.includes(question.id))) return false;
+  if (filters.status === "wrong" && !(history ? history.missed.has(question.id) : state.missed.includes(question.id))) return false;
+  if (filters.status === "favorites" && !(history ? history.favorites.has(question.id) : state.favorites.includes(question.id))) return false;
   const query = String(filters.query || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
   if (query) {
-    const haystack = [question.id, question.context, question.alternativesIntroduction, question.moduleTitle, ...question.alternatives.map(a => a.text)].join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const haystack = [question.id, question.context, question.alternativesIntroduction, question.moduleTitle, question.examName, question.cargo, question.year, ...question.alternatives.map(a => a.text)].join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     if (!query.split(/\s+/).every(word => haystack.includes(word))) return false;
   }
   return true;
 }
 
 function filteredPracticeQuestions(filters = practiceFilters()) {
-  return data.questions.filter(q => questionMatches(q, filters));
+  const history = { answered: new Set(state.answered), missed: new Set(state.missed), favorites: new Set(state.favorites) };
+  return data.questions.filter(q => questionMatches(q, filters, history));
 }
 
 function filterOptions(values, selected, allLabel) {
@@ -371,20 +441,29 @@ function renderPractice() {
   const filters = practiceFilters();
   const pool = filteredPracticeQuestions(filters);
   const metrics = performanceMetrics(courseAttempts());
+  const officialCourse = catalog.courses.find(c => c.practiceOnly);
+  const examNames = [...new Map(data.questions.filter(q => q.examId).map(q => [q.examId, q.examName || q.examId]))];
+  const nameCounts = new Map();
+  for (const [, name] of examNames) nameCounts.set(name, (nameCounts.get(name) || 0) + 1);
+  const exams = examNames.map(([id, name]) => [id, nameCounts.get(name) > 1 ? `${name} · ${id}` : name]).sort((a,b) => a[1].localeCompare(b[1], "pt-BR"));
+  const years = [...new Set(data.questions.map(q => q.year).filter(Boolean))].sort((a,b) => Number(b) - Number(a));
+  const origins = [...new Set(data.questions.map(q => q.origin))].map(value => [value, value === "oficial" ? "Prova oficial" : "Exercício autoral"]);
   app.innerHTML = `
-    ${pageHeader("Questões · CGU 2026", "Treine no seu ritmo.", "Resolva itens de Certo ou Errado. Leia a justificativa, revise seus erros e continue pelo tempo que quiser.")}
+    ${pageHeader(data.practiceOnly ? "Provas anteriores · Cebraspe TI" : "Questões · CGU 2026", "Treine no seu ritmo.", data.practiceOnly ? "Resolva questões das provas baixadas, confira o gabarito oficial e acompanhe seu desempenho." : "Resolva itens de Certo ou Errado. Leia a justificativa, revise seus erros e continue pelo tempo que quiser.")}
+    ${!data.practiceOnly && officialCourse ? `<div class="official-bank-link"><div><strong>Pratique com provas anteriores da Cebraspe</strong><p>${counted(officialCourse.total, "questão oficial disponível", "questões oficiais disponíveis")} no banco de cargos de TI.</p></div><button class="button secondary" data-select-course="${officialCourse.id}">Abrir banco oficial →</button></div>` : ""}
     <div class="practice-overview"><span><strong>${metrics.total}</strong> respostas registradas</span><span><strong>${metrics.accuracy === null ? "—" : metrics.accuracy + "%"}</strong> de acerto</span><a href="#desempenho" data-view="desempenho">Ver desempenho ↗</a></div>
     <form id="practice-filters" class="filter-card"><div class="section-heading"><div><p class="page-kicker">Monte seu treino</p><h2>Filtros de questões</h2></div><button type="button" class="text-button" data-action="reset-filters">Limpar filtros</button></div>
       <div class="filter-grid">
-        <label>Bloco da prova<select name="block">${filterOptions(catalog.exam.blocks.map(b => [b.id, b.id + " · " + b.title]), filters.block, "Todos os blocos")}</select></label>
-        <label>Disciplina<select name="module">${filterOptions([...data.modules].sort((a,b) => a.title.localeCompare(b.title,"pt-BR")).map(m => [m.id, m.title]), filters.module, "Todas as disciplinas")}</select></label>
+        ${data.practiceOnly ? `<label>Concurso<select name="exam">${filterOptions(exams, filters.exam, "Todos os concursos")}</select></label><label>Ano de referência<select name="year">${filterOptions(years.map(y => [y, y]), filters.year, "Todos os anos")}</select></label>` : `<label>Bloco da prova<select name="block">${filterOptions(catalog.exam.blocks.map(b => [b.id, b.id + " · " + b.title]), filters.block, "Todos os blocos")}</select></label>`}
+        <label>Origem<select name="origin">${filterOptions(origins, filters.origin, "Todas as origens")}</select></label>
+        <label>${data.practiceOnly ? "Bloco da prova" : "Disciplina"}<select name="module">${filterOptions([...data.modules].sort((a,b) => a.title.localeCompare(b.title,"pt-BR")).map(m => [m.id, m.title]), filters.module, data.practiceOnly ? "Todos os blocos" : "Todas as disciplinas")}</select></label>
         <label>Minha resolução<select name="status">${[["all","Todas as questões"],["unanswered","Ainda não respondi"],["wrong","Erros para revisar"],["answered","Já respondi"],["favorites","Favoritas"]].map(([v,l]) => `<option value="${v}" ${filters.status === v ? "selected" : ""}>${l}</option>`).join("")}</select></label>
         <label>Palavra-chave ou código<input name="query" type="search" maxlength="120" value="${escapeHtml(filters.query)}" placeholder="Ex.: integridade, dados, auditoria"></label>
       </div><button class="button secondary" type="submit">Aplicar filtros</button>
-      <p class="filter-help">A especialidade é escolhida no seletor acima. Origem do banco: exercícios autorais de estudo, alinhados ao edital; não são itens oficiais da banca.</p>
+      <p class="filter-help">${data.practiceOnly ? "Os itens mantêm a numeração da prova e o vínculo ao gabarito oficial. A imagem da página preserva textos, fórmulas e figuras; responda apenas ao item indicado. A seleção inclui conhecimentos comuns e específicos dos cargos de TI." : "A especialidade é escolhida no seletor acima. Este banco contém exercícios autorais de estudo, alinhados ao edital. As provas anteriores ficam no banco oficial."}</p>
     </form>
     <section class="practice-launch" aria-live="polite"><div><p class="page-kicker">Sua seleção</p><h2>${counted(pool.length,"questão encontrada","questões encontradas")}</h2><p>${pool.length ? "Sorteio sem repetição até percorrer a seleção." : "Nenhum item corresponde aos filtros. Amplie sua seleção."}</p></div><button class="button" data-action="practice" ${pool.length ? "" : "disabled"}>Iniciar prática →</button></section>
-    <div class="notice">Prática sem limite de erros. Acerto vale +1 em P1/P2 e +2 em P3; erro desconta o mesmo valor. Pular não pontua nem registra resposta. O saldo deste treino não prevê sua nota na prova.</div>`;
+    <div class="notice">${data.practiceOnly ? "Prática sem limite de erros. O desempenho registra acertos, erros e tempo; não calcula nota de concurso. Os gabaritos oficiais não incluem necessariamente justificativas pedagógicas. Leis, normas e versões de tecnologias devem ser lidas no contexto do ano da prova." : "Prática sem limite de erros. Acerto vale +1 em P1/P2 e +2 em P3; erro desconta o mesmo valor. O saldo deste treino não prevê sua nota na prova."} Pular não pontua nem registra resposta.</div>`;
 }
 
 function courseAttempts(period = "all", mode = "all") {
@@ -412,6 +491,7 @@ function counted(value, singular, plural = `${singular}s`) {
 }
 
 function renderPerformance() {
+  const missed = new Set(state.missed);
   const attempts = courseAttempts(statsPeriod, statsMode);
   const metrics = performanceMetrics(attempts);
   const questionById = new Map(data.questions.map(q => [q.id, q]));
@@ -424,18 +504,19 @@ function renderPerformance() {
     <div class="stats-controls"><label>Período<select id="stats-period">${[["7", "Últimos 7 dias"], ["30", "Últimos 30 dias"], ["all", "Todo o histórico"]].map(([v, l]) => `<option value="${v}" ${statsPeriod === v ? "selected" : ""}>${l}</option>`).join("")}</select></label><label>Modo<select id="stats-mode">${[["all", "Todos os modos"], ["practice", "Prática"], ["lesson", "Lições"]].map(([v, l]) => `<option value="${v}" ${statsMode === v ? "selected" : ""}>${l}</option>`).join("")}</select></label></div>
     ${storageWarning ? '<div class="notice">O navegador não conseguiu salvar o histórico. Os dados desta sessão estão apenas na memória; libere espaço para preservá-los.</div>' : ""}
     <div class="metric-grid">
-      ${[[metrics.total, "Respostas", `${metrics.unique} ${metrics.unique === 1 ? "questão distinta" : "questões distintas"}`], [`${metrics.accuracy === null ? "—" : `${metrics.accuracy}%`}`, "Taxa de acerto", `${counted(metrics.correct, "acerto")} · ${counted(metrics.wrong, "erro")}`], [metrics.points, "Saldo do treino", "P1/P2: +1/−1 · P3: +2/−2"], [data.questions.filter(q => state.missed.includes(q.id)).length, "Erros para revisar", "Situação atual da matéria"]].map(([n, title, detail]) => `<article class="metric-card"><strong>${n}</strong><h2>${title}</h2><p>${detail}</p></article>`).join("")}
+      ${[[metrics.total, "Respostas", `${metrics.unique} ${metrics.unique === 1 ? "questão distinta" : "questões distintas"}`], [`${metrics.accuracy === null ? "—" : `${metrics.accuracy}%`}`, "Taxa de acerto", `${counted(metrics.correct, "acerto")} · ${counted(metrics.wrong, "erro")}`], [data.practiceOnly ? metrics.correct : metrics.points, data.practiceOnly ? "Acertos no período" : "Saldo do treino", data.practiceOnly ? "Sem ponderação ou desconto de concurso" : "P1/P2: +1/−1 · P3: +2/−2"], [data.questions.filter(q => missed.has(q.id)).length, "Erros para revisar", "Situação atual da matéria"]].map(([n, title, detail]) => `<article class="metric-card"><strong>${n}</strong><h2>${title}</h2><p>${detail}</p></article>`).join("")}
     </div>
-    <p class="stats-note">Saldo acumulado das respostas deste período, incluindo repetições. Não é nota estimada de aprovação. Tempo: ${formatDuration(metrics.duration)} · média ${formatDuration(metrics.average)} por resposta.</p>
+    <p class="stats-note">${data.practiceOnly ? "Contagem das respostas deste período, incluindo repetições. A regra de pontuação varia por edital; este banco mede acertos e erros." : "Saldo acumulado das respostas deste período, incluindo repetições. Não é nota estimada de aprovação."} Tempo: ${formatDuration(metrics.duration)} · média ${formatDuration(metrics.average)} por resposta.</p>
     ${!metrics.total ? '<div class="empty-state"><span aria-hidden="true">↗</span><h2>Seu próximo treino começa este gráfico.</h2><p>Responda uma questão na prática ou nas lições. O resultado aparece aqui assim que você verifica a resposta.</p><a class="button" href="#praticar" data-view="praticar">Escolher questões</a></div>' : ""}
     <section class="stats-card"><div class="section-heading"><h2>Ritmo nos últimos 7 dias</h2><span class="chart-legend"><i></i> Acertos <i class="wrong"></i> Erros</span></div><div class="activity-chart">${daily.map(d => `<div class="day-column"><span>${d.total}</span><div class="day-track" role="img" aria-label="${d.day}: ${counted(d.correct, "acerto")} e ${counted(d.wrong, "erro")}"><div class="day-wrong" style="height:${d.wrong / max * 100}%"></div><div class="day-correct" style="height:${d.correct / max * 100}%"></div></div><small>${d.day.slice(8)}/${d.day.slice(5, 7)}</small></div>`).join("")}</div></section>
     <section class="stats-card"><div class="section-heading"><h2>Desempenho por assunto</h2><span class="tiny">Cada tentativa conta</span></div><div class="performance-list">${rows.map(row => `<div class="performance-row"><div><strong>${escapeHtml(row.module.title)}</strong><small>${counted(row.total, "resposta")} · ${counted(row.correct, "acerto")} · ${counted(row.wrong, "erro")}</small></div><div class="performance-result"><strong>${row.accuracy === null ? "—" : `${row.accuracy}%`}</strong><div class="progress-track"><div class="progress-fill" style="width:${row.accuracy || 0}%"></div></div></div></div>`).join("")}</div></section>
-    ${attempts.length ? `<section class="stats-card"><h2>Respostas recentes</h2><div class="recent-list">${attempts.slice(-10).reverse().map(a => { const q = questionById.get(a.questionId); return `<div class="recent-row"><span class="result-icon ${a.correct ? "" : "wrong"}">${a.correct ? "✓" : "×"}</span><div><strong>Item ${q.index} · ${q.block}</strong><small>${escapeHtml(q.moduleTitle)} · ${a.mode === "practice" ? "Prática" : "Lição"} · ${a.day.split("-").reverse().join("/")}</small></div><span>${formatDuration(a.durationMs || 0)}</span></div>`; }).join("")}</div></section>` : ""}
+    ${attempts.length ? `<section class="stats-card"><h2>Respostas recentes</h2><div class="recent-list">${attempts.slice(-10).reverse().map(a => { const q = questionById.get(a.questionId); return `<div class="recent-row"><span class="result-icon ${a.correct ? "" : "wrong"}">${a.correct ? "✓" : "×"}</span><div><strong>Item ${q.index} · ${escapeHtml(q.origin === "oficial" ? q.examName || q.examId : q.block)}</strong><small>${escapeHtml(q.moduleTitle)} · ${a.mode === "practice" ? "Prática" : "Lição"} · ${a.day.split("-").reverse().join("/")}</small></div><span>${formatDuration(a.durationMs || 0)}</span></div>`; }).join("")}</div></section>` : ""}
     <p class="stats-note">Histórico salvo neste navegador, sem sincronização entre dispositivos.${state.legacyAnsweredCount ? ` As ${state.legacyAnsweredCount} respostas anteriores permanecem no progresso, mas não entram nas taxas por não terem acerto e tempo registrados.` : ""} O tempo mede apenas a questão aberta e visível, até a correção; leitura da resolução e questões puladas não entram.</p>
   `;
 }
 
 function questionMeta(question) {
+  if (question.origin === "oficial") return `<span class="origin-badge official">Prova oficial · Cebraspe</span><span class="block-badge">${escapeHtml(question.year || "Ano não informado")}${question.yearBasis === "event" ? " (concurso)" : ""} · ${escapeHtml(question.examName || question.examId || "Prova anterior")}</span>`;
   return `<span class="origin-badge">Autoral · estudo dirigido</span><span class="block-badge">${question.block} · acerto +${question.weight} / erro −${question.weight}</span>`;
 }
 
@@ -467,7 +548,7 @@ function resetQuestionTimer() {
 
 function recordAttempt(question, correct) {
   const at = new Date().toISOString();
-  state.attempts.push({ questionId: question.id, answer: quiz.selected, correct, at, day: localDay(), durationMs: Math.round(quiz.elapsedMs), mode: quiz.practice ? "practice" : "lesson", courseId: data.id, block: question.block, points: correct ? question.weight : -question.weight });
+  state.attempts.push({ questionId: question.id, answer: quiz.selected, correct, at, day: localDay(), durationMs: Math.round(quiz.elapsedMs), mode: quiz.practice ? "practice" : "lesson", courseId: data.id, block: question.block, origin: question.origin, scoring: question.origin === "oficial" ? "accuracy" : "cgu-weighted", points: question.origin === "oficial" ? (correct ? 1 : 0) : (correct ? question.weight : -question.weight) });
   markStudyDay();
 }
 
@@ -517,13 +598,15 @@ function advancePractice() {
 }
 
 function renderAchievements() {
+  const answered = new Set(state.answered);
+  const practiced = data.questions.filter(q => answered.has(q.id)).length;
   const achievements = [
-    ["🚀", "Primeiro passo", "Conclua sua primeira lição.", state.completed.length >= 1],
+    ["🚀", "Primeiro passo", data.practiceOnly ? "Responda à primeira questão deste banco." : "Conclua sua primeira lição.", data.practiceOnly ? practiced > 0 : state.completed.length >= 1],
     ["🔥", "Em chamas", "Mantenha uma sequência de 3 dias.", state.streak >= 3],
     ["⚡", "Em evolução", "Acumule 200 XP.", state.xp >= 200],
     ["🎯", "Precisão", "Responda 20 questões.", state.answered.length >= 20],
-    ["🏅", "Meio caminho", `Conclua metade da trilha de ${data.title}.`, lessons.length > 0 && completedLessons() >= Math.ceil(lessons.length / 2)],
-    ["🧠", `Domínio de ${data.title}`, "Conclua toda a trilha selecionada.", lessons.length > 0 && completedLessons() >= lessons.length],
+    ["🏅", "Meio caminho", data.practiceOnly ? "Responda à metade das questões deste banco." : `Conclua metade da trilha de ${data.title}.`, data.practiceOnly ? data.total > 0 && practiced >= Math.ceil(data.total / 2) : lessons.length > 0 && completedLessons() >= Math.ceil(lessons.length / 2)],
+    ["🧠", data.practiceOnly ? "Banco percorrido" : `Domínio de ${data.title}`, data.practiceOnly ? "Responda a todas as questões deste banco." : "Conclua toda a trilha selecionada.", data.practiceOnly ? data.total > 0 && practiced >= data.total : lessons.length > 0 && completedLessons() >= lessons.length],
   ];
   app.innerHTML = `
     ${pageHeader("Seu progresso", "Conquistas", "Cada marco registra a constância que você está construindo.")}
@@ -539,10 +622,12 @@ function renderAchievements() {
 }
 
 function renderAbout() {
+  const authoredCount = catalog.questions.filter(q => q.origin === "autoral").length;
+  const officialCount = catalog.courses.find(c => c.practiceOnly)?.total || 0;
   app.innerHTML = `${pageHeader("Sobre o projeto", "Concursos", "Um treino diário com questões comentadas, trilhas por edital e progresso que acompanha seu esforço.")}
-  <div class="about-grid"><article class="info-card"><div class="big-number">${catalog.total}</div><h3>itens autorais únicos</h3><p>Banco inicial de Certo ou Errado. Os itens comuns aparecem nas quatro especialidades, sem duplicar o histórico.</p></article><article class="info-card"><div class="big-number">4</div><h3>especialidades da CGU</h3><p>Auditoria, Ciência de Dados, Infraestrutura de TI e Desenvolvimento de Sistemas.</p></article></div>
+  <div class="about-grid"><article class="info-card"><div class="big-number">${authoredCount}</div><h3>itens autorais únicos</h3><p>Banco inicial de Certo ou Errado. Os itens comuns aparecem nas quatro especialidades, sem duplicar o histórico.</p></article><article class="info-card"><div class="big-number">${officialCount}</div><h3>questões oficiais importadas</h3><p>Provas anteriores de cargos de TI da Cebraspe, com fonte e gabarito. Disponíveis no banco de prática.</p></article></div>
   <div class="notice"><strong>Como estudar:</strong> leia a introdução, resolva uma lição de até cinco questões e consulte a justificativa. Lições permitem até três erros por tentativa; reiniciar renova as chances. Na prática, não há limite de erros.</div>
-  <div class="notice"><strong>Origem do conteúdo:</strong> exercícios, comentários e introduções são autorais. Os vínculos ao programa são editoriais. O app não tem vínculo com a CGU ou o Cebraspe. A prova de 2026 ainda não foi aplicada. Este banco inicial não cobre todos os tópicos do edital, e a discursiva não possui correção automática.</div>
+  <div class="notice"><strong>Origem do conteúdo:</strong> as quatro trilhas da CGU contêm exercícios, comentários e introduções autorais. O banco de provas anteriores contém questões oficiais da Cebraspe, identificadas em cada item. Quando não há comentário, a correção apresenta somente o gabarito e a fonte. Os vínculos ao programa são editoriais. O app não tem vínculo com a CGU ou o Cebraspe. A prova de 2026 ainda não foi aplicada. Este banco inicial não cobre todos os tópicos do edital, e a discursiva não possui correção automática.</div>
   <div class="notice"><strong>Instalar o Concursos:</strong> use “Instalar aplicativo” no menu do Chrome ou Edge. No iPhone/iPad, Compartilhar → Adicionar à Tela de Início. O conteúdo já carregado pode ser usado offline. Seu progresso fica neste navegador e é separado do ENEM.</div>
   <div class="notice"><strong>Fontes:</strong> <a href="${escapeHtml(catalog.exam.sourceUrl)}" class="source-link" target="_blank" rel="noreferrer">página oficial da banca</a> · <a href="/data/edital-cgu-2026.pdf" class="source-link" download>edital local em PDF</a> · <a href="/data/courses.json" class="source-link" download>baixar banco de estudo</a>. Verificação do edital: 13/10/2026. Consulte a banca para retificações.</div>`;
 }
@@ -563,6 +648,8 @@ function renderEdital() {
 }
 
 function renderPage(resetScroll = true) {
+  if (data.practiceOnly && activeView === "edital") setCourse("desenvolvimento");
+  if (data.practiceOnly && activeView === "aprender") { activeView = "praticar"; history.replaceState(null, "", "#praticar"); }
   document.querySelectorAll("[data-view]").forEach((item) => {
     item.classList.toggle("active", item.dataset.view === activeView);
   });
@@ -684,11 +771,12 @@ function renderQuestion() {
       </div>
       ${quiz.practice ? "" : `<p class="lesson-rule">Até ${MAX_LESSON_ERRORS} erros para concluir. Ao reiniciar a lição, a contagem volta a zero.</p>`}
       <div class="question-wrap">
-        <div class="question-meta"><span>${escapeHtml(question.moduleTitle || quiz.lesson.module.title)}</span><span>Item ${question.index} · ${question.block}</span></div>
+        <div class="question-meta"><span>${escapeHtml(question.moduleTitle || quiz.lesson.module.title)}</span><span>Item ${question.index}${question.origin === "oficial" ? " da prova" : ` · ${question.block}`}</span></div>
         <div class="question-tools">${questionMeta(question)}<button class="text-button favorite-button" data-action="favorite" aria-pressed="${state.favorites.includes(question.id)}">${state.favorites.includes(question.id) ? "★ Favorita" : "☆ Favoritar"}</button></div>
 
-        <h1 tabindex="-1">${renderMathText(question.alternativesIntroduction || "Qual é a alternativa correta?")}</h1>
-        ${question.context ? `<div class="question-context" lang="${question.language === "ingles" ? "en" : question.language === "espanhol" ? "es" : "pt-BR"}">${renderMarkdown(question.context, question.areaId === "linguagens")}</div>` : ""}
+        <h1 tabindex="-1">${question.origin === "oficial" ? `Responda apenas ao item ${escapeHtml(question.index)}` : renderMathText(question.alternativesIntroduction || "Qual é a alternativa correta?")}</h1>
+        ${question.origin === "oficial" ? renderOfficialStatement(question) : ""}
+        ${question.context && question.origin !== "oficial" ? `<div class="question-context" lang="${question.language === "ingles" ? "en" : question.language === "espanhol" ? "es" : "pt-BR"}">${renderMarkdown(question.context, question.areaId === "linguagens")}</div>` : ""}
         <div class="answers">
           ${question.alternatives.map((alternative) => {
             let status = quiz.selected === alternative.letter ? "selected" : "";
@@ -707,8 +795,42 @@ function renderQuestion() {
   `;
 }
 
+function sourceHref(url, page) {
+  if (!/^https?:\/\//i.test(String(url || ""))) return "";
+  return escapeHtml(`${String(url).split("#")[0]}${Number.isInteger(page) && page > 0 ? `#page=${page}` : ""}`);
+}
+
+function officialSourceLinks(question, includeAnswerKey = false) {
+  const exam = sourceHref(question.sourceUrl, question.sourcePage);
+  const key = sourceHref(question.answerKeyUrl, question.answerKeyPage);
+  return `<div class="official-sources">${exam ? `<a class="source-link" href="${exam}" target="_blank" rel="noreferrer">Prova original${question.sourcePage ? ` · página ${question.sourcePage}` : ""} ↗</a>` : ""}${includeAnswerKey && key ? `<a class="source-link" href="${key}" target="_blank" rel="noreferrer">Gabarito oficial${question.answerKeyPage ? ` · página ${question.answerKeyPage}` : ""} ↗</a>` : ""}</div>`;
+}
+
+function officialItemMarker(marker) {
+  if (!marker || !["left", "top", "width", "height"].every(key => Number.isFinite(marker[key]) && marker[key] >= 0 && marker[key] <= 100)) return "";
+  if (!marker.width || !marker.height || marker.left + marker.width > 100 || marker.top + marker.height > 100) return "";
+  return `<span class="exam-item-marker" aria-hidden="true" style="left:${marker.left}%;top:${marker.top}%;width:${marker.width}%;height:${marker.height}%"></span>`;
+}
+
+function officialImageMarkup(image, question) {
+  return `<figure><a href="${escapeHtml(image.src)}" target="_blank" rel="noreferrer" aria-label="Ampliar ${escapeHtml(image.alt || `página da prova com o item ${question.index}`)}"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || `Prova original com o item ${question.index}`)}" loading="lazy">${officialItemMarker(image.marker)}</a>${image.page ? `<figcaption>Página ${escapeHtml(image.page)} da prova original</figcaption>` : ""}</figure>`;
+}
+
+function renderOfficialStatement(question) {
+  const images = (question.images || []).filter(image => typeof image.src === "string" && image.src.startsWith("/assets/questions/") && !image.src.includes("..") && !/[\\\s]/.test(image.src));
+  const support = images.filter(image => image.support);
+  const main = images.filter(image => !image.support).sort((a,b) => (a.page === question.sourcePage ? -1 : b.page === question.sourcePage ? 1 : (a.page || 0) - (b.page || 0)));
+  const text = question.context ? `<div class="question-context official-transcript">${escapeHtml(question.context).replace(/\n/g, "<br>")}</div>` : "";
+  const supportMarkup = support.length ? `<details class="exam-support"><summary>Material de apoio · ${support.length === 1 ? "página" : "páginas"} ${support.map(image => escapeHtml(image.page)).join(", ")}</summary><p class="tiny">Páginas anteriores preservadas para consultar textos, figuras, tabelas e código citados no item.</p><div class="exam-pages">${support.map(image => officialImageMarkup(image, question)).join("")}</div></details>` : "";
+  return `<div class="official-question"><p class="official-instruction">${escapeHtml(question.alternativesIntroduction || "Leia o enunciado e selecione a resposta.")}</p>${question.paperTitle ? `<p class="reference-note">${escapeHtml(question.paperTitle)}</p>` : ""}${question.cargo && question.cargo !== question.paperTitle ? `<details class="paper-roles"><summary>Cargos associados ao caderno</summary><p>${escapeHtml(question.cargo)}</p></details>` : ""}${images.length ? `<p class="notice compact">A página pode conter outros itens e textos de apoio. Responda somente ao <strong>item ${escapeHtml(question.index)}</strong>. Abra a imagem para ampliar.${support.length ? ' Revise o <strong>material de apoio abaixo</strong> quando o item mencionar texto, figura, tabela ou código das páginas anteriores.' : ""}</p><div class="exam-pages">${main.map(image => officialImageMarkup(image, question)).join("")}</div>${supportMarkup}${text ? `<details class="transcript"><summary>Transcrição auxiliar · item ${escapeHtml(question.index)}</summary><p class="tiny">Texto extraído do PDF, que pode incluir outros itens e textos de apoio. A página original é a referência para enunciados, fórmulas, tabelas e figuras.</p>${text}</details>` : ""}` : text}${officialSourceLinks(question)}</div>`;
+}
+
 function renderExplanation(question) {
   const explanation = question.explanation;
+  if (question.origin === "oficial") {
+    const hasComment = Boolean(explanation?.steps?.length);
+    return `<section class="explanation" aria-labelledby="explanation-title" tabindex="-1"><p class="page-kicker">Correção pela banca</p><h2 id="explanation-title">Gabarito oficial${question.answerKeyStatus ? ` · ${escapeHtml(question.answerKeyStatus)}` : ""}</h2><div class="correct-answer"><strong>Resposta: ${escapeHtml(answerLabel(question, question.correctAlternative))}</strong></div>${hasComment ? `<h3>${escapeHtml(explanation.label || "Comentário de estudo")}</h3><ol>${explanation.steps.map(step => `<li>${renderMathText(step)}</li>`).join("")}</ol>` : '<p>O gabarito confirma a resposta, mas não traz uma justificativa pedagógica para este item. Consulte a prova e o gabarito nas fontes abaixo.</p>'}${officialSourceLinks(question, true)}<p class="reference-note">Item ${escapeHtml(question.index)} · ${escapeHtml(question.examName || question.examId)}${question.year ? ` · ${escapeHtml(question.year)}` : ""}. Considere o contexto e as normas vigentes na data da prova.</p></section>`;
+  }
   const correctAnswer = question.alternatives.find((alternative) => alternative.letter === question.correctAlternative);
   return `<section class="explanation" aria-labelledby="explanation-title" tabindex="-1">
     <p class="page-kicker">${renderMathText(explanation.concept)}</p>
@@ -729,7 +851,7 @@ function renderQuizFooter(question) {
   return `
     <footer class="quiz-footer ${correct ? "success" : "error"}">
       <div class="quiz-footer-inner">
-        <div class="feedback-copy" role="status"><strong>${correct ? "Mandou bem! +10 XP" : `Gabarito: ${answerLabel(question, question.correctAlternative)}`}</strong><span>${!quiz.practice && quiz.errors > MAX_LESSON_ERRORS ? "Limite de erros excedido. Leia a resolução antes de reiniciar." : "Confira a resolução comentada antes de continuar."}</span></div>
+        <div class="feedback-copy" role="status"><strong>${correct ? "Mandou bem! +10 XP" : `Gabarito: ${answerLabel(question, question.correctAlternative)}`}</strong><span>${!quiz.practice && quiz.errors > MAX_LESSON_ERRORS ? "Limite de erros excedido. Leia a resolução antes de reiniciar." : (question.origin === "oficial" ? "Confira o gabarito oficial e as fontes antes de continuar." : "Confira a resolução comentada antes de continuar.")}</span></div>
         <button class="button ${correct ? "" : "danger"}" data-action="next-question">${quiz.practice ? "Próxima questão" : quiz.errors > MAX_LESSON_ERRORS ? "Ver resultado" : quiz.index === quiz.questions.length - 1 ? "Finalizar" : "Continuar"}</button>
       </div>
     </footer>
@@ -846,12 +968,15 @@ function showToast(message) {
 document.addEventListener("click", (event) => {
   const view = event.target.closest("[data-view]");
   if (view) {
+    courseSelectionVersion += 1;
     event.preventDefault();
     activeView = view.dataset.view;
     history.replaceState(null, "", `#${activeView}`);
     renderPage();
     return;
   }
+  const courseButton = event.target.closest("[data-select-course]");
+  if (courseButton) { activeView = "praticar"; void selectCourse(courseButton.dataset.selectCourse); return; }
   const blockButton = event.target.closest("[data-study-block]");
   if (blockButton) { state.studyBlocks[data.id] = blockButton.dataset.studyBlock; state.studyUnits[data.id] = data.modules.find(m => m.block === blockButton.dataset.studyBlock).id; saveState(); renderLearn(); app.querySelector(`[data-study-block="${blockButton.dataset.studyBlock}"]`).focus({preventScroll:true}); return; }
   const openStudy = event.target.closest("[data-open-study]");
@@ -868,6 +993,7 @@ document.addEventListener("click", (event) => {
   if (answer) selectAnswer(answer.dataset.answer);
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "continue") {
+    if (data.practiceOnly) { activeView = "praticar"; history.replaceState(null, "", "#praticar"); renderPage(); return; }
     if (data.studyGuide) {
       const module = selectedStudyModule();
       const next = pendingUnitLesson(module.id);
@@ -924,11 +1050,7 @@ document.addEventListener("change", (event) => {
     return;
   }
   if (event.target.id !== "course-select") return;
-  setCourse(event.target.value);
-  if (!["praticar", "desempenho", "edital"].includes(activeView)) activeView = "aprender";
-  history.replaceState(null, "", `#${activeView}`);
-  renderPage();
-  app.querySelector("#course-select").focus({ preventScroll: true });
+  void selectCourse(event.target.value);
 });
 
 document.addEventListener("submit", (event) => {
@@ -945,6 +1067,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 window.addEventListener("hashchange", () => {
+  courseSelectionVersion += 1;
   activeView = location.hash.slice(1) || "aprender";
   renderPage();
 });
@@ -965,9 +1088,18 @@ async function init() {
     const response = await fetch(DATA_URL, { cache: "no-cache" });
     if (!response.ok) throw new Error("Não foi possível carregar as matérias.");
     catalog = await response.json();
-    state.missed = state.missed.filter((id) => catalog.questions.some((question) => question.id === id));
-    setCourse(initialCourseId());
-    renderPage();
+    const knownIds = new Set(catalog.courses.flatMap(course => course.questionIds));
+    state.missed = state.missed.filter(id => knownIds.has(id));
+    const requested = initialCourseId();
+    try {
+      await ensureCourseData(requested);
+      setCourse(requested);
+      renderPage();
+    } catch (error) {
+      setCourse("desenvolvimento");
+      renderPage();
+      showToast(error.message);
+    }
   } catch (error) {
     app.innerHTML = `<div class="notice" style="margin-top:40px"><strong>Falha ao iniciar.</strong><br>${escapeHtml(error.message)} Recarregue a página ou verifique se o site está sendo servido por HTTP.</div>`;
   }

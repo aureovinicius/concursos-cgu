@@ -8,7 +8,11 @@ A especialidade prioritária é **TI — Desenvolvimento de Sistemas**. Novos ac
 
 O edital oficial da CGU publicado em 9/10/2026 está preservado em `dist/data/edital-cgu-2026.pdf`. O programa integral do item 15.2 está em `data/syllabus.json`, com URL, SHA-256 e data da conferência. São quatro especialidades: Auditoria, Ciência de Dados, Infraestrutura de TI e Desenvolvimento de Sistemas.
 
-O banco inicial possui 130 exercícios **autorais**, cinco por disciplina. Não são questões oficiais da CGU/Cebraspe. Cada item contém gabarito, explicação, referência e vínculo editorial ao programa. A prova de 2026 ainda não foi aplicada. Este banco não esgota os tópicos do edital. A discursiva consta do resumo, sem correção automática.
+As quatro trilhas do edital possuem 130 exercícios **autorais**, cinco por disciplina. Cada item contém gabarito, explicação, referência e vínculo editorial ao programa. A prova de 2026 ainda não foi aplicada. Este banco não esgota os tópicos do edital. A discursiva consta do resumo, sem correção automática.
+
+O banco **Provas anteriores · Cebraspe TI**, acessível por `?especialidade=cebraspe-ti#praticar`, acrescenta **27.557 questões oficiais de 510 cadernos e 142 concursos**, com páginas originais, gabaritos definitivos e filtros por concurso, ano, bloco, palavra-chave e histórico. Figuras, tabelas e código permanecem nas páginas da prova; a transcrição é auxiliar. Questões anuladas, cadernos ambíguos e documentos com respostas impressas junto do enunciado não entram na prática. Os totais e as exclusões estão em `data/cebraspe-import-report.json`.
+
+Este banco histórico não presume alinhamento ao edital da CGU nem inclui justificativas pedagógicas geradas. Registra acertos, erros e tempo sem aplicar penalidades ou pesos de outro concurso. Os recursos são carregados quando usados. A reprodução da importação está documentada em `scripts/import-cebraspe/README.md`.
 
 P1/P2: +1 por acerto, −1 por erro; P3: +2/−2. O saldo é do treino, incluindo repetições; não é previsão de nota/classificação. Pular não registra resposta. XP é separado dessa pontuação. Lições admitem até três erros por tentativa; prática livre não tem limite.
 
