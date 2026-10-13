@@ -1,4 +1,4 @@
-const DATA_URL = "/data/courses.json?v=concursos-2";
+const DATA_URL = "/data/courses.json?v=concursos-3";
 const STORAGE_KEY = "concursos-cgu-progress-v1";
 const DAILY_GOAL = 50;
 const MAX_LESSON_ERRORS = 3;
@@ -42,7 +42,7 @@ function loadState() {
     introductionsRead: [],
     answered: [],
     missed: [],
-    activeCourse: "auditoria",
+    activeCourse: "desenvolvimento",
     attempts: [],
     favorites: [],
     practiceFilters: {},
@@ -170,6 +170,11 @@ function setCourse(courseId) {
   }) };
   state.activeCourse = course.id;
   makeLessons();
+  if (!data.modules.some(m => m.id === state.studyUnits[data.id]) && data.recommendedModule) {
+    state.studyUnits[data.id] = data.recommendedModule;
+  }
+  const selectedModule = data.modules.find(m => m.id === state.studyUnits[data.id]);
+  if (selectedModule) state.studyBlocks[data.id] = selectedModule.block;
   for (const [currentId, oldId] of Object.entries(course.legacyLessonCredits || {})) {
     if (state.completed.includes(oldId) && !state.completed.includes(currentId)) state.completed.push(currentId);
   }
@@ -944,6 +949,16 @@ window.addEventListener("hashchange", () => {
   renderPage();
 });
 
+function initialCourseId() {
+  const params = new URLSearchParams(location.search);
+  const requested = params.get("especialidade");
+  if (!catalog.courses.some(c => c.id === requested)) return state.activeCourse;
+  params.delete("especialidade");
+  const search = params.toString();
+  history.replaceState(null, "", `${location.pathname}${search ? "?" + search : ""}${location.hash}`);
+  return requested;
+}
+
 async function init() {
   app.innerHTML = `<div class="loading"><div><div class="loader"></div>Carregando sua trilha…</div></div>`;
   try {
@@ -951,7 +966,7 @@ async function init() {
     if (!response.ok) throw new Error("Não foi possível carregar as matérias.");
     catalog = await response.json();
     state.missed = state.missed.filter((id) => catalog.questions.some((question) => question.id === id));
-    setCourse(state.activeCourse);
+    setCourse(initialCourseId());
     renderPage();
   } catch (error) {
     app.innerHTML = `<div class="notice" style="margin-top:40px"><strong>Falha ao iniciar.</strong><br>${escapeHtml(error.message)} Recarregue a página ou verifique se o site está sendo servido por HTTP.</div>`;

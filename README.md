@@ -2,6 +2,8 @@
 
 Fork independente do [Enem](https://github.com/aureovinicius/enem), com trilhas por edital, questões de Certo ou Errado, prática contínua, justificativas, favoritos, revisão de erros e estatísticas. Veja a origem em `FORK.md`.
 
+A especialidade prioritária é **TI — Desenvolvimento de Sistemas**. Novos acessos começam nessa trilha, com o bloco P3 e Engenharia de Software em destaque. Seleções anteriores e progresso são preservados. O link `?especialidade=desenvolvimento#aprender` seleciona explicitamente a trilha e consome o parâmetro para respeitar escolhas posteriores.
+
 ## Conteúdo inicial
 
 O edital oficial da CGU publicado em 9/10/2026 está preservado em `dist/data/edital-cgu-2026.pdf`. O programa integral do item 15.2 está em `data/syllabus.json`, com URL, SHA-256 e data da conferência. São quatro especialidades: Auditoria, Ciência de Dados, Infraestrutura de TI e Desenvolvimento de Sistemas.

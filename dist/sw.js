@@ -1,5 +1,5 @@
 /* Change VERSION with every release of the application shell. */
-const VERSION = "concursos-2";
+const VERSION = "concursos-3";
 const SCOPE = new URL(self.registration.scope);
 const PREFIX = `concursos:${encodeURIComponent(SCOPE.href)}:`;
 const CORE_CACHE = `${PREFIX}${VERSION}:core`;
@@ -8,8 +8,8 @@ const MATH_FONTS = ["KaTeX_AMS-Regular.woff2", "KaTeX_Caligraphic-Bold.woff2", "
 const CORE_PATHS = [
   "vendor/katex/katex.min.js", "vendor/katex/katex.min.css",
   ...MATH_FONTS.map(name => `vendor/katex/fonts/${name}`),
-  "./", "app.js?v=concursos-2", "styles.css?v=concursos-2", "pwa.js?v=concursos-2",
-  "data/courses.json?v=concursos-2", "manifest.webmanifest", "icons/icon-192.png",
+  "./", "app.js?v=concursos-3", "styles.css?v=concursos-3", "pwa.js?v=concursos-3",
+  "data/courses.json?v=concursos-3", "manifest.webmanifest", "icons/icon-192.png",
   "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "favicon.svg",
 ];
 const CORE_URLS = new Set(CORE_PATHS.map(path => new URL(path, SCOPE).href));

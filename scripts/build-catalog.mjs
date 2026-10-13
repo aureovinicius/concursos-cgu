@@ -23,10 +23,10 @@ const questions = sourceQuestions.map((q,i) => {
   const correctAlternative = q.correct ? 'C' : 'E';
   return {id:`cgu26-autoral-${m.id}-${sourceQuestions.slice(0,i+1).filter(x => x.moduleId===m.id).length}`, index:i+1, year:2026, origin:'autoral', format:'certo-errado', examId:'cgu-2026', board:null, moduleId:m.id, moduleTitle:m.title, subjectTitle:m.title, block:m.block, track:m.track, weight:m.block==='P3'?2:1, topic:q.topic, context:q.statement, alternativesIntroduction:'Julgue o item a seguir.', alternatives:[{letter:'C',text:'Certo',isCorrect:q.correct},{letter:'E',text:'Errado',isCorrect:!q.correct}],correctAlternative,explanation:q.explanation,sourceUrl:q.sourceUrl,sourceLabel:q.sourceLabel};
 });
-const courses = tracks.map(t => {
+const courses = [...tracks].sort((a,b) => Number(b.id === "desenvolvimento") - Number(a.id === "desenvolvimento")).map(t => {
   const selected = modules.filter(m => m.track === 'common' || m.track === t.id);
   const ids = questions.filter(q => selected.some(m => m.id===q.moduleId)).map(q => q.id);
-  return {...t,emoji:'✓',description:'Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.',studyGuide:true,modules:selected,questionIds:ids,total:ids.length};
+  return {...t,emoji:'✓',recommendedModule:t.id==='desenvolvimento'?'dev-engenharia':null,description:t.id==='desenvolvimento'?'Comece pelos conhecimentos específicos: engenharia de software, arquitetura, dados e desenvolvimento seguro. Intercale com os blocos comuns P1 e P2.':'Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.',studyGuide:true,modules:selected,questionIds:ids,total:ids.length};
 });
 const catalog = {schemaVersion:1,exam,total:questions.length,origin:'Banco autoral inicial. Não contém itens oficiais de provas anteriores.',courses,questions};
 await writeFile('dist/data/courses.json',JSON.stringify(catalog,null,2)+'\n');

@@ -4,12 +4,12 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const catalog = JSON.parse(readFileSync('dist/data/courses.json','utf8'));
 const source = readFileSync('dist/app.js','utf8').replace(/\ninit\(\);\s*$/,'');
-function harness(saved, customCatalog=catalog) {
+function harness(saved, customCatalog=catalog, search="") {
  const nodes=new Map();
  const node=()=>({innerHTML:'',hidden:true,dataset:{},setAttribute(){},focus(){},matches(){return false},scrollIntoView(){},scrollTo(){},querySelector(){return node()},classList:{add(){},remove(){}}});
  const store=new Map([['fisio-progress-v1',JSON.stringify({xp:999,completed:['mecanica-1']})]]);
  if(saved) store.set('concursos-cgu-progress-v1',JSON.stringify(saved));
- const ctx=vm.createContext({document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(){},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:''},window:{addEventListener(){},scrollTo(){}},history:{replaceState(){}},Intl,Date,setTimeout(){},structuredClone});
+ const ctx=vm.createContext({document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(){},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:'#aprender',search,pathname:'/concursos-cgu/'},window:{addEventListener(){},scrollTo(){}},history:{replaceState(_s,_title,url){ctx.lastReplacedUrl=url;ctx.location.search=new URL(url,"https://example.test").search;}},URLSearchParams,Intl,Date,setTimeout(){},structuredClone});
  vm.runInContext(source,ctx);ctx.input=customCatalog;vm.runInContext('catalog=input;setCourse(state.activeCourse);',ctx);
  return {run:s=>vm.runInContext(s,ctx),nodes,store};
 }
@@ -73,4 +73,17 @@ test('an empty bank has a useful study view and no false completion',()=>{
  const empty=structuredClone(catalog);empty.questions=[];empty.courses=empty.courses.map(c=>({...c,total:0,questionIds:[]}));
  const a=harness(null,empty);a.run('renderPage()');const html=a.nodes.get('#app').innerHTML;
  assert.ok(html.includes('Questões em preparação'));assert.ok(!html.includes('NaN'));assert.ok(!html.includes('✓ Concluído'));a.run('startPractice()');assert.equal(a.run('quiz'),null);
+});
+
+
+test('Development is the initial track, with P3 selected, while saved choices survive',()=>{
+ const fresh=harness();assert.equal(fresh.run('data.id'),'desenvolvimento');assert.equal(fresh.run('selectedStudyModule().id'),'dev-engenharia');assert.equal(fresh.run('state.studyBlocks.desenvolvimento'),'P3');
+ const saved=harness({activeCourse:'auditoria',xp:200,completed:['etica-1']});assert.equal(saved.run('data.id'),'auditoria');assert.equal(saved.run('state.xp'),200);
+ const chosen=harness({activeCourse:'desenvolvimento',studyUnits:{desenvolvimento:'etica'},studyBlocks:{desenvolvimento:'P3'}});assert.equal(chosen.run('selectedStudyModule().id'),'etica');assert.equal(chosen.run('state.studyBlocks.desenvolvimento'),'P1');
+});
+test('an explicit specialty link selects Development once, preserving progress and other URL parameters',()=>{
+ const a=harness({activeCourse:'auditoria',xp:200,completed:['etica-1']},catalog,'?especialidade=desenvolvimento&origem=link');
+ a.run('setCourse(initialCourseId())');assert.equal(a.run('data.id'),'desenvolvimento');assert.equal(a.run('state.xp'),200);assert.ok(a.run('state.completed.includes("etica-1")'));assert.equal(a.run('lastReplacedUrl'),'/concursos-cgu/?origem=link#aprender');
+ a.run('setCourse("infra");setCourse(initialCourseId())');assert.equal(a.run('data.id'),'infra');
+ const invalid=harness({activeCourse:'dados'},catalog,'?especialidade=unknown');assert.equal(invalid.run('initialCourseId()'),'dados');
 });

@@ -71,10 +71,649 @@
   "origin": "Banco autoral inicial. Não contém itens oficiais de provas anteriores.",
   "courses": [
     {
+      "id": "desenvolvimento",
+      "title": "TI — Desenvolvimento de Sistemas",
+      "vacancies": 10,
+      "emoji": "✓",
+      "recommendedModule": "dev-engenharia",
+      "description": "Comece pelos conhecimentos específicos: engenharia de software, arquitetura, dados e desenvolvimento seguro. Intercale com os blocos comuns P1 e P2.",
+      "studyGuide": true,
+      "modules": [
+        {
+          "id": "estado",
+          "title": "Estado, democracia e direitos",
+          "block": "P1",
+          "track": "common",
+          "syllabusText": "1 Estado e legitimidade. 1.1 Estado, governo e administração; autoridade, legitimidade e poder; interesse público, pluralismo e conflitos distributivos. 2 Democracia e representação. 2.1 Representação e participação; responsabilização democrática; relações entre Executivo, Legislativo e Judiciário; governabilidade e controles recíprocos. 3 Federalismo e capacidades estatais. 3.1 Autonomia, coordenação e cooperação federativa; capacidades administrativas e políticas; burocracia, discricionariedade e implementação de direitos. 4 Ordem constitucional e direitos. 4.1 Fundamentos e objetivos da República; direitos fundamentais, sociais e políticos; igualdade, devido processo e limites ao exercício do poder; princípios da administração pública. 5 Valor público e controle. 5.1 Resultados socialmente relevantes; legitimidade, confiança e direitos; controle interno, externo e social em perspectiva institucional; tensões entre eficiência, equidade e garantias. 6 Corrupção como fenômeno político e social. 6.1 Abuso do poder confiado e apropriação de decisões públicas em benefício particular; dimensões política, administrativa e público-privada. 6.2 Distinções entre corrupção, falha de gestão, conflito de interesses e ilícitos específicos; relações e diferenças entre clientelismo, patronagem, nepotismo e captura. 7 Mecanismos de reprodução e captura. 7.1 Assimetrias de poder e informação, incentivos e oportunidades; relações principal-agente e problemas de ação coletiva; normas sociais, tolerância organizacional e redes de favorecimento. 7.2 Captura de políticas e influência indevida; distinção entre representação legítima de interesses e favorecimento. 8 Consequências e respostas à corrupção. 8.1 Efeitos sobre direitos, desigualdades, competição, alocação de recursos, qualidade dos serviços e confiança institucional. 8.2 Relações entre prevenção, detecção, responsabilização e reparação; controles democráticos, participação e capacidades estatais. 8.3 Avaliação crítica das respostas e de seus efeitos não pretendidos, preservados o devido processo e a continuidade de serviços essenciais. 9 Estado e modelos de desenvolvimento econômico. 9.1 Arranjos de desenvolvimento com diferentes combinações de mercado, planejamento, regulação, provisão pública e atuação empresarial do Estado; industrialização, inovação e transformação produtiva. 9.2 Papel das empresas estatais no investimento de longo prazo, na infraestrutura, no financiamento e na prestação de serviços públicos. 9.3 Relações entre finalidade pública, concorrência, universalização, sustentabilidade fiscal e socioambiental; capacidades estatais, riscos de captura e efeitos distributivos. 9.4 Fundamentos constitucionais da atuação econômica do Estado e comparação de alternativas institucionais à luz de objetivos, evidências e resultados.",
+          "section": "15.2.2",
+          "description": "Poder, democracia, direitos e limites da atuação estatal.",
+          "emoji": "🏛️",
+          "introduction": {
+            "title": "Quem decide e quem controla?",
+            "summary": "Distinga as instituições permanentes, a direção política e a execução administrativa.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Estado, governo e administração",
+                "text": "O Estado é a organização política e jurídica; o governo define a direção política; a administração executa funções públicas. A troca de governantes não extingue as instituições nem os direitos."
+              },
+              {
+                "title": "Democracia e federalismo",
+                "text": "Representação, participação e fiscalização convivem. União, estados, Distrito Federal e municípios possuem autonomia constitucional; cooperação não os transforma em repartições de um único ente."
+              },
+              {
+                "title": "Valor público e integridade",
+                "text": "Uma ação pública deve ser examinada pelos resultados e pelo respeito a direitos. Eficiência não dispensa imparcialidade, justificativa e controle. Prevenir corrupção envolve instituições, incentivos e transparência."
+              }
+            ],
+            "example": {
+              "title": "Um serviço mais rápido, mas para poucos",
+              "steps": [
+                "Uma prefeitura reduz o tempo médio de atendimento ao tornar o cadastro exclusivamente digital.",
+                "Verifique se a economia de tempo veio acompanhada de barreiras para pessoas sem internet.",
+                "Avalie o resultado considerando acesso, direitos e alternativas de atendimento, além da velocidade."
+              ]
+            },
+            "pitfall": "Não confunda aprovação eleitoral com autorização para agir fora dos limites constitucionais."
+          },
+          "officialTitle": "ESTADO, DEMOCRACIA, DIREITOS E CIÊNCIA POLÍTICA",
+          "color": [
+            "#4166d9",
+            "#2e4dad"
+          ]
+        },
+        {
+          "id": "sociedade",
+          "title": "Sociedade, diversidade e desenvolvimento",
+          "block": "P1",
+          "track": "common",
+          "syllabusText": "1 Fundamentos sociológicos. 1.1 Instituições, socialização e ação coletiva; estratificação e mobilidade social; redes, poder, discriminação e reprodução das desigualdades. 2 Formação social e cidadania no Brasil. 2.1 Heranças da escravidão, hierarquias sociais e construção da cidadania; transformações nas relações entre Estado e sociedade; mecanismos de inclusão e exclusão institucional. 3 População, território e trabalho. 3.1 Transição demográfica, envelhecimento e cuidado; desigualdades regionais, urbanas e rurais; estrutura produtiva, informalidade e mudanças tecnológicas no trabalho. 4 Diversidade e acesso a direitos. 4.1 Relações étnico-raciais, gênero e sexualidade; pessoas com deficiência; idade; povos indígenas e comunidades tradicionais. Interseccionalidade, acessibilidade e barreiras administrativas e digitais. 5 Desenvolvimento e realidade brasileira. 5.1 Pobreza, renda e proteção social; educação, saúde, saneamento e habitação como problemas públicos; sustentabilidade e vulnerabilidade climática; leitura contextual de indicadores e desigualdades.",
+          "section": "15.2.2",
+          "description": "Desigualdades, diversidade, acessibilidade e leitura da realidade brasileira.",
+          "emoji": "🤝",
+          "introduction": {
+            "title": "Enxergue quem a média esconde",
+            "summary": "Analise diferenças entre grupos e as barreiras que afetam o acesso a direitos.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Indicadores têm recortes",
+                "text": "Uma média nacional resume situações muito diferentes. Comparar renda, educação ou trabalho exige observar período, território, população e método de cálculo."
+              },
+              {
+                "title": "Desigualdades se combinam",
+                "text": "Raça, gênero, deficiência, idade e território podem produzir barreiras simultâneas. A análise interseccional observa essas combinações sem pressupor que todas as pessoas de um grupo vivam a mesma situação."
+              },
+              {
+                "title": "Acesso exige condições reais",
+                "text": "Disponibilizar um serviço não garante que todos consigam utilizá-lo. Linguagem, acessibilidade, conexão e documentos exigidos podem excluir justamente o público que deveria ser atendido."
+              }
+            ],
+            "example": {
+              "title": "Um formulário que seleciona sem querer",
+              "steps": [
+                "Uma pesquisa sobre serviços públicos é divulgada apenas em aplicativo.",
+                "As respostas descrevem quem conseguiu acessar e responder; pessoas sem conexão podem estar ausentes.",
+                "Compare o perfil da amostra com o público do serviço antes de generalizar a satisfação medida."
+              ]
+            },
+            "pitfall": "Não conclua que uma desigualdade desapareceu apenas porque o indicador agregado melhorou."
+          },
+          "officialTitle": "SOCIEDADE BRASILEIRA, DESIGUALDADES, DIVERSIDADE E DESENVOLVIMENTO",
+          "color": [
+            "#4166d9",
+            "#2e4dad"
+          ]
+        },
+        {
+          "id": "etica",
+          "title": "Ética pública",
+          "block": "P1",
+          "track": "common",
+          "syllabusText": "1 Fundamentos da ética pública. 1.1 Interesse público, dignidade, justiça e responsabilidade; relações entre deveres, consequências e virtudes profissionais; conflitos entre valores em decisões públicas. 2 Deveres profissionais. 2.1 Imparcialidade, probidade, diligência e respeito; autonomia técnica e responsabilidade; limites da obediência hierárquica; uso adequado de informação e recursos públicos. 2.2 Aplicação dos valores e deveres de conduta ética da CGU a situações de trabalho. 3 Conflitos de interesses e imparcialidade. 3.1 Identificação de interesses privados em conflito com a função pública e medidas de prevenção, consulta e encaminhamento, nos termos dos arts. 3º a 5º, 8º e 10 da Lei nº 12.813/2013. 3.2 Impedimento e suspeição no processo administrativo federal, nos termos dos arts. 18 a 21 da Lei nº 9.784/1999; comunicação e abstenção quando exigidas. 4 Relações de trabalho e atendimento. 4.1 Dignidade, diversidade e relações de poder; reconhecimento e prevenção de assédio e discriminação; respeito, escuta e não retaliação. 4.2 Distinção entre acolher uma pessoa, verificar fatos e atribuir responsabilidade. 5 Integridade como responsabilidade institucional. 5.1 Coerência entre regras e práticas; ambiente organizacional e incentivos; canais de orientação e relato; papel do exemplo, da confiança e da prestação de contas.",
+          "section": "15.2.2",
+          "description": "Imparcialidade, conflito de interesses e responsabilidade nas relações de trabalho.",
+          "emoji": "⚖️",
+          "introduction": {
+            "title": "Reconheça o conflito antes de decidir",
+            "summary": "A conduta ética começa na prevenção e no cuidado com pessoas e informações.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Responsabilidade profissional",
+                "text": "A diligência exige verificar fatos e registrar decisões. Hierarquia não elimina responsabilidade pessoal; ordens manifestamente ilegais não integram o dever de obediência do servidor federal."
+              },
+              {
+                "title": "Interesse privado e função pública",
+                "text": "Um interesse privado pode comprometer a imparcialidade mesmo sem prejuízo financeiro consumado. Havendo dúvida sobre conflito de interesses, procure a instância competente; impedimento processual exige comunicação e abstenção."
+              },
+              {
+                "title": "Escuta e proteção",
+                "text": "Acolher um relato requer respeito e discrição. Apurar fatos e atribuir responsabilidade são etapas distintas, com competências e garantias próprias. Proteção não equivale a condenação antecipada."
+              }
+            ],
+            "example": {
+              "title": "O parecer sobre a própria empresa",
+              "steps": [
+                "Uma servidora recebe processo que pode beneficiar empresa da qual é sócia.",
+                "Ela identifica interesse direto na matéria e comunica o impedimento à autoridade competente.",
+                "Abstém-se de atuar no processo, permitindo sua redistribuição e o registro da situação."
+              ]
+            },
+            "pitfall": "A ausência de vantagem recebida não prova que a decisão esteja livre de conflito de interesses."
+          },
+          "officialTitle": "ÉTICA PÚBLICA E RESPONSABILIDADE PROFISSIONAL",
+          "color": [
+            "#4166d9",
+            "#2e4dad"
+          ]
+        },
+        {
+          "id": "administracao",
+          "title": "Administração e políticas públicas",
+          "block": "P1",
+          "track": "common",
+          "syllabusText": "1 Organização administrativa. 1.1 Administração direta e indireta; descentralização e desconcentração; agentes públicos; funções da administração pública: formulação, execução, regulação e controle de políticas e ações públicas; arranjos de cooperação com entes federativos e entidades não estatais. 2 Modelos de administração. 2.1 Burocracia e profissionalização; gestão orientada a resultados; participação e governança; limites e contribuições de diferentes modelos na realidade brasileira. 3 Políticas públicas. 3.1 Problema público, agenda e formulação; instrumentos de ação estatal; implementação, monitoramento e avaliação; intersetorialidade e atores governamentais e sociais. 4 Planejamento e recursos. 4.1 Funções do planejamento e do orçamento; relação entre PPA, LDO e LOA; receita e despesa em nível conceitual; restrições fiscais, escolhas alocativas e sustentabilidade das ações. 5 Serviços e transformação digital. 5.1 Orientação ao usuário; simplificação e acessibilidade; coordenação de serviços; oportunidades e riscos da automação e da inteligência artificial na administração.",
+          "section": "15.2.2",
+          "description": "Organização administrativa, ciclo de políticas, planejamento e serviços.",
+          "emoji": "🧭",
+          "introduction": {
+            "title": "Ligue o problema público à entrega",
+            "summary": "Organize a análise: problema, alternativas, recursos, execução e resultados.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Organização e responsabilidades",
+                "text": "Desconcentração distribui tarefas entre órgãos da mesma pessoa jurídica. Descentralização envolve outra pessoa, como uma autarquia. Identificar quem executa e quem supervisiona evita confundir suas responsabilidades."
+              },
+              {
+                "title": "Políticas ao longo do tempo",
+                "text": "A formulação escolhe instrumentos para um problema; a implementação os coloca em funcionamento. Monitorar acompanha a execução. Avaliar investiga mérito, funcionamento ou efeitos, sem tratar essas atividades como etapas isoladas e inflexíveis."
+              },
+              {
+                "title": "Planejamento e capacidade",
+                "text": "PPA, LDO e LOA cumprem funções diferentes e precisam de coerência. Uma meta requer recursos, pessoas, coordenação e mecanismos de acompanhamento; a previsão em um plano não assegura sua execução."
+              }
+            ],
+            "example": {
+              "title": "Vagas oferecidas não são aprendizagem",
+              "steps": [
+                "Um programa entrega cursos a mil participantes.",
+                "O número de vagas e concluintes ajuda a acompanhar entregas, mas não informa sozinho o ganho de aprendizagem.",
+                "Defina indicadores de resultado e um desenho de avaliação compatível com a pergunta que se deseja responder."
+              ]
+            },
+            "pitfall": "Não confunda dinheiro gasto ou atividade executada com problema público resolvido."
+          },
+          "officialTitle": "ADMINISTRAÇÃO PÚBLICA E FUNDAMENTOS DE POLÍTICAS PÚBLICAS",
+          "color": [
+            "#4166d9",
+            "#2e4dad"
+          ]
+        },
+        {
+          "id": "governanca",
+          "title": "Governança, riscos e integridade",
+          "block": "P2",
+          "track": "common",
+          "syllabusText": "1 Governança e responsabilidades. 1.1 Distinção entre direção, gestão, controle e prestação de contas; papéis, supervisão, transparência e responsabilização. Relação entre decisões organizacionais, finalidade pública e direitos. 2 Riscos e controles essenciais. 2.1 Risco, causa, consequência e controle; prevenção e detecção; proporcionalidade dos controles, segregação de funções e risco residual. 2.2 Identificação de vulnerabilidades e de controles compatíveis com situações usuais, a partir dos dados fornecidos. 3 Integridade pública. 3.1 Finalidades dos programas e medidas de integridade; compromisso da liderança, orientação ética, identificação de riscos, canais de relato e acompanhamento de ações. 3.2 Prevenção de favorecimento, assédio e discriminação; ambiente seguro e não retaliação. 4 Integridade privada. 4.1 Finalidades dos programas de integridade e sua relação com o poder público; compromisso da direção, registros confiáveis, controles, diligência proporcional sobre terceiros, canais de relato e remediação. 4.2 Diferença entre existência documental, implementação e efetividade dos mecanismos. 5 Prevenção e melhoria institucional. 5.1 Cultura, incentivos e confiança; diferenças de capacidade entre organizações; orientação e medidas proporcionais. 5.2 Denúncias e resultados de controle como insumos de melhoria. 5.3 Distinção entre baixa ocorrência e baixa detecção de problemas; leitura de evidências simples sobre funcionamento e resultados das medidas.",
+          "section": "15.2.3",
+          "description": "Direção, riscos, controles e efetividade da integridade.",
+          "emoji": "🛡️",
+          "introduction": {
+            "title": "Controle é resposta a um risco",
+            "summary": "Entenda responsabilidades e escolha controles proporcionais ao problema.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Governar e gerir",
+                "text": "A governança orienta e acompanha a organização. A gestão transforma as diretrizes em planos e operações. A distinção ajuda a identificar quem decide prioridades e quem organiza sua execução."
+              },
+              {
+                "title": "Do objetivo ao controle",
+                "text": "Comece pelo objetivo, identifique o que pode impedi-lo e examine causas e consequências. Um controle reduz probabilidade ou impacto; risco residual é o que permanece após a resposta."
+              },
+              {
+                "title": "Integridade em funcionamento",
+                "text": "Um código publicado é apenas parte do programa. Liderança, orientação, canais confiáveis, controles e acompanhamento precisam operar juntos. A avaliação deve verificar práticas e resultados, além da documentação."
+              }
+            ],
+            "example": {
+              "title": "Pagamento sem conferência independente",
+              "steps": [
+                "O mesmo agente cadastra fornecedor, atesta recebimento e autoriza pagamento.",
+                "A concentração permite que um erro ou favorecimento percorra todo o fluxo sem revisão independente.",
+                "Separe funções incompatíveis ou adote controles compensatórios adequados, acompanhando o risco que permanece."
+              ]
+            },
+            "pitfall": "Mais controles não significa automaticamente melhor controle; avalie custo, risco e funcionamento."
+          },
+          "officialTitle": "FUNDAMENTOS DE GOVERNANÇA, RISCOS E INTEGRIDADE PÚBLICA E PRIVADA",
+          "color": [
+            "#387e78",
+            "#215c57"
+          ]
+        },
+        {
+          "id": "transparencia",
+          "title": "Transparência e participação social",
+          "block": "P2",
+          "track": "common",
+          "syllabusText": "1 Acesso à informação. 1.1 Transparência ativa e passiva; finalidade de pedidos e recursos; publicidade como regra e motivação das restrições. 1.2 Distinção conceitual entre informação classificada, sigilos previstos em lei, informação pessoal e documento preparatório; acesso parcial e comunicação clara da decisão. 2 Transparência e proteção de dados. 2.1 Compatibilização entre acesso à informação e proteção de dados pessoais; finalidade, necessidade e salvaguardas. 2.2 Diferença entre dados pessoais e dados pessoais sensíveis; noções de tarjamento, anonimização e risco de reidentificação. 3 Ouvidoria e proteção das pessoas. 3.1 Finalidades das manifestações; acolhimento, encaminhamento e resposta ao usuário; acessibilidade e linguagem cidadã. 3.2 Proteção da identidade e prevenção de retaliação. 3.3 Distinção entre receber um relato, apurar fatos e decidir sobre responsabilidade. 4 Participação e melhoria de serviços. 4.1 Participação e controle social; conselhos, consultas e escuta de usuários; representatividade e barreiras à participação. 4.2 Recorrências em manifestações como sinais de problemas. 4.2.1 Subnotificação. 4.3 Transparência ativa, dados abertos e Portal da Transparência como meios de acesso e controle; qualidade, atualização, cobertura e limites da informação. 4.4 Papel da CGU na orientação e no monitoramento da transparência e do acesso à informação, em nível de finalidade institucional. 5 Integridade da informação e comunicação. 5.1 Confiabilidade e contexto das fontes; distinção entre fato, alegação e interpretação. 5.2 Desinformação e efeitos sobre políticas públicas; comunicação de incertezas e correção de erros. 5.3 Liberdade de expressão e pluralismo. 5.3.1 Distinção entre crítica legítima e desinformação.",
+          "section": "15.2.3",
+          "description": "Acesso à informação, dados pessoais, ouvidoria e participação.",
+          "emoji": "🔎",
+          "introduction": {
+            "title": "Abra a informação e proteja as pessoas",
+            "summary": "Combine publicidade, acesso parcial e tratamento responsável das manifestações.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Ativa ou passiva",
+                "text": "Publicar informações de interesse coletivo sem pedido caracteriza transparência ativa. Responder a uma solicitação individual caracteriza transparência passiva. Ambas favorecem fiscalização e acesso a direitos."
+              },
+              {
+                "title": "Proteção sem bloqueio indiscriminado",
+                "text": "Dados pessoais exigem finalidade e proteção. A existência de uma parte protegida não torna necessariamente todo o documento inacessível; pode ser possível entregar uma cópia com ocultação justificada."
+              },
+              {
+                "title": "Escutar, encaminhar e melhorar",
+                "text": "Uma manifestação pode revelar barreiras e falhas recorrentes. Recebê-la não comprova todos os fatos narrados. A ouvidoria trata e encaminha o relato, preservando informações e distinguindo sua função da apuração."
+              }
+            ],
+            "example": {
+              "title": "Pedido de relatório com dado pessoal",
+              "steps": [
+                "Um cidadão solicita relatório que contém gastos públicos e telefone pessoal de um beneficiário.",
+                "Analise o fundamento da proteção do dado e se sua divulgação é necessária.",
+                "Quando cabível, forneça a parte pública com o telefone ocultado e explique a restrição aplicada."
+              ]
+            },
+            "pitfall": "Não use a proteção de dados como justificativa genérica para negar acesso a documentos inteiros."
+          },
+          "officialTitle": "FUNDAMENTOS DE TRANSPARÊNCIA, OUVIDORIA E PARTICIPAÇÃO SOCIAL",
+          "color": [
+            "#387e78",
+            "#215c57"
+          ]
+        },
+        {
+          "id": "direito",
+          "title": "Direito público e responsabilização",
+          "block": "P2",
+          "track": "common",
+          "syllabusText": "1 Decisão administrativa. 1.1 Competência, finalidade, motivação, proporcionalidade e segurança jurídica; consideração das consequências e das condições de atuação. 1.2 Dever de fundamentação e limites ao exercício do poder e à revisão de decisões. 2 Processo e garantias. 2.1 Devido processo, contraditório, defesa e imparcialidade; finalidade da instrução e da prova. 2.2 Distinção entre procedimento investigativo e processo sancionador; proteção de direitos e necessidade de fundamentar conclusões. 3 Funções de controle e melhoria da gestão. 3.1 Finalidades do controle interno, externo e social; inserção institucional da CGU no Poder Executivo federal. 3.2 Avaliação da ação governamental e apoio ao aprimoramento da gestão, da governança, dos controles e dos resultados das políticas públicas; prevenção, detecção e correção de irregularidades. 3.3 Autonomia técnica e responsabilidades dos gestores; diferenças de competências e complementaridade com o controle externo exercido pelo Congresso Nacional com o auxílio do TCU. 3.4 Distinção entre avaliar a gestão, apurar fatos e aplicar sanções; cooperação e compartilhamento lícito de informações. 4 Responsabilização em nível introdutório. 4.1 Distinção entre indício, falha de gestão, irregularidade e responsabilidade. 4.2 Finalidades e diferenças entre responsabilização de agentes públicos e de pessoas jurídicas; noções de admissibilidade, processo disciplinar, processo administrativo de responsabilização e acordo de leniência. 5 Proteção e encaminhamento. 5.1 Distinção entre acolhimento, medidas de proteção, apuração de fatos e conclusão sancionadora, especialmente diante de assédio e discriminação; finalidades e garantias de cada atuação.",
+          "section": "15.2.3",
+          "description": "Motivação, processo, controles e limites da responsabilização.",
+          "emoji": "📜",
+          "introduction": {
+            "title": "Uma conclusão precisa de fundamento",
+            "summary": "Separe indícios, apuração, decisão e sanção, observando competências e garantias.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Decisão administrativa",
+                "text": "Identifique quem pode decidir, qual finalidade a lei permite e quais fatos foram demonstrados. Motivação liga esses fatos ao fundamento jurídico, permitindo compreensão e controle da decisão."
+              },
+              {
+                "title": "Processo e garantias",
+                "text": "Investigar obtém informações; sancionar exige o procedimento adequado. Uma suspeita orienta a apuração, mas não substitui prova e oportunidade de defesa quando exigidas."
+              },
+              {
+                "title": "Controles complementares",
+                "text": "Controle interno, externo e social possuem posições institucionais diferentes. No plano federal, o controle externo cabe ao Congresso Nacional com auxílio do TCU; não se confunde com a atuação da CGU no Executivo."
+              }
+            ],
+            "example": {
+              "title": "Alerta sobre contratação",
+              "steps": [
+                "Um sistema aponta semelhança incomum entre propostas de fornecedores.",
+                "A equipe confirma a origem dos documentos e examina explicações alternativas antes de concluir sobre a ocorrência.",
+                "Se houver elementos, encaminha o caso à instância competente, sem tratar o alerta como sanção automática."
+              ]
+            },
+            "pitfall": "Um achado de auditoria não transfere automaticamente ao auditor a competência para aplicar qualquer sanção."
+          },
+          "officialTitle": "FUNDAMENTOS DE DIREITO PÚBLICO APLICADO, CONTROLE E RESPONSABILIZAÇÃO",
+          "color": [
+            "#387e78",
+            "#215c57"
+          ]
+        },
+        {
+          "id": "evidencias",
+          "title": "Evidências, dados e IA",
+          "block": "P2",
+          "track": "common",
+          "syllabusText": "1 Perguntas e fontes. 1.1 Relação entre problema, pergunta e informação necessária; fontes documentais, administrativas, estatísticas e de participação social. 1.2 Distinção entre dado, evidência, interpretação e juízo de valor; verificação de origem e confronto de fontes. 2 Leitura de dados e indicadores. 2.1 Interpretação de tabelas, gráficos, proporções, taxas e medidas descritivas; denominadores, qualidade e comparabilidade. 2.2 Distinção entre indicadores de percepção, experiência, denúncias, detecção e sanções na análise da corrupção; subnotificação e limites de inferência sobre sua ocorrência. 3 Inferências e erros de raciocínio. 3.1 Associação e causalidade; seleção e representatividade; explicações alternativas e incerteza. 3.2 Generalizações indevidas, falácia ecológica e viés de confirmação; falsos positivos e falsos negativos. 4 Integridade da evidência e proteção. 4.1 Rastreabilidade e verificação de informações; comunicação proporcional dos resultados e limites. 4.2 Escuta sem indução, confidencialidade e risco de identificação indireta. 4.3 Distinção entre as condições e os regimes de proteção de entrevistados em auditoria, participantes de pesquisa e denunciantes. 5 Uso responsável de inteligência artificial. 5.1 Possibilidades de classificação, busca, síntese e apoio à análise; escolha entre IA, solução simples e revisão humana. 5.2 Erros, conteúdo não sustentado, vieses e efeitos sobre grupos; proteção de informações, supervisão, rastreabilidade e contestação. 5.3 Verificação de fontes e limites da automação de decisões que afetam direitos.",
+          "section": "15.2.3",
+          "description": "Indicadores, inferência, rastreabilidade e uso responsável de IA.",
+          "emoji": "📊",
+          "introduction": {
+            "title": "Da informação à conclusão",
+            "summary": "Pergunte o que os dados permitem afirmar — e o que ainda permanece incerto.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "A pergunta orienta a fonte",
+                "text": "Defina o problema antes de buscar números. Uma base pode ser adequada para contar atendimentos e inadequada para medir satisfação. Registre origem, período, população e limitações."
+              },
+              {
+                "title": "Comparar exige denominadores",
+                "text": "Contagens e taxas respondem a perguntas diferentes. Considere o tamanho da população, mudanças no registro e seleção da amostra. Associação temporal ou estatística não demonstra sozinha uma relação causal."
+              },
+              {
+                "title": "IA como apoio verificável",
+                "text": "Uma resposta fluente pode conter erros e referências inexistentes. Confira fontes, proteja informações e mantenha responsabilidade humana pela análise. Resultados automatizados precisam de contexto e possibilidade de revisão."
+              }
+            ],
+            "example": {
+              "title": "Reclamações que dobraram",
+              "steps": [
+                "Um serviço passa de 20 reclamações em mil atendimentos para 40 em quatro mil.",
+                "A quantidade duplicou, mas a proporção caiu de 2% para 1%.",
+                "Antes de avaliar a qualidade, verifique também acesso ao canal, perfil dos usuários e critérios de registro."
+              ]
+            },
+            "pitfall": "Nem aumento de denúncias prova aumento de irregularidades, nem ausência de denúncias prova integridade."
+          },
+          "officialTitle": "FUNDAMENTOS DE EVIDÊNCIAS, DADOS E INTELIGÊNCIA ARTIFICIAL",
+          "color": [
+            "#387e78",
+            "#215c57"
+          ]
+        },
+        {
+          "id": "auditoria-fundamentos",
+          "title": "Fundamentos de auditoria",
+          "block": "P2",
+          "track": "common",
+          "syllabusText": "1 Propósito, serviços e papéis. 1.1 Contribuição da auditoria para a governança, os riscos, os controles e os resultados. 1.2 Avaliação e consultoria como serviços de auditoria interna governamental; apuração de atos e fatos com indícios de ilegalidade ou irregularidade na utilização de recursos públicos federais como competência do sistema de controle interno. 1.3 Finalidades e diferenças entre as três formas de atuação da SFC; relação com a gestão, correição e avaliação de políticas. 1.4 Independência, objetividade, diligência e ceticismo; papéis de gestão, supervisão e auditoria no modelo das três linhas. 2 Ciclo do trabalho. 2.1 Planejamento, execução, comunicação e monitoramento; finalidade de objetivos, escopo, critérios e perguntas. 2.2 Priorização por risco, materialidade e relevância social em nível conceitual; adequação do trabalho às finalidades de avaliação, consultoria ou apuração. 2.3 Apoio à melhoria da gestão com preservação da autonomia técnica e das responsabilidades de decisão e execução dos gestores. 3 Evidência e conclusão. 3.1 Suficiência, adequação e confiabilidade; noção de achado e de limitações. 3.2 Distinção entre sinal de risco, evidência e conclusão; necessidade de aprofundamento e proporcionalidade da afirmação. 4 Comunicação e acompanhamento. 4.1 Clareza, contexto e utilidade dos resultados; publicidade e proteção de pessoas e informações. 4.2 Recomendações relacionadas a causas e riscos; distinção entre plano de ação, implementação, resultado e benefício. 5 Integração entre funções da CGU. 5.1 Denúncias e informações de ouvidoria e transparência como insumos de risco; achados como subsídios para admissibilidade correcional e responsabilização de entes privados. 5.2 Resultados do controle como insumos de integridade e melhoria de serviços; compartilhamento lícito, devolutivas e proteção.",
+          "section": "15.2.3",
+          "description": "Papéis, planejamento, evidências e acompanhamento da auditoria governamental.",
+          "emoji": "🗂️",
+          "introduction": {
+            "title": "Transforme evidência em melhoria",
+            "summary": "Planeje perguntas, sustente achados e acompanhe o que mudou após a recomendação.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Papéis preservados",
+                "text": "A auditoria oferece avaliação e consultoria para melhorar a organização. A decisão de gerir e executar permanece com o gestor. Independência e objetividade ajudam a sustentar uma opinião técnica confiável."
+              },
+              {
+                "title": "Trabalho orientado",
+                "text": "Objetivo define o que se pretende responder; escopo delimita o trabalho; critério estabelece a referência de comparação. Planejamento baseado em riscos direciona recursos às questões relevantes."
+              },
+              {
+                "title": "Conclusão e acompanhamento",
+                "text": "A conclusão precisa de evidência compatível com sua força. Recomendações devem dialogar com causas e riscos. Receber um plano de ação não comprova que a ação foi executada ou que produziu benefício."
+              }
+            ],
+            "example": {
+              "title": "Controle anunciado, problema persistente",
+              "steps": [
+                "Após uma auditoria, a gestão apresenta plano para revisar pagamentos duplicados.",
+                "A equipe acompanha evidências de implementação e verifica se o novo controle funciona.",
+                "A conclusão sobre benefício depende dos resultados observados, não apenas da promessa de revisão."
+              ]
+            },
+            "pitfall": "Ceticismo profissional é examinar criticamente a evidência, sem presumir previamente culpa ou inocência."
+          },
+          "officialTitle": "FUNDAMENTOS DE AUDITORIA GOVERNAMENTAL E ATUAÇÃO INTEGRADA DA CGU",
+          "color": [
+            "#387e78",
+            "#215c57"
+          ]
+        },
+        {
+          "id": "dev-engenharia",
+          "title": "Engenharia de software",
+          "block": "P3",
+          "track": "desenvolvimento",
+          "syllabusText": "1 Problemas e requisitos. 1.1 Necessidades de usuários. 1.2 Requisitos funcionais e não funcionais. 1.3 Restrições e critérios de aceitação. 1.4 Desenho centrado nas pessoas. 1.5 Relações entre problema público, processo de trabalho e solução digital. 2 Programação e correção. 2.1 Linguagem Java: tipos de dados, estruturas de controle, métodos, classes e objetos. 2.2 Encapsulamento, interfaces, herança e polimorfismo. 2.3 Coleções e tipos genéricos. 2.4 Igualdade de objetos, mutabilidade, tratamento de exceções e leitura e escrita de arquivos. 2.5 Estruturas de dados, algoritmos e pseudocódigo. 2.6 Leitura, depuração e testes de borda. 2.7 Complexidade em decisões de desempenho. 2.8 Modularidade e padrões de projeto aplicados à manutenção. 3 Concorrência e processamento. 3.1 Concorrência, paralelismo e assincronia. 3.2 Condições de corrida e sincronização. 3.3 Compartilhamento de estado, bloqueios e falhas. 3.4 Correção e desempenho sob requisições concorrentes. 4 Interfaces e experiência do usuário. 4.1 Usabilidade, prototipagem e desenho responsivo. 4.2 Acessibilidade e barreiras digitais. 4.3 Componentes de interface e reaproveitamento. 4.4 Validação com usuários e prevenção de erros no uso dos serviços. 4.5 Desenvolvimento de interfaces com JavaScript e Vue.js: componentes, reatividade, tratamento de eventos e consumo de APIs. 5 Manutenção e evolução. 5.1 Débito técnico, documentação, modularidade e acoplamento. 5.2 Sustentação e modernização de sistemas legados. 5.3 Interoperabilidade e compatibilidade. 5.4 Impactos das mudanças e das falhas sobre a continuidade e a qualidade dos serviços.",
+          "section": "15.2.4",
+          "description": "Programação Java, concorrência, interfaces acessíveis e manutenção.",
+          "emoji": "💻",
+          "introduction": {
+            "title": "Transforme requisitos em comportamento verificável",
+            "summary": "Corretude envolve o resultado esperado, os limites da entrada e o uso simultâneo do sistema.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Objetos têm identidade e estado",
+                "text": "Em Java, comparar referências com == não é o mesmo que comparar conteúdo por equals. Ao redefinir igualdade, respeite o contrato de hashCode usado pelas coleções baseadas em hash."
+              },
+              {
+                "title": "Concorrência muda a análise",
+                "text": "Uma operação aparentemente simples pode envolver leitura, cálculo e escrita. Se essas etapas se intercalarem entre threads, atualizações podem ser perdidas. A solução exige uma estratégia de sincronização adequada."
+              },
+              {
+                "title": "A interface também precisa funcionar",
+                "text": "Teste teclado, foco e mensagens de erro. Uma funcionalidade só operável por mouse cria uma barreira para quem utiliza outras formas de interação."
+              }
+            ],
+            "example": {
+              "title": "Contador de solicitações",
+              "steps": [
+                "Identifique se várias requisições compartilham o mesmo contador.",
+                "Verifique se a atualização é atômica ou devidamente sincronizada.",
+                "Teste execuções concorrentes para procurar resultados perdidos."
+              ]
+            },
+            "pitfall": "Passar em um teste sequencial não demonstra correção sob concorrência."
+          },
+          "officialTitle": "ENGENHARIA DE SOFTWARE E PROGRAMAÇÃO",
+          "color": [
+            "#8863bf",
+            "#634296"
+          ]
+        },
+        {
+          "id": "dev-arquitetura",
+          "title": "Arquitetura e integração",
+          "block": "P3",
+          "track": "desenvolvimento",
+          "syllabusText": "1 Arquiteturas de aplicações. 1.1 Monolitos, microsserviços e arquiteturas orientadas a eventos. 1.2 Distribuição de responsabilidades, acoplamento e dependências. 1.3 Desempenho, escalabilidade, segurança e custo. 1.4 Escolha de arquitetura conforme restrições. 1.5 Aplicações Java com Spring Framework e Spring Boot: organização de componentes, inversão de controle e injeção de dependências. 1.6 Configuração e autoconfiguração. 1.7 Construção de serviços REST e separação entre apresentação, regras de negócio e acesso a dados. 2 APIs e identidade. 2.1 Design , contratos e versionamento de APIs REST. 2.2 Autenticação e autorização. 2.3 OAuth 2.0 para autorização e OpenID Connect para autenticação federada. 2.4 Uso, validação e proteção de tokens . 2.5 Controle de acesso e segregação de funções nas aplicações. 2.6 Spring Security: configuração e avaliação de mecanismos de autenticação e autorização. 2.7 Proteção de endpoints e métodos. 2.8 Identificação e correção de permissões excessivas e falhas de controle de acesso. 3 Comunicação e consistência. 3.1 Mensageria, eventos e persistência. 3.2 Falhas, repetição de requisições, idempotência e consistência. 3.3 Integração entre sistemas e coordenação de operações. 3.4 Evolução de contratos e migração de esquemas. 4 Integração com dados e IA. 4.1 Consumo e disponibilização de serviços de dados e modelos de linguagem. 4.2 Representações vetoriais, busca semântica e recuperação de informação para geração de respostas. 4.3 Agentes e ferramentas. 4.4 Avaliação funcional de respostas e fontes. 4.5 Limites de autorização, supervisão e proteção contra instruções maliciosas em conteúdo externo. 5 Confiabilidade das aplicações. 5.1 Contêineres, serviços de nuvem e processamento serverless como ambientes de implantação. 5.2 Logs , métricas e rastreamento. 5.3 Latência, disponibilidade, capacidade e tolerância a falhas. 5.4 Diagnóstico de integrações e dependências. 5.5 Continuidade, recuperação e degradação de serviços.",
+          "section": "15.2.4",
+          "description": "Arquiteturas, APIs, identidade, integração e serviços com IA.",
+          "emoji": "🔗",
+          "introduction": {
+            "title": "Integre sistemas sem perder controle",
+            "summary": "Uma integração precisa definir contratos, permissões e comportamento diante de falhas e repetições.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Separe responsabilidades",
+                "text": "Injeção de dependências permite fornecer colaboradores a um componente. Contratos claros ajudam a testar as regras de negócio sem depender de toda a infraestrutura."
+              },
+              {
+                "title": "Identidade não equivale a permissão",
+                "text": "Autenticação identifica o usuário; autorização decide o que ele pode fazer. OpenID Connect acrescenta uma camada de identidade sobre OAuth 2.0. Cada operação deve verificar os acessos necessários."
+              },
+              {
+                "title": "Prepare a integração para repetir",
+                "text": "Falhas de rede podem deixar o cliente sem saber se a operação ocorreu. Idempotência evita que repetições previstas produzam efeitos adicionais indevidos. Respostas iguais não são requisito para que uma operação seja idempotente."
+              }
+            ],
+            "example": {
+              "title": "Consultar documentos com um agente",
+              "steps": [
+                "Restrinja o agente aos documentos e ferramentas autorizados.",
+                "Trate instruções encontradas nos documentos como conteúdo externo.",
+                "Confira se a resposta é sustentada pelas fontes e atende à tarefa."
+              ]
+            },
+            "pitfall": "Uma chamada autenticada ainda pode tentar acessar um recurso para o qual o usuário não tem autorização."
+          },
+          "officialTitle": "ARQUITETURA E INTEGRAÇÃO DE SISTEMAS",
+          "color": [
+            "#8863bf",
+            "#634296"
+          ]
+        },
+        {
+          "id": "dev-dados",
+          "title": "Persistência e proteção de dados",
+          "block": "P3",
+          "track": "desenvolvimento",
+          "syllabusText": "1 Modelagem e persistência. 1.1 Modelagem relacional, normalização e integridade. 1.2 Bancos documentais, chave-valor e vetoriais. 1.3 Cache e busca textual. 1.4 Escolha de armazenamento conforme uso. 1.5 Transações, concorrência, consistência e evolução de esquemas. 1.6 Persistência em Java com JPA: mapeamento de entidades e relacionamentos, ciclo de vida das entidades, contexto de persistência, consultas e transações. 1.7 Estratégias de carregamento e seus efeitos sobre correção e desempenho. 1.8 Spring Data JPA: repositórios, consultas e paginação. 1.9 Integração da camada de persistência às regras de negócio. 2 SQL e desempenho. 2.1 Definição e manipulação de dados, controle de acesso e transações. 2.2 Consultas com filtros, junções, agregações, subconsultas e expressões de tabela comuns. 2.3 Índices, planos de execução, valores nulos e duplicações. 2.4 Diagnóstico de consultas e efeitos sobre o desempenho da aplicação. 3 Fluxos e interoperabilidade. 3.1 Ingestão, transformação e carga. 3.2 ETL e ELT. 3.3 Processamento em lote e fluxo, completo e incremental. 3.4 APIs, contratos e formatos CSV, JSON, XML e Parquet. 3.5 Qualidade, rastreabilidade, conciliação e repetição segura de processamento. 3.6 Spring Batch: organização de trabalhos e etapas de processamento ( jobs e steps ). 3.7 Leitura, processamento e escrita de registros. 3.8 Controle transacional, registro do estado de execução e reinício após falhas. 3.9 Prevenção de perdas e duplicações no reprocessamento. 4 Privacidade e segurança de dados. 4.1 Minimização, finalidade, acesso e segregação. 4.2 Criptografia em trânsito e repouso. 4.3 Pseudonimização e risco de reidentificação. 4.4 Retenção, descarte e proteção de cópias e registros. 4.5 Compartilhamento e publicação com salvaguardas. 4.6 Proteção de dados pessoais desde a concepção da aplicação.",
+          "section": "15.2.4",
+          "description": "Persistência, SQL, processamento em lote e proteção de dados.",
+          "emoji": "💾",
+          "introduction": {
+            "title": "Persistir é preservar significado e consistência",
+            "summary": "O modelo de dados e as regras de processamento devem impedir estados incorretos e repetições indevidas.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Use restrições para proteger relações",
+                "text": "Uma chave estrangeira valida a existência da referência; ela não impede sozinha que vários registros apontem para a mesma linha. A cardinalidade desejada pode exigir restrições adicionais."
+              },
+              {
+                "title": "Consulte com atenção aos nulos",
+                "text": "SQL distingue ausência de valor e valor conhecido. Agregações e junções devem ser interpretadas considerando nulos, registros sem correspondência e possíveis multiplicações de linhas."
+              },
+              {
+                "title": "Pense na falha durante a carga",
+                "text": "Processamentos em lote podem ser organizados em etapas e transações. Para reiniciar com segurança, registre o estado e evite reaplicar efeitos já confirmados."
+              }
+            ],
+            "example": {
+              "title": "Importar uma lista de pagamentos",
+              "steps": [
+                "Defina um identificador que permita reconhecer cada pagamento.",
+                "Valide os registros e delimite as transações da carga.",
+                "Simule uma interrupção e confira se o reinício evita perdas e duplicações."
+              ]
+            },
+            "pitfall": "Reexecutar o mesmo arquivo não é automaticamente seguro: o comportamento depende das chaves, dos efeitos e do controle de execução."
+          },
+          "officialTitle": "PERSISTÊNCIA, INTEGRAÇÃO E PROTEÇÃO DE DADOS",
+          "color": [
+            "#8863bf",
+            "#634296"
+          ]
+        },
+        {
+          "id": "dev-seguranca",
+          "title": "Desenvolvimento seguro e entrega",
+          "block": "P3",
+          "track": "desenvolvimento",
+          "syllabusText": "1 Segurança de aplicações. 1.1 Ameaças e vulnerabilidades em aplicações e interfaces. 1.2 Validação de entradas e controles de acesso. 1.3 Proteção de segredos e dependências. 1.4 Testes de segurança autorizados. 1.5 Prevenção de vazamentos. 1.6 Registros, preservação de evidências e tratamento de falhas de segurança, inclusive em integrações com IA. 2 Testes e qualidade. 2.1 Testes unitários, de integração, de contrato e de aceitação. 2.2 Análise estática, cobertura e revisão de código. 2.3 Automação e dados de teste. 2.4 Limites das métricas de qualidade. 2.5 Verificação de requisitos funcionais, segurança, desempenho e acessibilidade. 3 Entrega e operação. 3.1 Versionamento, integração e entrega contínuas. 3.2 DevSecOps e segurança da cadeia de dependências. 3.3 Automação de build , teste e implantação. 3.4 Configuração e segregação de ambientes. 3.5 Mudanças, reversão e observabilidade. 3.6 Manutenção da continuidade durante entregas e incidentes. 4 Gestão de produtos e governança. 4.1 Descoberta de necessidades, entrega e ciclo de vida de produtos digitais. 4.2 Scrum e Kanban. 4.3 Priorização, critérios de aceitação e indicadores de resultado. 4.4 PDTIC, plano de transformação digital e plano de dados abertos aplicados a produtos e integrações. 4.5 Riscos, responsabilidades e evidências de efetividade de controles. 5 Contratação e fiscalização de soluções. 5.1 Necessidade, estudo técnico preliminar e termo de referência. 5.2 Comparação entre desenvolvimento próprio, contratação e compartilhamento. 5.3 Viabilidade, dimensionamento, custo total de propriedade e pesquisa de preços. 5.4 Qualidade, níveis de serviço e entregas verificáveis. 5.5 Fiscalização e pagamento. 5.6 Propriedade intelectual, portabilidade, acesso a código e dados, dependência tecnológica e plano de saída.",
+          "section": "15.2.4",
+          "description": "Desenvolvimento seguro, testes, entrega e gestão da qualidade.",
+          "emoji": "🔐",
+          "introduction": {
+            "title": "Construa segurança durante a entrega",
+            "summary": "Revisões, testes e controles de acesso precisam acompanhar o desenvolvimento e a operação.",
+            "duration": "3 min",
+            "sections": [
+              {
+                "title": "Mantenha dados separados de comandos",
+                "text": "Consultas parametrizadas evitam que valores fornecidos pelo usuário sejam interpretados como parte do comando SQL. Validação de entrada e menor privilégio complementam essa proteção."
+              },
+              {
+                "title": "Teste o comportamento que importa",
+                "text": "Testes unitários, de integração e de aceitação observam aspectos diferentes. Uma métrica de cobertura mostra código executado, mas não comprova que todas as regras foram verificadas."
+              },
+              {
+                "title": "Proteja a entrega e os segredos",
+                "text": "Credenciais precisam de armazenamento e acesso controlados. O ciclo de entrega deve incluir revisão de mudanças, verificação de dependências e tratamento de vulnerabilidades."
+              }
+            ],
+            "example": {
+              "title": "Entregar uma nova consulta pública",
+              "steps": [
+                "Revise a autorização e a exposição de dados de cada operação.",
+                "Teste entradas válidas, inválidas e tentativas de acesso indevido.",
+                "Publique com observabilidade e um procedimento de reversão conhecido."
+              ]
+            },
+            "pitfall": "Ocultar um botão na interface não substitui a verificação de autorização no servidor."
+          },
+          "officialTitle": "DESENVOLVIMENTO SEGURO, QUALIDADE E GESTÃO DA ENTREGA",
+          "color": [
+            "#8863bf",
+            "#634296"
+          ]
+        }
+      ],
+      "questionIds": [
+        "cgu26-autoral-estado-1",
+        "cgu26-autoral-estado-2",
+        "cgu26-autoral-estado-3",
+        "cgu26-autoral-estado-4",
+        "cgu26-autoral-estado-5",
+        "cgu26-autoral-sociedade-1",
+        "cgu26-autoral-sociedade-2",
+        "cgu26-autoral-sociedade-3",
+        "cgu26-autoral-sociedade-4",
+        "cgu26-autoral-sociedade-5",
+        "cgu26-autoral-etica-1",
+        "cgu26-autoral-etica-2",
+        "cgu26-autoral-etica-3",
+        "cgu26-autoral-etica-4",
+        "cgu26-autoral-etica-5",
+        "cgu26-autoral-administracao-1",
+        "cgu26-autoral-administracao-2",
+        "cgu26-autoral-administracao-3",
+        "cgu26-autoral-administracao-4",
+        "cgu26-autoral-administracao-5",
+        "cgu26-autoral-governanca-1",
+        "cgu26-autoral-governanca-2",
+        "cgu26-autoral-governanca-3",
+        "cgu26-autoral-governanca-4",
+        "cgu26-autoral-governanca-5",
+        "cgu26-autoral-transparencia-1",
+        "cgu26-autoral-transparencia-2",
+        "cgu26-autoral-transparencia-3",
+        "cgu26-autoral-transparencia-4",
+        "cgu26-autoral-transparencia-5",
+        "cgu26-autoral-direito-1",
+        "cgu26-autoral-direito-2",
+        "cgu26-autoral-direito-3",
+        "cgu26-autoral-direito-4",
+        "cgu26-autoral-direito-5",
+        "cgu26-autoral-evidencias-1",
+        "cgu26-autoral-evidencias-2",
+        "cgu26-autoral-evidencias-3",
+        "cgu26-autoral-evidencias-4",
+        "cgu26-autoral-evidencias-5",
+        "cgu26-autoral-auditoria-fundamentos-1",
+        "cgu26-autoral-auditoria-fundamentos-2",
+        "cgu26-autoral-auditoria-fundamentos-3",
+        "cgu26-autoral-auditoria-fundamentos-4",
+        "cgu26-autoral-auditoria-fundamentos-5",
+        "cgu26-autoral-dev-engenharia-1",
+        "cgu26-autoral-dev-engenharia-2",
+        "cgu26-autoral-dev-engenharia-3",
+        "cgu26-autoral-dev-engenharia-4",
+        "cgu26-autoral-dev-engenharia-5",
+        "cgu26-autoral-dev-arquitetura-1",
+        "cgu26-autoral-dev-arquitetura-2",
+        "cgu26-autoral-dev-arquitetura-3",
+        "cgu26-autoral-dev-arquitetura-4",
+        "cgu26-autoral-dev-arquitetura-5",
+        "cgu26-autoral-dev-dados-1",
+        "cgu26-autoral-dev-dados-2",
+        "cgu26-autoral-dev-dados-3",
+        "cgu26-autoral-dev-dados-4",
+        "cgu26-autoral-dev-dados-5",
+        "cgu26-autoral-dev-seguranca-1",
+        "cgu26-autoral-dev-seguranca-2",
+        "cgu26-autoral-dev-seguranca-3",
+        "cgu26-autoral-dev-seguranca-4",
+        "cgu26-autoral-dev-seguranca-5"
+      ],
+      "total": 65
+    },
+    {
       "id": "auditoria",
       "title": "Auditoria",
       "vacancies": 30,
       "emoji": "✓",
+      "recommendedModule": null,
       "description": "Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.",
       "studyGuide": true,
       "modules": [
@@ -760,6 +1399,7 @@
       "title": "TI — Ciência de Dados",
       "vacancies": 10,
       "emoji": "✓",
+      "recommendedModule": null,
       "description": "Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.",
       "studyGuide": true,
       "modules": [
@@ -1397,6 +2037,7 @@
       "title": "TI — Infraestrutura de TI",
       "vacancies": 10,
       "emoji": "✓",
+      "recommendedModule": null,
       "description": "Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.",
       "studyGuide": true,
       "modules": [
@@ -2026,643 +2667,6 @@
         "cgu26-autoral-infra-operacao-3",
         "cgu26-autoral-infra-operacao-4",
         "cgu26-autoral-infra-operacao-5"
-      ],
-      "total": 65
-    },
-    {
-      "id": "desenvolvimento",
-      "title": "TI — Desenvolvimento de Sistemas",
-      "vacancies": 10,
-      "emoji": "✓",
-      "description": "Do conceito à prática: estude por bloco do edital e consolide cada disciplina em lições curtas.",
-      "studyGuide": true,
-      "modules": [
-        {
-          "id": "estado",
-          "title": "Estado, democracia e direitos",
-          "block": "P1",
-          "track": "common",
-          "syllabusText": "1 Estado e legitimidade. 1.1 Estado, governo e administração; autoridade, legitimidade e poder; interesse público, pluralismo e conflitos distributivos. 2 Democracia e representação. 2.1 Representação e participação; responsabilização democrática; relações entre Executivo, Legislativo e Judiciário; governabilidade e controles recíprocos. 3 Federalismo e capacidades estatais. 3.1 Autonomia, coordenação e cooperação federativa; capacidades administrativas e políticas; burocracia, discricionariedade e implementação de direitos. 4 Ordem constitucional e direitos. 4.1 Fundamentos e objetivos da República; direitos fundamentais, sociais e políticos; igualdade, devido processo e limites ao exercício do poder; princípios da administração pública. 5 Valor público e controle. 5.1 Resultados socialmente relevantes; legitimidade, confiança e direitos; controle interno, externo e social em perspectiva institucional; tensões entre eficiência, equidade e garantias. 6 Corrupção como fenômeno político e social. 6.1 Abuso do poder confiado e apropriação de decisões públicas em benefício particular; dimensões política, administrativa e público-privada. 6.2 Distinções entre corrupção, falha de gestão, conflito de interesses e ilícitos específicos; relações e diferenças entre clientelismo, patronagem, nepotismo e captura. 7 Mecanismos de reprodução e captura. 7.1 Assimetrias de poder e informação, incentivos e oportunidades; relações principal-agente e problemas de ação coletiva; normas sociais, tolerância organizacional e redes de favorecimento. 7.2 Captura de políticas e influência indevida; distinção entre representação legítima de interesses e favorecimento. 8 Consequências e respostas à corrupção. 8.1 Efeitos sobre direitos, desigualdades, competição, alocação de recursos, qualidade dos serviços e confiança institucional. 8.2 Relações entre prevenção, detecção, responsabilização e reparação; controles democráticos, participação e capacidades estatais. 8.3 Avaliação crítica das respostas e de seus efeitos não pretendidos, preservados o devido processo e a continuidade de serviços essenciais. 9 Estado e modelos de desenvolvimento econômico. 9.1 Arranjos de desenvolvimento com diferentes combinações de mercado, planejamento, regulação, provisão pública e atuação empresarial do Estado; industrialização, inovação e transformação produtiva. 9.2 Papel das empresas estatais no investimento de longo prazo, na infraestrutura, no financiamento e na prestação de serviços públicos. 9.3 Relações entre finalidade pública, concorrência, universalização, sustentabilidade fiscal e socioambiental; capacidades estatais, riscos de captura e efeitos distributivos. 9.4 Fundamentos constitucionais da atuação econômica do Estado e comparação de alternativas institucionais à luz de objetivos, evidências e resultados.",
-          "section": "15.2.2",
-          "description": "Poder, democracia, direitos e limites da atuação estatal.",
-          "emoji": "🏛️",
-          "introduction": {
-            "title": "Quem decide e quem controla?",
-            "summary": "Distinga as instituições permanentes, a direção política e a execução administrativa.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Estado, governo e administração",
-                "text": "O Estado é a organização política e jurídica; o governo define a direção política; a administração executa funções públicas. A troca de governantes não extingue as instituições nem os direitos."
-              },
-              {
-                "title": "Democracia e federalismo",
-                "text": "Representação, participação e fiscalização convivem. União, estados, Distrito Federal e municípios possuem autonomia constitucional; cooperação não os transforma em repartições de um único ente."
-              },
-              {
-                "title": "Valor público e integridade",
-                "text": "Uma ação pública deve ser examinada pelos resultados e pelo respeito a direitos. Eficiência não dispensa imparcialidade, justificativa e controle. Prevenir corrupção envolve instituições, incentivos e transparência."
-              }
-            ],
-            "example": {
-              "title": "Um serviço mais rápido, mas para poucos",
-              "steps": [
-                "Uma prefeitura reduz o tempo médio de atendimento ao tornar o cadastro exclusivamente digital.",
-                "Verifique se a economia de tempo veio acompanhada de barreiras para pessoas sem internet.",
-                "Avalie o resultado considerando acesso, direitos e alternativas de atendimento, além da velocidade."
-              ]
-            },
-            "pitfall": "Não confunda aprovação eleitoral com autorização para agir fora dos limites constitucionais."
-          },
-          "officialTitle": "ESTADO, DEMOCRACIA, DIREITOS E CIÊNCIA POLÍTICA",
-          "color": [
-            "#4166d9",
-            "#2e4dad"
-          ]
-        },
-        {
-          "id": "sociedade",
-          "title": "Sociedade, diversidade e desenvolvimento",
-          "block": "P1",
-          "track": "common",
-          "syllabusText": "1 Fundamentos sociológicos. 1.1 Instituições, socialização e ação coletiva; estratificação e mobilidade social; redes, poder, discriminação e reprodução das desigualdades. 2 Formação social e cidadania no Brasil. 2.1 Heranças da escravidão, hierarquias sociais e construção da cidadania; transformações nas relações entre Estado e sociedade; mecanismos de inclusão e exclusão institucional. 3 População, território e trabalho. 3.1 Transição demográfica, envelhecimento e cuidado; desigualdades regionais, urbanas e rurais; estrutura produtiva, informalidade e mudanças tecnológicas no trabalho. 4 Diversidade e acesso a direitos. 4.1 Relações étnico-raciais, gênero e sexualidade; pessoas com deficiência; idade; povos indígenas e comunidades tradicionais. Interseccionalidade, acessibilidade e barreiras administrativas e digitais. 5 Desenvolvimento e realidade brasileira. 5.1 Pobreza, renda e proteção social; educação, saúde, saneamento e habitação como problemas públicos; sustentabilidade e vulnerabilidade climática; leitura contextual de indicadores e desigualdades.",
-          "section": "15.2.2",
-          "description": "Desigualdades, diversidade, acessibilidade e leitura da realidade brasileira.",
-          "emoji": "🤝",
-          "introduction": {
-            "title": "Enxergue quem a média esconde",
-            "summary": "Analise diferenças entre grupos e as barreiras que afetam o acesso a direitos.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Indicadores têm recortes",
-                "text": "Uma média nacional resume situações muito diferentes. Comparar renda, educação ou trabalho exige observar período, território, população e método de cálculo."
-              },
-              {
-                "title": "Desigualdades se combinam",
-                "text": "Raça, gênero, deficiência, idade e território podem produzir barreiras simultâneas. A análise interseccional observa essas combinações sem pressupor que todas as pessoas de um grupo vivam a mesma situação."
-              },
-              {
-                "title": "Acesso exige condições reais",
-                "text": "Disponibilizar um serviço não garante que todos consigam utilizá-lo. Linguagem, acessibilidade, conexão e documentos exigidos podem excluir justamente o público que deveria ser atendido."
-              }
-            ],
-            "example": {
-              "title": "Um formulário que seleciona sem querer",
-              "steps": [
-                "Uma pesquisa sobre serviços públicos é divulgada apenas em aplicativo.",
-                "As respostas descrevem quem conseguiu acessar e responder; pessoas sem conexão podem estar ausentes.",
-                "Compare o perfil da amostra com o público do serviço antes de generalizar a satisfação medida."
-              ]
-            },
-            "pitfall": "Não conclua que uma desigualdade desapareceu apenas porque o indicador agregado melhorou."
-          },
-          "officialTitle": "SOCIEDADE BRASILEIRA, DESIGUALDADES, DIVERSIDADE E DESENVOLVIMENTO",
-          "color": [
-            "#4166d9",
-            "#2e4dad"
-          ]
-        },
-        {
-          "id": "etica",
-          "title": "Ética pública",
-          "block": "P1",
-          "track": "common",
-          "syllabusText": "1 Fundamentos da ética pública. 1.1 Interesse público, dignidade, justiça e responsabilidade; relações entre deveres, consequências e virtudes profissionais; conflitos entre valores em decisões públicas. 2 Deveres profissionais. 2.1 Imparcialidade, probidade, diligência e respeito; autonomia técnica e responsabilidade; limites da obediência hierárquica; uso adequado de informação e recursos públicos. 2.2 Aplicação dos valores e deveres de conduta ética da CGU a situações de trabalho. 3 Conflitos de interesses e imparcialidade. 3.1 Identificação de interesses privados em conflito com a função pública e medidas de prevenção, consulta e encaminhamento, nos termos dos arts. 3º a 5º, 8º e 10 da Lei nº 12.813/2013. 3.2 Impedimento e suspeição no processo administrativo federal, nos termos dos arts. 18 a 21 da Lei nº 9.784/1999; comunicação e abstenção quando exigidas. 4 Relações de trabalho e atendimento. 4.1 Dignidade, diversidade e relações de poder; reconhecimento e prevenção de assédio e discriminação; respeito, escuta e não retaliação. 4.2 Distinção entre acolher uma pessoa, verificar fatos e atribuir responsabilidade. 5 Integridade como responsabilidade institucional. 5.1 Coerência entre regras e práticas; ambiente organizacional e incentivos; canais de orientação e relato; papel do exemplo, da confiança e da prestação de contas.",
-          "section": "15.2.2",
-          "description": "Imparcialidade, conflito de interesses e responsabilidade nas relações de trabalho.",
-          "emoji": "⚖️",
-          "introduction": {
-            "title": "Reconheça o conflito antes de decidir",
-            "summary": "A conduta ética começa na prevenção e no cuidado com pessoas e informações.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Responsabilidade profissional",
-                "text": "A diligência exige verificar fatos e registrar decisões. Hierarquia não elimina responsabilidade pessoal; ordens manifestamente ilegais não integram o dever de obediência do servidor federal."
-              },
-              {
-                "title": "Interesse privado e função pública",
-                "text": "Um interesse privado pode comprometer a imparcialidade mesmo sem prejuízo financeiro consumado. Havendo dúvida sobre conflito de interesses, procure a instância competente; impedimento processual exige comunicação e abstenção."
-              },
-              {
-                "title": "Escuta e proteção",
-                "text": "Acolher um relato requer respeito e discrição. Apurar fatos e atribuir responsabilidade são etapas distintas, com competências e garantias próprias. Proteção não equivale a condenação antecipada."
-              }
-            ],
-            "example": {
-              "title": "O parecer sobre a própria empresa",
-              "steps": [
-                "Uma servidora recebe processo que pode beneficiar empresa da qual é sócia.",
-                "Ela identifica interesse direto na matéria e comunica o impedimento à autoridade competente.",
-                "Abstém-se de atuar no processo, permitindo sua redistribuição e o registro da situação."
-              ]
-            },
-            "pitfall": "A ausência de vantagem recebida não prova que a decisão esteja livre de conflito de interesses."
-          },
-          "officialTitle": "ÉTICA PÚBLICA E RESPONSABILIDADE PROFISSIONAL",
-          "color": [
-            "#4166d9",
-            "#2e4dad"
-          ]
-        },
-        {
-          "id": "administracao",
-          "title": "Administração e políticas públicas",
-          "block": "P1",
-          "track": "common",
-          "syllabusText": "1 Organização administrativa. 1.1 Administração direta e indireta; descentralização e desconcentração; agentes públicos; funções da administração pública: formulação, execução, regulação e controle de políticas e ações públicas; arranjos de cooperação com entes federativos e entidades não estatais. 2 Modelos de administração. 2.1 Burocracia e profissionalização; gestão orientada a resultados; participação e governança; limites e contribuições de diferentes modelos na realidade brasileira. 3 Políticas públicas. 3.1 Problema público, agenda e formulação; instrumentos de ação estatal; implementação, monitoramento e avaliação; intersetorialidade e atores governamentais e sociais. 4 Planejamento e recursos. 4.1 Funções do planejamento e do orçamento; relação entre PPA, LDO e LOA; receita e despesa em nível conceitual; restrições fiscais, escolhas alocativas e sustentabilidade das ações. 5 Serviços e transformação digital. 5.1 Orientação ao usuário; simplificação e acessibilidade; coordenação de serviços; oportunidades e riscos da automação e da inteligência artificial na administração.",
-          "section": "15.2.2",
-          "description": "Organização administrativa, ciclo de políticas, planejamento e serviços.",
-          "emoji": "🧭",
-          "introduction": {
-            "title": "Ligue o problema público à entrega",
-            "summary": "Organize a análise: problema, alternativas, recursos, execução e resultados.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Organização e responsabilidades",
-                "text": "Desconcentração distribui tarefas entre órgãos da mesma pessoa jurídica. Descentralização envolve outra pessoa, como uma autarquia. Identificar quem executa e quem supervisiona evita confundir suas responsabilidades."
-              },
-              {
-                "title": "Políticas ao longo do tempo",
-                "text": "A formulação escolhe instrumentos para um problema; a implementação os coloca em funcionamento. Monitorar acompanha a execução. Avaliar investiga mérito, funcionamento ou efeitos, sem tratar essas atividades como etapas isoladas e inflexíveis."
-              },
-              {
-                "title": "Planejamento e capacidade",
-                "text": "PPA, LDO e LOA cumprem funções diferentes e precisam de coerência. Uma meta requer recursos, pessoas, coordenação e mecanismos de acompanhamento; a previsão em um plano não assegura sua execução."
-              }
-            ],
-            "example": {
-              "title": "Vagas oferecidas não são aprendizagem",
-              "steps": [
-                "Um programa entrega cursos a mil participantes.",
-                "O número de vagas e concluintes ajuda a acompanhar entregas, mas não informa sozinho o ganho de aprendizagem.",
-                "Defina indicadores de resultado e um desenho de avaliação compatível com a pergunta que se deseja responder."
-              ]
-            },
-            "pitfall": "Não confunda dinheiro gasto ou atividade executada com problema público resolvido."
-          },
-          "officialTitle": "ADMINISTRAÇÃO PÚBLICA E FUNDAMENTOS DE POLÍTICAS PÚBLICAS",
-          "color": [
-            "#4166d9",
-            "#2e4dad"
-          ]
-        },
-        {
-          "id": "governanca",
-          "title": "Governança, riscos e integridade",
-          "block": "P2",
-          "track": "common",
-          "syllabusText": "1 Governança e responsabilidades. 1.1 Distinção entre direção, gestão, controle e prestação de contas; papéis, supervisão, transparência e responsabilização. Relação entre decisões organizacionais, finalidade pública e direitos. 2 Riscos e controles essenciais. 2.1 Risco, causa, consequência e controle; prevenção e detecção; proporcionalidade dos controles, segregação de funções e risco residual. 2.2 Identificação de vulnerabilidades e de controles compatíveis com situações usuais, a partir dos dados fornecidos. 3 Integridade pública. 3.1 Finalidades dos programas e medidas de integridade; compromisso da liderança, orientação ética, identificação de riscos, canais de relato e acompanhamento de ações. 3.2 Prevenção de favorecimento, assédio e discriminação; ambiente seguro e não retaliação. 4 Integridade privada. 4.1 Finalidades dos programas de integridade e sua relação com o poder público; compromisso da direção, registros confiáveis, controles, diligência proporcional sobre terceiros, canais de relato e remediação. 4.2 Diferença entre existência documental, implementação e efetividade dos mecanismos. 5 Prevenção e melhoria institucional. 5.1 Cultura, incentivos e confiança; diferenças de capacidade entre organizações; orientação e medidas proporcionais. 5.2 Denúncias e resultados de controle como insumos de melhoria. 5.3 Distinção entre baixa ocorrência e baixa detecção de problemas; leitura de evidências simples sobre funcionamento e resultados das medidas.",
-          "section": "15.2.3",
-          "description": "Direção, riscos, controles e efetividade da integridade.",
-          "emoji": "🛡️",
-          "introduction": {
-            "title": "Controle é resposta a um risco",
-            "summary": "Entenda responsabilidades e escolha controles proporcionais ao problema.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Governar e gerir",
-                "text": "A governança orienta e acompanha a organização. A gestão transforma as diretrizes em planos e operações. A distinção ajuda a identificar quem decide prioridades e quem organiza sua execução."
-              },
-              {
-                "title": "Do objetivo ao controle",
-                "text": "Comece pelo objetivo, identifique o que pode impedi-lo e examine causas e consequências. Um controle reduz probabilidade ou impacto; risco residual é o que permanece após a resposta."
-              },
-              {
-                "title": "Integridade em funcionamento",
-                "text": "Um código publicado é apenas parte do programa. Liderança, orientação, canais confiáveis, controles e acompanhamento precisam operar juntos. A avaliação deve verificar práticas e resultados, além da documentação."
-              }
-            ],
-            "example": {
-              "title": "Pagamento sem conferência independente",
-              "steps": [
-                "O mesmo agente cadastra fornecedor, atesta recebimento e autoriza pagamento.",
-                "A concentração permite que um erro ou favorecimento percorra todo o fluxo sem revisão independente.",
-                "Separe funções incompatíveis ou adote controles compensatórios adequados, acompanhando o risco que permanece."
-              ]
-            },
-            "pitfall": "Mais controles não significa automaticamente melhor controle; avalie custo, risco e funcionamento."
-          },
-          "officialTitle": "FUNDAMENTOS DE GOVERNANÇA, RISCOS E INTEGRIDADE PÚBLICA E PRIVADA",
-          "color": [
-            "#387e78",
-            "#215c57"
-          ]
-        },
-        {
-          "id": "transparencia",
-          "title": "Transparência e participação social",
-          "block": "P2",
-          "track": "common",
-          "syllabusText": "1 Acesso à informação. 1.1 Transparência ativa e passiva; finalidade de pedidos e recursos; publicidade como regra e motivação das restrições. 1.2 Distinção conceitual entre informação classificada, sigilos previstos em lei, informação pessoal e documento preparatório; acesso parcial e comunicação clara da decisão. 2 Transparência e proteção de dados. 2.1 Compatibilização entre acesso à informação e proteção de dados pessoais; finalidade, necessidade e salvaguardas. 2.2 Diferença entre dados pessoais e dados pessoais sensíveis; noções de tarjamento, anonimização e risco de reidentificação. 3 Ouvidoria e proteção das pessoas. 3.1 Finalidades das manifestações; acolhimento, encaminhamento e resposta ao usuário; acessibilidade e linguagem cidadã. 3.2 Proteção da identidade e prevenção de retaliação. 3.3 Distinção entre receber um relato, apurar fatos e decidir sobre responsabilidade. 4 Participação e melhoria de serviços. 4.1 Participação e controle social; conselhos, consultas e escuta de usuários; representatividade e barreiras à participação. 4.2 Recorrências em manifestações como sinais de problemas. 4.2.1 Subnotificação. 4.3 Transparência ativa, dados abertos e Portal da Transparência como meios de acesso e controle; qualidade, atualização, cobertura e limites da informação. 4.4 Papel da CGU na orientação e no monitoramento da transparência e do acesso à informação, em nível de finalidade institucional. 5 Integridade da informação e comunicação. 5.1 Confiabilidade e contexto das fontes; distinção entre fato, alegação e interpretação. 5.2 Desinformação e efeitos sobre políticas públicas; comunicação de incertezas e correção de erros. 5.3 Liberdade de expressão e pluralismo. 5.3.1 Distinção entre crítica legítima e desinformação.",
-          "section": "15.2.3",
-          "description": "Acesso à informação, dados pessoais, ouvidoria e participação.",
-          "emoji": "🔎",
-          "introduction": {
-            "title": "Abra a informação e proteja as pessoas",
-            "summary": "Combine publicidade, acesso parcial e tratamento responsável das manifestações.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Ativa ou passiva",
-                "text": "Publicar informações de interesse coletivo sem pedido caracteriza transparência ativa. Responder a uma solicitação individual caracteriza transparência passiva. Ambas favorecem fiscalização e acesso a direitos."
-              },
-              {
-                "title": "Proteção sem bloqueio indiscriminado",
-                "text": "Dados pessoais exigem finalidade e proteção. A existência de uma parte protegida não torna necessariamente todo o documento inacessível; pode ser possível entregar uma cópia com ocultação justificada."
-              },
-              {
-                "title": "Escutar, encaminhar e melhorar",
-                "text": "Uma manifestação pode revelar barreiras e falhas recorrentes. Recebê-la não comprova todos os fatos narrados. A ouvidoria trata e encaminha o relato, preservando informações e distinguindo sua função da apuração."
-              }
-            ],
-            "example": {
-              "title": "Pedido de relatório com dado pessoal",
-              "steps": [
-                "Um cidadão solicita relatório que contém gastos públicos e telefone pessoal de um beneficiário.",
-                "Analise o fundamento da proteção do dado e se sua divulgação é necessária.",
-                "Quando cabível, forneça a parte pública com o telefone ocultado e explique a restrição aplicada."
-              ]
-            },
-            "pitfall": "Não use a proteção de dados como justificativa genérica para negar acesso a documentos inteiros."
-          },
-          "officialTitle": "FUNDAMENTOS DE TRANSPARÊNCIA, OUVIDORIA E PARTICIPAÇÃO SOCIAL",
-          "color": [
-            "#387e78",
-            "#215c57"
-          ]
-        },
-        {
-          "id": "direito",
-          "title": "Direito público e responsabilização",
-          "block": "P2",
-          "track": "common",
-          "syllabusText": "1 Decisão administrativa. 1.1 Competência, finalidade, motivação, proporcionalidade e segurança jurídica; consideração das consequências e das condições de atuação. 1.2 Dever de fundamentação e limites ao exercício do poder e à revisão de decisões. 2 Processo e garantias. 2.1 Devido processo, contraditório, defesa e imparcialidade; finalidade da instrução e da prova. 2.2 Distinção entre procedimento investigativo e processo sancionador; proteção de direitos e necessidade de fundamentar conclusões. 3 Funções de controle e melhoria da gestão. 3.1 Finalidades do controle interno, externo e social; inserção institucional da CGU no Poder Executivo federal. 3.2 Avaliação da ação governamental e apoio ao aprimoramento da gestão, da governança, dos controles e dos resultados das políticas públicas; prevenção, detecção e correção de irregularidades. 3.3 Autonomia técnica e responsabilidades dos gestores; diferenças de competências e complementaridade com o controle externo exercido pelo Congresso Nacional com o auxílio do TCU. 3.4 Distinção entre avaliar a gestão, apurar fatos e aplicar sanções; cooperação e compartilhamento lícito de informações. 4 Responsabilização em nível introdutório. 4.1 Distinção entre indício, falha de gestão, irregularidade e responsabilidade. 4.2 Finalidades e diferenças entre responsabilização de agentes públicos e de pessoas jurídicas; noções de admissibilidade, processo disciplinar, processo administrativo de responsabilização e acordo de leniência. 5 Proteção e encaminhamento. 5.1 Distinção entre acolhimento, medidas de proteção, apuração de fatos e conclusão sancionadora, especialmente diante de assédio e discriminação; finalidades e garantias de cada atuação.",
-          "section": "15.2.3",
-          "description": "Motivação, processo, controles e limites da responsabilização.",
-          "emoji": "📜",
-          "introduction": {
-            "title": "Uma conclusão precisa de fundamento",
-            "summary": "Separe indícios, apuração, decisão e sanção, observando competências e garantias.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Decisão administrativa",
-                "text": "Identifique quem pode decidir, qual finalidade a lei permite e quais fatos foram demonstrados. Motivação liga esses fatos ao fundamento jurídico, permitindo compreensão e controle da decisão."
-              },
-              {
-                "title": "Processo e garantias",
-                "text": "Investigar obtém informações; sancionar exige o procedimento adequado. Uma suspeita orienta a apuração, mas não substitui prova e oportunidade de defesa quando exigidas."
-              },
-              {
-                "title": "Controles complementares",
-                "text": "Controle interno, externo e social possuem posições institucionais diferentes. No plano federal, o controle externo cabe ao Congresso Nacional com auxílio do TCU; não se confunde com a atuação da CGU no Executivo."
-              }
-            ],
-            "example": {
-              "title": "Alerta sobre contratação",
-              "steps": [
-                "Um sistema aponta semelhança incomum entre propostas de fornecedores.",
-                "A equipe confirma a origem dos documentos e examina explicações alternativas antes de concluir sobre a ocorrência.",
-                "Se houver elementos, encaminha o caso à instância competente, sem tratar o alerta como sanção automática."
-              ]
-            },
-            "pitfall": "Um achado de auditoria não transfere automaticamente ao auditor a competência para aplicar qualquer sanção."
-          },
-          "officialTitle": "FUNDAMENTOS DE DIREITO PÚBLICO APLICADO, CONTROLE E RESPONSABILIZAÇÃO",
-          "color": [
-            "#387e78",
-            "#215c57"
-          ]
-        },
-        {
-          "id": "evidencias",
-          "title": "Evidências, dados e IA",
-          "block": "P2",
-          "track": "common",
-          "syllabusText": "1 Perguntas e fontes. 1.1 Relação entre problema, pergunta e informação necessária; fontes documentais, administrativas, estatísticas e de participação social. 1.2 Distinção entre dado, evidência, interpretação e juízo de valor; verificação de origem e confronto de fontes. 2 Leitura de dados e indicadores. 2.1 Interpretação de tabelas, gráficos, proporções, taxas e medidas descritivas; denominadores, qualidade e comparabilidade. 2.2 Distinção entre indicadores de percepção, experiência, denúncias, detecção e sanções na análise da corrupção; subnotificação e limites de inferência sobre sua ocorrência. 3 Inferências e erros de raciocínio. 3.1 Associação e causalidade; seleção e representatividade; explicações alternativas e incerteza. 3.2 Generalizações indevidas, falácia ecológica e viés de confirmação; falsos positivos e falsos negativos. 4 Integridade da evidência e proteção. 4.1 Rastreabilidade e verificação de informações; comunicação proporcional dos resultados e limites. 4.2 Escuta sem indução, confidencialidade e risco de identificação indireta. 4.3 Distinção entre as condições e os regimes de proteção de entrevistados em auditoria, participantes de pesquisa e denunciantes. 5 Uso responsável de inteligência artificial. 5.1 Possibilidades de classificação, busca, síntese e apoio à análise; escolha entre IA, solução simples e revisão humana. 5.2 Erros, conteúdo não sustentado, vieses e efeitos sobre grupos; proteção de informações, supervisão, rastreabilidade e contestação. 5.3 Verificação de fontes e limites da automação de decisões que afetam direitos.",
-          "section": "15.2.3",
-          "description": "Indicadores, inferência, rastreabilidade e uso responsável de IA.",
-          "emoji": "📊",
-          "introduction": {
-            "title": "Da informação à conclusão",
-            "summary": "Pergunte o que os dados permitem afirmar — e o que ainda permanece incerto.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "A pergunta orienta a fonte",
-                "text": "Defina o problema antes de buscar números. Uma base pode ser adequada para contar atendimentos e inadequada para medir satisfação. Registre origem, período, população e limitações."
-              },
-              {
-                "title": "Comparar exige denominadores",
-                "text": "Contagens e taxas respondem a perguntas diferentes. Considere o tamanho da população, mudanças no registro e seleção da amostra. Associação temporal ou estatística não demonstra sozinha uma relação causal."
-              },
-              {
-                "title": "IA como apoio verificável",
-                "text": "Uma resposta fluente pode conter erros e referências inexistentes. Confira fontes, proteja informações e mantenha responsabilidade humana pela análise. Resultados automatizados precisam de contexto e possibilidade de revisão."
-              }
-            ],
-            "example": {
-              "title": "Reclamações que dobraram",
-              "steps": [
-                "Um serviço passa de 20 reclamações em mil atendimentos para 40 em quatro mil.",
-                "A quantidade duplicou, mas a proporção caiu de 2% para 1%.",
-                "Antes de avaliar a qualidade, verifique também acesso ao canal, perfil dos usuários e critérios de registro."
-              ]
-            },
-            "pitfall": "Nem aumento de denúncias prova aumento de irregularidades, nem ausência de denúncias prova integridade."
-          },
-          "officialTitle": "FUNDAMENTOS DE EVIDÊNCIAS, DADOS E INTELIGÊNCIA ARTIFICIAL",
-          "color": [
-            "#387e78",
-            "#215c57"
-          ]
-        },
-        {
-          "id": "auditoria-fundamentos",
-          "title": "Fundamentos de auditoria",
-          "block": "P2",
-          "track": "common",
-          "syllabusText": "1 Propósito, serviços e papéis. 1.1 Contribuição da auditoria para a governança, os riscos, os controles e os resultados. 1.2 Avaliação e consultoria como serviços de auditoria interna governamental; apuração de atos e fatos com indícios de ilegalidade ou irregularidade na utilização de recursos públicos federais como competência do sistema de controle interno. 1.3 Finalidades e diferenças entre as três formas de atuação da SFC; relação com a gestão, correição e avaliação de políticas. 1.4 Independência, objetividade, diligência e ceticismo; papéis de gestão, supervisão e auditoria no modelo das três linhas. 2 Ciclo do trabalho. 2.1 Planejamento, execução, comunicação e monitoramento; finalidade de objetivos, escopo, critérios e perguntas. 2.2 Priorização por risco, materialidade e relevância social em nível conceitual; adequação do trabalho às finalidades de avaliação, consultoria ou apuração. 2.3 Apoio à melhoria da gestão com preservação da autonomia técnica e das responsabilidades de decisão e execução dos gestores. 3 Evidência e conclusão. 3.1 Suficiência, adequação e confiabilidade; noção de achado e de limitações. 3.2 Distinção entre sinal de risco, evidência e conclusão; necessidade de aprofundamento e proporcionalidade da afirmação. 4 Comunicação e acompanhamento. 4.1 Clareza, contexto e utilidade dos resultados; publicidade e proteção de pessoas e informações. 4.2 Recomendações relacionadas a causas e riscos; distinção entre plano de ação, implementação, resultado e benefício. 5 Integração entre funções da CGU. 5.1 Denúncias e informações de ouvidoria e transparência como insumos de risco; achados como subsídios para admissibilidade correcional e responsabilização de entes privados. 5.2 Resultados do controle como insumos de integridade e melhoria de serviços; compartilhamento lícito, devolutivas e proteção.",
-          "section": "15.2.3",
-          "description": "Papéis, planejamento, evidências e acompanhamento da auditoria governamental.",
-          "emoji": "🗂️",
-          "introduction": {
-            "title": "Transforme evidência em melhoria",
-            "summary": "Planeje perguntas, sustente achados e acompanhe o que mudou após a recomendação.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Papéis preservados",
-                "text": "A auditoria oferece avaliação e consultoria para melhorar a organização. A decisão de gerir e executar permanece com o gestor. Independência e objetividade ajudam a sustentar uma opinião técnica confiável."
-              },
-              {
-                "title": "Trabalho orientado",
-                "text": "Objetivo define o que se pretende responder; escopo delimita o trabalho; critério estabelece a referência de comparação. Planejamento baseado em riscos direciona recursos às questões relevantes."
-              },
-              {
-                "title": "Conclusão e acompanhamento",
-                "text": "A conclusão precisa de evidência compatível com sua força. Recomendações devem dialogar com causas e riscos. Receber um plano de ação não comprova que a ação foi executada ou que produziu benefício."
-              }
-            ],
-            "example": {
-              "title": "Controle anunciado, problema persistente",
-              "steps": [
-                "Após uma auditoria, a gestão apresenta plano para revisar pagamentos duplicados.",
-                "A equipe acompanha evidências de implementação e verifica se o novo controle funciona.",
-                "A conclusão sobre benefício depende dos resultados observados, não apenas da promessa de revisão."
-              ]
-            },
-            "pitfall": "Ceticismo profissional é examinar criticamente a evidência, sem presumir previamente culpa ou inocência."
-          },
-          "officialTitle": "FUNDAMENTOS DE AUDITORIA GOVERNAMENTAL E ATUAÇÃO INTEGRADA DA CGU",
-          "color": [
-            "#387e78",
-            "#215c57"
-          ]
-        },
-        {
-          "id": "dev-engenharia",
-          "title": "Engenharia de software",
-          "block": "P3",
-          "track": "desenvolvimento",
-          "syllabusText": "1 Problemas e requisitos. 1.1 Necessidades de usuários. 1.2 Requisitos funcionais e não funcionais. 1.3 Restrições e critérios de aceitação. 1.4 Desenho centrado nas pessoas. 1.5 Relações entre problema público, processo de trabalho e solução digital. 2 Programação e correção. 2.1 Linguagem Java: tipos de dados, estruturas de controle, métodos, classes e objetos. 2.2 Encapsulamento, interfaces, herança e polimorfismo. 2.3 Coleções e tipos genéricos. 2.4 Igualdade de objetos, mutabilidade, tratamento de exceções e leitura e escrita de arquivos. 2.5 Estruturas de dados, algoritmos e pseudocódigo. 2.6 Leitura, depuração e testes de borda. 2.7 Complexidade em decisões de desempenho. 2.8 Modularidade e padrões de projeto aplicados à manutenção. 3 Concorrência e processamento. 3.1 Concorrência, paralelismo e assincronia. 3.2 Condições de corrida e sincronização. 3.3 Compartilhamento de estado, bloqueios e falhas. 3.4 Correção e desempenho sob requisições concorrentes. 4 Interfaces e experiência do usuário. 4.1 Usabilidade, prototipagem e desenho responsivo. 4.2 Acessibilidade e barreiras digitais. 4.3 Componentes de interface e reaproveitamento. 4.4 Validação com usuários e prevenção de erros no uso dos serviços. 4.5 Desenvolvimento de interfaces com JavaScript e Vue.js: componentes, reatividade, tratamento de eventos e consumo de APIs. 5 Manutenção e evolução. 5.1 Débito técnico, documentação, modularidade e acoplamento. 5.2 Sustentação e modernização de sistemas legados. 5.3 Interoperabilidade e compatibilidade. 5.4 Impactos das mudanças e das falhas sobre a continuidade e a qualidade dos serviços.",
-          "section": "15.2.4",
-          "description": "Programação Java, concorrência, interfaces acessíveis e manutenção.",
-          "emoji": "💻",
-          "introduction": {
-            "title": "Transforme requisitos em comportamento verificável",
-            "summary": "Corretude envolve o resultado esperado, os limites da entrada e o uso simultâneo do sistema.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Objetos têm identidade e estado",
-                "text": "Em Java, comparar referências com == não é o mesmo que comparar conteúdo por equals. Ao redefinir igualdade, respeite o contrato de hashCode usado pelas coleções baseadas em hash."
-              },
-              {
-                "title": "Concorrência muda a análise",
-                "text": "Uma operação aparentemente simples pode envolver leitura, cálculo e escrita. Se essas etapas se intercalarem entre threads, atualizações podem ser perdidas. A solução exige uma estratégia de sincronização adequada."
-              },
-              {
-                "title": "A interface também precisa funcionar",
-                "text": "Teste teclado, foco e mensagens de erro. Uma funcionalidade só operável por mouse cria uma barreira para quem utiliza outras formas de interação."
-              }
-            ],
-            "example": {
-              "title": "Contador de solicitações",
-              "steps": [
-                "Identifique se várias requisições compartilham o mesmo contador.",
-                "Verifique se a atualização é atômica ou devidamente sincronizada.",
-                "Teste execuções concorrentes para procurar resultados perdidos."
-              ]
-            },
-            "pitfall": "Passar em um teste sequencial não demonstra correção sob concorrência."
-          },
-          "officialTitle": "ENGENHARIA DE SOFTWARE E PROGRAMAÇÃO",
-          "color": [
-            "#8863bf",
-            "#634296"
-          ]
-        },
-        {
-          "id": "dev-arquitetura",
-          "title": "Arquitetura e integração",
-          "block": "P3",
-          "track": "desenvolvimento",
-          "syllabusText": "1 Arquiteturas de aplicações. 1.1 Monolitos, microsserviços e arquiteturas orientadas a eventos. 1.2 Distribuição de responsabilidades, acoplamento e dependências. 1.3 Desempenho, escalabilidade, segurança e custo. 1.4 Escolha de arquitetura conforme restrições. 1.5 Aplicações Java com Spring Framework e Spring Boot: organização de componentes, inversão de controle e injeção de dependências. 1.6 Configuração e autoconfiguração. 1.7 Construção de serviços REST e separação entre apresentação, regras de negócio e acesso a dados. 2 APIs e identidade. 2.1 Design , contratos e versionamento de APIs REST. 2.2 Autenticação e autorização. 2.3 OAuth 2.0 para autorização e OpenID Connect para autenticação federada. 2.4 Uso, validação e proteção de tokens . 2.5 Controle de acesso e segregação de funções nas aplicações. 2.6 Spring Security: configuração e avaliação de mecanismos de autenticação e autorização. 2.7 Proteção de endpoints e métodos. 2.8 Identificação e correção de permissões excessivas e falhas de controle de acesso. 3 Comunicação e consistência. 3.1 Mensageria, eventos e persistência. 3.2 Falhas, repetição de requisições, idempotência e consistência. 3.3 Integração entre sistemas e coordenação de operações. 3.4 Evolução de contratos e migração de esquemas. 4 Integração com dados e IA. 4.1 Consumo e disponibilização de serviços de dados e modelos de linguagem. 4.2 Representações vetoriais, busca semântica e recuperação de informação para geração de respostas. 4.3 Agentes e ferramentas. 4.4 Avaliação funcional de respostas e fontes. 4.5 Limites de autorização, supervisão e proteção contra instruções maliciosas em conteúdo externo. 5 Confiabilidade das aplicações. 5.1 Contêineres, serviços de nuvem e processamento serverless como ambientes de implantação. 5.2 Logs , métricas e rastreamento. 5.3 Latência, disponibilidade, capacidade e tolerância a falhas. 5.4 Diagnóstico de integrações e dependências. 5.5 Continuidade, recuperação e degradação de serviços.",
-          "section": "15.2.4",
-          "description": "Arquiteturas, APIs, identidade, integração e serviços com IA.",
-          "emoji": "🔗",
-          "introduction": {
-            "title": "Integre sistemas sem perder controle",
-            "summary": "Uma integração precisa definir contratos, permissões e comportamento diante de falhas e repetições.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Separe responsabilidades",
-                "text": "Injeção de dependências permite fornecer colaboradores a um componente. Contratos claros ajudam a testar as regras de negócio sem depender de toda a infraestrutura."
-              },
-              {
-                "title": "Identidade não equivale a permissão",
-                "text": "Autenticação identifica o usuário; autorização decide o que ele pode fazer. OpenID Connect acrescenta uma camada de identidade sobre OAuth 2.0. Cada operação deve verificar os acessos necessários."
-              },
-              {
-                "title": "Prepare a integração para repetir",
-                "text": "Falhas de rede podem deixar o cliente sem saber se a operação ocorreu. Idempotência evita que repetições previstas produzam efeitos adicionais indevidos. Respostas iguais não são requisito para que uma operação seja idempotente."
-              }
-            ],
-            "example": {
-              "title": "Consultar documentos com um agente",
-              "steps": [
-                "Restrinja o agente aos documentos e ferramentas autorizados.",
-                "Trate instruções encontradas nos documentos como conteúdo externo.",
-                "Confira se a resposta é sustentada pelas fontes e atende à tarefa."
-              ]
-            },
-            "pitfall": "Uma chamada autenticada ainda pode tentar acessar um recurso para o qual o usuário não tem autorização."
-          },
-          "officialTitle": "ARQUITETURA E INTEGRAÇÃO DE SISTEMAS",
-          "color": [
-            "#8863bf",
-            "#634296"
-          ]
-        },
-        {
-          "id": "dev-dados",
-          "title": "Persistência e proteção de dados",
-          "block": "P3",
-          "track": "desenvolvimento",
-          "syllabusText": "1 Modelagem e persistência. 1.1 Modelagem relacional, normalização e integridade. 1.2 Bancos documentais, chave-valor e vetoriais. 1.3 Cache e busca textual. 1.4 Escolha de armazenamento conforme uso. 1.5 Transações, concorrência, consistência e evolução de esquemas. 1.6 Persistência em Java com JPA: mapeamento de entidades e relacionamentos, ciclo de vida das entidades, contexto de persistência, consultas e transações. 1.7 Estratégias de carregamento e seus efeitos sobre correção e desempenho. 1.8 Spring Data JPA: repositórios, consultas e paginação. 1.9 Integração da camada de persistência às regras de negócio. 2 SQL e desempenho. 2.1 Definição e manipulação de dados, controle de acesso e transações. 2.2 Consultas com filtros, junções, agregações, subconsultas e expressões de tabela comuns. 2.3 Índices, planos de execução, valores nulos e duplicações. 2.4 Diagnóstico de consultas e efeitos sobre o desempenho da aplicação. 3 Fluxos e interoperabilidade. 3.1 Ingestão, transformação e carga. 3.2 ETL e ELT. 3.3 Processamento em lote e fluxo, completo e incremental. 3.4 APIs, contratos e formatos CSV, JSON, XML e Parquet. 3.5 Qualidade, rastreabilidade, conciliação e repetição segura de processamento. 3.6 Spring Batch: organização de trabalhos e etapas de processamento ( jobs e steps ). 3.7 Leitura, processamento e escrita de registros. 3.8 Controle transacional, registro do estado de execução e reinício após falhas. 3.9 Prevenção de perdas e duplicações no reprocessamento. 4 Privacidade e segurança de dados. 4.1 Minimização, finalidade, acesso e segregação. 4.2 Criptografia em trânsito e repouso. 4.3 Pseudonimização e risco de reidentificação. 4.4 Retenção, descarte e proteção de cópias e registros. 4.5 Compartilhamento e publicação com salvaguardas. 4.6 Proteção de dados pessoais desde a concepção da aplicação.",
-          "section": "15.2.4",
-          "description": "Persistência, SQL, processamento em lote e proteção de dados.",
-          "emoji": "💾",
-          "introduction": {
-            "title": "Persistir é preservar significado e consistência",
-            "summary": "O modelo de dados e as regras de processamento devem impedir estados incorretos e repetições indevidas.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Use restrições para proteger relações",
-                "text": "Uma chave estrangeira valida a existência da referência; ela não impede sozinha que vários registros apontem para a mesma linha. A cardinalidade desejada pode exigir restrições adicionais."
-              },
-              {
-                "title": "Consulte com atenção aos nulos",
-                "text": "SQL distingue ausência de valor e valor conhecido. Agregações e junções devem ser interpretadas considerando nulos, registros sem correspondência e possíveis multiplicações de linhas."
-              },
-              {
-                "title": "Pense na falha durante a carga",
-                "text": "Processamentos em lote podem ser organizados em etapas e transações. Para reiniciar com segurança, registre o estado e evite reaplicar efeitos já confirmados."
-              }
-            ],
-            "example": {
-              "title": "Importar uma lista de pagamentos",
-              "steps": [
-                "Defina um identificador que permita reconhecer cada pagamento.",
-                "Valide os registros e delimite as transações da carga.",
-                "Simule uma interrupção e confira se o reinício evita perdas e duplicações."
-              ]
-            },
-            "pitfall": "Reexecutar o mesmo arquivo não é automaticamente seguro: o comportamento depende das chaves, dos efeitos e do controle de execução."
-          },
-          "officialTitle": "PERSISTÊNCIA, INTEGRAÇÃO E PROTEÇÃO DE DADOS",
-          "color": [
-            "#8863bf",
-            "#634296"
-          ]
-        },
-        {
-          "id": "dev-seguranca",
-          "title": "Desenvolvimento seguro e entrega",
-          "block": "P3",
-          "track": "desenvolvimento",
-          "syllabusText": "1 Segurança de aplicações. 1.1 Ameaças e vulnerabilidades em aplicações e interfaces. 1.2 Validação de entradas e controles de acesso. 1.3 Proteção de segredos e dependências. 1.4 Testes de segurança autorizados. 1.5 Prevenção de vazamentos. 1.6 Registros, preservação de evidências e tratamento de falhas de segurança, inclusive em integrações com IA. 2 Testes e qualidade. 2.1 Testes unitários, de integração, de contrato e de aceitação. 2.2 Análise estática, cobertura e revisão de código. 2.3 Automação e dados de teste. 2.4 Limites das métricas de qualidade. 2.5 Verificação de requisitos funcionais, segurança, desempenho e acessibilidade. 3 Entrega e operação. 3.1 Versionamento, integração e entrega contínuas. 3.2 DevSecOps e segurança da cadeia de dependências. 3.3 Automação de build , teste e implantação. 3.4 Configuração e segregação de ambientes. 3.5 Mudanças, reversão e observabilidade. 3.6 Manutenção da continuidade durante entregas e incidentes. 4 Gestão de produtos e governança. 4.1 Descoberta de necessidades, entrega e ciclo de vida de produtos digitais. 4.2 Scrum e Kanban. 4.3 Priorização, critérios de aceitação e indicadores de resultado. 4.4 PDTIC, plano de transformação digital e plano de dados abertos aplicados a produtos e integrações. 4.5 Riscos, responsabilidades e evidências de efetividade de controles. 5 Contratação e fiscalização de soluções. 5.1 Necessidade, estudo técnico preliminar e termo de referência. 5.2 Comparação entre desenvolvimento próprio, contratação e compartilhamento. 5.3 Viabilidade, dimensionamento, custo total de propriedade e pesquisa de preços. 5.4 Qualidade, níveis de serviço e entregas verificáveis. 5.5 Fiscalização e pagamento. 5.6 Propriedade intelectual, portabilidade, acesso a código e dados, dependência tecnológica e plano de saída.",
-          "section": "15.2.4",
-          "description": "Desenvolvimento seguro, testes, entrega e gestão da qualidade.",
-          "emoji": "🔐",
-          "introduction": {
-            "title": "Construa segurança durante a entrega",
-            "summary": "Revisões, testes e controles de acesso precisam acompanhar o desenvolvimento e a operação.",
-            "duration": "3 min",
-            "sections": [
-              {
-                "title": "Mantenha dados separados de comandos",
-                "text": "Consultas parametrizadas evitam que valores fornecidos pelo usuário sejam interpretados como parte do comando SQL. Validação de entrada e menor privilégio complementam essa proteção."
-              },
-              {
-                "title": "Teste o comportamento que importa",
-                "text": "Testes unitários, de integração e de aceitação observam aspectos diferentes. Uma métrica de cobertura mostra código executado, mas não comprova que todas as regras foram verificadas."
-              },
-              {
-                "title": "Proteja a entrega e os segredos",
-                "text": "Credenciais precisam de armazenamento e acesso controlados. O ciclo de entrega deve incluir revisão de mudanças, verificação de dependências e tratamento de vulnerabilidades."
-              }
-            ],
-            "example": {
-              "title": "Entregar uma nova consulta pública",
-              "steps": [
-                "Revise a autorização e a exposição de dados de cada operação.",
-                "Teste entradas válidas, inválidas e tentativas de acesso indevido.",
-                "Publique com observabilidade e um procedimento de reversão conhecido."
-              ]
-            },
-            "pitfall": "Ocultar um botão na interface não substitui a verificação de autorização no servidor."
-          },
-          "officialTitle": "DESENVOLVIMENTO SEGURO, QUALIDADE E GESTÃO DA ENTREGA",
-          "color": [
-            "#8863bf",
-            "#634296"
-          ]
-        }
-      ],
-      "questionIds": [
-        "cgu26-autoral-estado-1",
-        "cgu26-autoral-estado-2",
-        "cgu26-autoral-estado-3",
-        "cgu26-autoral-estado-4",
-        "cgu26-autoral-estado-5",
-        "cgu26-autoral-sociedade-1",
-        "cgu26-autoral-sociedade-2",
-        "cgu26-autoral-sociedade-3",
-        "cgu26-autoral-sociedade-4",
-        "cgu26-autoral-sociedade-5",
-        "cgu26-autoral-etica-1",
-        "cgu26-autoral-etica-2",
-        "cgu26-autoral-etica-3",
-        "cgu26-autoral-etica-4",
-        "cgu26-autoral-etica-5",
-        "cgu26-autoral-administracao-1",
-        "cgu26-autoral-administracao-2",
-        "cgu26-autoral-administracao-3",
-        "cgu26-autoral-administracao-4",
-        "cgu26-autoral-administracao-5",
-        "cgu26-autoral-governanca-1",
-        "cgu26-autoral-governanca-2",
-        "cgu26-autoral-governanca-3",
-        "cgu26-autoral-governanca-4",
-        "cgu26-autoral-governanca-5",
-        "cgu26-autoral-transparencia-1",
-        "cgu26-autoral-transparencia-2",
-        "cgu26-autoral-transparencia-3",
-        "cgu26-autoral-transparencia-4",
-        "cgu26-autoral-transparencia-5",
-        "cgu26-autoral-direito-1",
-        "cgu26-autoral-direito-2",
-        "cgu26-autoral-direito-3",
-        "cgu26-autoral-direito-4",
-        "cgu26-autoral-direito-5",
-        "cgu26-autoral-evidencias-1",
-        "cgu26-autoral-evidencias-2",
-        "cgu26-autoral-evidencias-3",
-        "cgu26-autoral-evidencias-4",
-        "cgu26-autoral-evidencias-5",
-        "cgu26-autoral-auditoria-fundamentos-1",
-        "cgu26-autoral-auditoria-fundamentos-2",
-        "cgu26-autoral-auditoria-fundamentos-3",
-        "cgu26-autoral-auditoria-fundamentos-4",
-        "cgu26-autoral-auditoria-fundamentos-5",
-        "cgu26-autoral-dev-engenharia-1",
-        "cgu26-autoral-dev-engenharia-2",
-        "cgu26-autoral-dev-engenharia-3",
-        "cgu26-autoral-dev-engenharia-4",
-        "cgu26-autoral-dev-engenharia-5",
-        "cgu26-autoral-dev-arquitetura-1",
-        "cgu26-autoral-dev-arquitetura-2",
-        "cgu26-autoral-dev-arquitetura-3",
-        "cgu26-autoral-dev-arquitetura-4",
-        "cgu26-autoral-dev-arquitetura-5",
-        "cgu26-autoral-dev-dados-1",
-        "cgu26-autoral-dev-dados-2",
-        "cgu26-autoral-dev-dados-3",
-        "cgu26-autoral-dev-dados-4",
-        "cgu26-autoral-dev-dados-5",
-        "cgu26-autoral-dev-seguranca-1",
-        "cgu26-autoral-dev-seguranca-2",
-        "cgu26-autoral-dev-seguranca-3",
-        "cgu26-autoral-dev-seguranca-4",
-        "cgu26-autoral-dev-seguranca-5"
       ],
       "total": 65
     }
