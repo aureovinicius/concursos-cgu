@@ -34,7 +34,9 @@ O progresso fica no navegador sob `concursos-cgu-progress-v1`. Não há login ou
 
 ## Publicação
 
-O Sites usa `dist/` e a identidade própria em `.openai/hosting.json`. Para GitHub Pages, o workflow valida e gera um pacote com caminhos relativos ao repositório. A implantação só é ativada com a variável `PAGES_ENABLED=true` e o Pages configurado para GitHub Actions; o repositório começa privado.
+A publicação principal usa [GitHub Pages](https://aureovinicius.com.br/concursos-cgu/), com HTTPS obrigatório. A cada push em `main`, o workflow `.github/workflows/pages.yml` executa os testes, gera o pacote com caminhos relativos ao repositório e o publica pelo GitHub Actions. O repositório é público, a variável `PAGES_ENABLED=true` está habilitada e o Pages está configurado para GitHub Actions. Pull requests executam as verificações sem publicar.
+
+A cópia no ChatGPT Sites usa `dist/` e a identidade própria em `.openai/hosting.json`; esse endereço é atualizado pelo fluxo do Sites, separadamente do GitHub Actions.
 
 ```sh
 node scripts/build-github-pages.mjs --base-path /concursos-cgu --out-dir _site
