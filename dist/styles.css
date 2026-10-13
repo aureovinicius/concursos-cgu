@@ -971,3 +971,27 @@ select:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px 
 .paper-roles { margin:12px 0; color:var(--muted); font-size:12px; line-height:1.6; }
 .paper-roles summary { cursor:pointer; font-weight:700; }
 .paper-roles p { margin:8px 0; overflow-wrap:anywhere; }
+
+/* Installed app and browser installation help */
+.pwa-card { padding: 24px; margin-bottom: 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); }
+.pwa-heading { display: flex; align-items: center; gap: 16px; }
+.pwa-heading img { border-radius: 14px; flex-shrink: 0; }
+.pwa-heading h2 { font: 800 22px/1.3 "Manrope", sans-serif; margin: 4px 0 0; }
+.pwa-card p, .pwa-help li { line-height: 1.65; font-size: 14px; }
+.pwa-card [hidden] { display: none !important; }
+.pwa-card .button { margin: 0 0 12px; }
+.pwa-help { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 16px; }
+.pwa-help summary { cursor: pointer; font-weight: 800; }
+.pwa-help ul { padding-left: 20px; }
+.pwa-help li + li { margin-top: 12px; }
+.pwa-offline { color: var(--green-dark); font-weight: 700; }
+.pwa-note { color: var(--muted); }
+@media (max-width: 760px) {
+  .sidebar { height: calc(72px + env(safe-area-inset-bottom)); padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
+  .main-content { padding-top: calc(24px + env(safe-area-inset-top)); padding-bottom: calc(110px + env(safe-area-inset-bottom)); padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
+  .quiz-footer { padding-bottom: env(safe-area-inset-bottom); }
+  .quiz-topbar { padding-top: calc(13px + env(safe-area-inset-top)); }
+  .pwa-card { padding: 20px; }
+  .pwa-heading h2 { font-size: 19px; }
+  .pwa-card .button { width: 100%; }
+}

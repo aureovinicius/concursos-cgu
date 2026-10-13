@@ -29,8 +29,8 @@ function harness(scope = "https://example.test/concursos-cgu/") {
   const calls = [];
   const failures = { open: false, put: false };
   const prefix = `concursos:${encodeURIComponent(scope)}:`;
-  const core = `${prefix}concursos-6:core`;
-  const resources = `${prefix}concursos-6:resources`;
+  const core = `${prefix}concursos-7:core`;
+  const resources = `${prefix}concursos-7:resources`;
   let network = request => contentFor(new URL(typeof request === "string" ? request : request.url));
   let claims = 0;
   let skips = 0;
@@ -92,9 +92,29 @@ for (const scope of ["https://example.test/", "https://example.test/concursos-cg
     app.network(() => { throw new TypeError("Offline"); });
     assert.equal(await (await app.fetch("./", { mode: "navigate" })).text(), APP_HTML);
     assert.equal(await (await app.fetch("index.html", { mode: "navigate" })).text(), APP_HTML);
-    for (const path of ["app.js?v=concursos-6", "styles.css?v=concursos-6", "pwa.js?v=concursos-6", "data/courses.json?v=concursos-6", "vendor/katex/katex.min.js", "vendor/katex/katex.min.css", ...FONT_FILES.map(name => `vendor/katex/fonts/${name}`)]) {
+    for (const path of ["app.js?v=concursos-7", "styles.css?v=concursos-7", "pwa.js?v=concursos-7", "data/courses.json?v=concursos-7", "vendor/katex/katex.min.js", "vendor/katex/katex.min.css", ...FONT_FILES.map(name => `vendor/katex/fonts/${name}`)]) {
       assert.equal((await app.fetch(path)).status, 200);
     }
+  });
+}
+
+for (const scope of ["https://example.test/", "https://example.test/concursos-cgu/"]) {
+  test(`specialty links keep the installed shell available offline in scope ${new URL(scope).pathname}`, async () => {
+    const app = harness(scope);
+    await app.dispatch("install");
+    const installedKeys = [...app.buckets.get(app.core).keys()];
+    app.network(() => { throw new TypeError("Offline"); });
+    for (const path of [
+      "?especialidade=desenvolvimento",
+      "?especialidade=camara-divulgacao-institucional",
+      "index.html?especialidade=desenvolvimento",
+      "index.html?especialidade=camara-divulgacao-institucional",
+    ]) {
+      assert.equal(await (await app.fetch(path, { mode: "navigate" })).text(), APP_HTML, path);
+    }
+    // A shared shell serves public study links without storing per-link copies.
+    assert.deepEqual([...app.buckets.get(app.core).keys()], installedKeys);
+    assert.ok(!app.buckets.has(app.resources));
   });
 }
 
@@ -109,7 +129,9 @@ test("online navigation returns authentication redirects, login HTML and HTTP fa
     response("Service unavailable", "text/html", { status: 503 }),
   ]) {
     app.network(() => result);
-    assert.equal(await app.fetch("./", { mode: "navigate" }), result);
+    for (const path of ["./", "?especialidade=desenvolvimento", "?especialidade=camara-divulgacao-institucional"]) {
+      assert.equal(await app.fetch(path, { mode: "navigate" }), result);
+    }
     assert.equal(await app.buckets.get(app.core).get(app.scope).clone().text(), APP_HTML);
   }
 });
@@ -122,7 +144,7 @@ test("failed precache never replaces an existing version with authentication HTM
     response("Forbidden", "text/html", { status: 403 }),
   ]) {
     const app = harness();
-    const old = app.core.replace("concursos-6", "pwa-0");
+    const old = app.core.replace("concursos-7", "pwa-0");
     app.buckets.set(old, new Map([[app.scope, response(APP_HTML, "text/html")]]));
     app.network(request => request.url === app.scope ? result : contentFor(new URL(request.url)));
     await assert.rejects(app.dispatch("install"), /shell unavailable/);
@@ -130,7 +152,7 @@ test("failed precache never replaces an existing version with authentication HTM
     assert.ok(!app.buckets.has(app.core));
   }
   const app = harness();
-  const old = app.core.replace("concursos-6", "pwa-0");
+  const old = app.core.replace("concursos-7", "pwa-0");
   app.buckets.set(old, new Map());
   app.failures.put = true;
   await assert.rejects(app.dispatch("install"), /Quota exceeded/);
@@ -153,7 +175,7 @@ test("only visited question images and explicitly allowed local data become avai
   await assert.rejects(app.fetch("assets/questions/2023/2/unvisited.png"), /Offline/);
 });
 
-test("external resources, sibling scopes, authentication routes, unknown data, non-GET and query navigation are not intercepted", () => {
+test("external resources, sibling scopes, authentication routes, unknown data, non-GET and private or unknown query navigation are not intercepted", () => {
   const app = harness();
   for (const [path, options] of [
     ["https://other.test/concursos-cgu/assets/questions/1.png", {}],
@@ -161,6 +183,13 @@ test("external resources, sibling scopes, authentication routes, unknown data, n
     ["/enem-other/assets/questions/1.png", {}],
     ["/concursos-cgu/login", { mode: "navigate" }],
     ["/concursos-cgu/?code=secret", { mode: "navigate" }],
+    ["/concursos-cgu/?token=secret", { mode: "navigate" }],
+    ["/concursos-cgu/?unknown=value", { mode: "navigate" }],
+    ["/concursos-cgu/?especialidade=desenvolvimento&code=secret", { mode: "navigate" }],
+    ["/concursos-cgu/?token=secret&especialidade=desenvolvimento", { mode: "navigate" }],
+    ["/concursos-cgu/?especialidade=camara-divulgacao-institucional&unknown=value", { mode: "navigate" }],
+    ["/concursos-cgu/index.html?especialidade=desenvolvimento&token=secret", { mode: "navigate" }],
+    ["/concursos-cgu/lesson?especialidade=desenvolvimento", { mode: "navigate" }],
     ["/concursos-cgu/lesson", { mode: "navigate" }],
     ["data/private.json", {}],
     ["data/courses.json?v=old", {}],
@@ -195,7 +224,7 @@ test("storage read and write failures do not block available network resources",
 
 test("activation removes only old caches for this exact scope and leaves other applications untouched", async () => {
   const app = harness();
-  const old = app.core.replace("concursos-6", "pwa-0");
+  const old = app.core.replace("concursos-7", "pwa-0");
   const root = harness("https://example.test/").core;
   const sibling = harness("https://example.test/enem-other/").core;
   for (const name of [old, app.core, app.resources, root, sibling, "unrelated-cache"]) app.buckets.set(name, new Map());
@@ -216,7 +245,7 @@ test("the large official bank is cached only on request and remains available of
   const app = harness();
   await app.dispatch("install");
   assert.ok(!app.calls.some(request => request.url.includes("cebraspe-ti-questions")));
-  const path="data/cebraspe-ti-questions.json?v=concursos-6";
+  const path="data/cebraspe-ti-questions.json?v=concursos-7";
   assert.equal((await app.fetch(path)).status,200);
   app.network(()=>{throw new TypeError("Offline")});
   assert.equal(await (await app.fetch(path)).text(),"{}");
@@ -227,22 +256,22 @@ test("the large official bank is cached only on request and remains available of
 test("official bank parts are lazy, scoped and versioned in the offline cache", async () => {
  const app=harness();await app.dispatch("install");
  assert.ok(!app.calls.some(request=>request.url.includes("cebraspe-ti/part-")));
- const path="data/cebraspe-ti/part-001.json?v=concursos-6";
+ const path="data/cebraspe-ti/part-001.json?v=concursos-7";
  assert.equal((await app.fetch(path)).status,200);
  app.network(()=>{throw new TypeError("Offline")});
  assert.equal(await (await app.fetch(path)).text(),"{}");
- for(const path of ["data/cebraspe-ti/part-001.json?v=old","data/cebraspe-ti/private.json?v=concursos-6","data/cebraspe-ti/part-001.json?v=concursos-6&token=secret","data/cebraspe-ti/part-001.json"]) assert.equal(app.fetch(path),undefined,path);
+ for(const path of ["data/cebraspe-ti/part-001.json?v=old","data/cebraspe-ti/private.json?v=concursos-7","data/cebraspe-ti/part-001.json?v=concursos-7&token=secret","data/cebraspe-ti/part-001.json"]) assert.equal(app.fetch(path),undefined,path);
 });
 
 test("compressed official parts retain bytes offline and reject login HTML",async()=>{
  const app=harness();await app.dispatch('install');
- const path='data/cebraspe-ti/part-001.json.gz?v=concursos-6';
+ const path='data/cebraspe-ti/part-001.json.gz?v=concursos-7';
  app.network(()=>response('compressed bytes','application/gzip'));
  assert.equal(await (await app.fetch(path)).text(),'compressed bytes');
  app.network(()=>{throw new TypeError('Offline')});
  assert.equal(await (await app.fetch(path)).text(),'compressed bytes');
  assert.equal(app.fetch('data/cebraspe-ti/part-001.json.gz?v=old'),undefined);
- const other='data/cebraspe-ti/part-002.json.gz?v=concursos-6';
+ const other='data/cebraspe-ti/part-002.json.gz?v=concursos-7';
  app.network(()=>response('<html>Login</html>','text/html'));
  await app.fetch(other);app.network(()=>{throw new TypeError('Offline')});
  await assert.rejects(app.fetch(other),/Offline/);

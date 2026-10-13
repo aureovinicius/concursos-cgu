@@ -38,6 +38,14 @@ python3 -m http.server 51946 --directory dist
 
 No navegador, abra `http://localhost:51946`. O manifesto e o service worker oferecem instalação pelo menu do navegador e cache do conteúdo principal. PDF e demais recursos opcionais dependem do primeiro acesso online.
 
+## Instalar como aplicativo (PWA)
+
+Abra https://aureovinicius.com.br/concursos-cgu/ com Chrome ou Edge e use a opção de instalação do menu do navegador. A aba **Sobre** também oferece um botão quando o navegador disponibiliza a instalação nativa. No iPhone/iPad, use Safari → Compartilhar → Adicionar à Tela de Início; no Safari do Mac, Arquivo → Adicionar ao Dock.
+
+O manifesto define nome, ícones 192/512/maskable, janela independente e atalhos para Aprender, Praticar e Editais nos sistemas compatíveis. O build preserva a identidade e o escopo em `/concursos-cgu/`. Não é necessário publicar em uma loja de aplicativos.
+
+Após o primeiro acesso online, o conteúdo principal pode ser aberto offline, inclusive por links de especialidade. Questões oficiais, imagens e PDFs são armazenados conforme o uso; o banco completo não é baixado automaticamente. O armazenamento está sujeito aos limites e à limpeza do navegador. Atualizações entram após fechar as janelas abertas do app e reabri-lo com internet, podendo exigir novo carregamento dos recursos opcionais. O progresso permanece no armazenamento local do navegador; não há sincronização entre dispositivos.
+
 ## Dados e isolamento
 
 O progresso fica no navegador sob `concursos-cgu-progress-v1`. Não há login ou sincronização. Questões comuns mantêm IDs únicos e compartilham o progresso entre especialidades; itens específicos não se misturam. Os dados e caches do ENEM não são alterados.

@@ -12,13 +12,16 @@ const LOCAL_REFERENCE = /["'(](\/(?:assets\/questions\/|data\/|icons\/|vendor\/|
 
 function rewriteManifestRoutes(text, base) {
   const manifest = JSON.parse(text);
-  for (const field of ["id", "start_url", "scope"]) {
-    const route = manifest[field];
+  function rewriteRoute(route, field) {
     if (typeof route !== "string" || !route.startsWith("/") || route.startsWith("//") || /[\\\s]/.test(route) || route.includes("..")) {
       throw new Error(`Manifest ${field} must be a safe root-relative URL.`);
     }
-    manifest[field] = `${base}${route}`;
+    return `${base}${route}`;
   }
+  for (const field of ["id", "start_url", "scope"]) {
+    manifest[field] = rewriteRoute(manifest[field], field);
+  }
+  for (const shortcut of manifest.shortcuts || []) shortcut.url = rewriteRoute(shortcut.url, "shortcut URL");
   return `${JSON.stringify(manifest, null, 2)}\n`;
 }
 

@@ -234,7 +234,7 @@ function officialFixture() {
  const questions=[{...base,id:'oficial-a-51',index:51,examId:'concurso-a',examName:'Órgão A',year:2024},{...base,id:'oficial-b-52',index:52,examId:'concurso-b',examName:'Órgão B',year:2025,correctAlternative:'E'}];
  result.questions.push(...questions);
  result.courses.push({id:'cebraspe-ti',title:'Provas anteriores · Cebraspe TI',practiceOnly:true,questionIds:questions.map(q=>q.id),total:2,modules:[{id:'oficial-ti',title:'Conhecimentos de TI'}]});
- result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-6'};
+ result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-7'};
  return result;
 }
 
@@ -299,7 +299,7 @@ test('previous support pages remain available without hiding the numbered item b
 
 test('official manifest parts load atomically and without duplicate requests',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-6','/data/cebraspe-ti/part-002.json?v=concursos-6'];const calls=[];
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-7','/data/cebraspe-ti/part-002.json?v=concursos-7'];const calls=[];
  const a=harness(null,metadata,'',async url=>{calls.push(url);return {ok:true,json:async()=>url===metadata.officialBank.url?{parts,total:2}:{questions:[questions[parts.indexOf(url)]]}}});
  await Promise.all([a.run('ensureCourseData("cebraspe-ti")'),a.run('ensureCourseData("cebraspe-ti")')]);
  assert.equal(calls.length,3);assert.equal(new Set(calls).size,3);assert.equal(a.run('catalog.questions.length'),132);
@@ -307,7 +307,7 @@ test('official manifest parts load atomically and without duplicate requests',as
 
 test('missing official part never imports a partial bank and a retry stays unique',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-6','/data/cebraspe-ti/part-002.json?v=concursos-6'];let fails=true;
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-7','/data/cebraspe-ti/part-002.json?v=concursos-7'];let fails=true;
  const a=harness(null,metadata,'',async url=>({ok:!(fails&&url===parts[1]),json:async()=>url===metadata.officialBank.url?{parts}:{questions:[questions[parts.indexOf(url)]]}}));
  await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'),/parte do banco/);assert.equal(a.run('catalog.questions.length'),130);
  fails=false;await a.run('ensureCourseData("cebraspe-ti")');await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);assert.equal(a.run('new Set(catalog.questions.map(q=>q.id)).size'),132);
@@ -329,7 +329,7 @@ test('official filters identify coarse blocks and disambiguate identical exam na
 
 for (const decoded of [false,true]) test(`compressed official parts load correctly with server decoding=${decoded}`,async()=>{
  const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
- const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-6';
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-7';
  const content=JSON.stringify({questions});
  const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(decoded?content:gzipSync(content)));
  await a.run('ensureCourseData("cebraspe-ti")');
@@ -339,7 +339,7 @@ for (const decoded of [false,true]) test(`compressed official parts load correct
 
 test('a corrupted compressed part remains atomic and can be retried',async()=>{
  const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
- const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-6';let broken=true;
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-7';let broken=true;
  const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(broken?new Uint8Array([31,139,8,0]):gzipSync(JSON.stringify({questions}))));
  await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'));assert.equal(a.run('catalog.questions.length'),130);
  broken=false;await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);

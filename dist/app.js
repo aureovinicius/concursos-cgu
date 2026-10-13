@@ -1,4 +1,4 @@
-const DATA_URL = "/data/courses.json?v=concursos-6";
+const DATA_URL = "/data/courses.json?v=concursos-7";
 const OFFICIAL_PART_PREFIX = "/data/cebraspe-ti/";
 const STORAGE_KEY = "concursos-cgu-progress-v1";
 const DAILY_GOAL = 50;
@@ -185,7 +185,7 @@ async function ensureCourseData(courseId) {
       const payload = await response.json();
       let questions = payload.questions;
       if (!Array.isArray(questions) && Array.isArray(payload.parts)) {
-        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json(?:\.gz)?\?v=concursos-6$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
+        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json(?:\.gz)?\?v=concursos-7$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
         const parts = new Array(payload.parts.length);
         let next = 0;
         let failure = null;
@@ -691,11 +691,26 @@ function renderAbout() {
   const authoredCount = catalog.questions.filter(q => q.origin === "autoral").length;
   const officialCount = catalog.courses.find(c => c.practiceOnly)?.total || 0;
   app.innerHTML = `${pageHeader("Sobre o projeto", "Concursos", "Um treino diário com questões comentadas, trilhas por edital e progresso que acompanha seu esforço.")}
+  <section class="pwa-card" aria-labelledby="pwa-title">
+    <div class="pwa-heading"><img src="/icons/icon-192.png" width="56" height="56" alt="" /><div><span class="eyebrow">Sempre à mão</span><h2 id="pwa-title">Seu estudo em um aplicativo</h2></div></div>
+    <p>Adicione o Concursos à tela inicial ou ao computador e abra sua trilha em uma janela própria.</p>
+    <p data-pwa-status role="status">A instalação está disponível pelo menu dos navegadores compatíveis.</p>
+    <button class="button" type="button" data-pwa-install hidden>Instalar aplicativo</button>
+    <div data-pwa-instructions>
+      <details class="pwa-help" open><summary>Como instalar pelo navegador</summary><ul>
+        <li><strong>Chrome e Edge:</strong> abra o menu ⋮ ou ⋯ e procure “Instalar aplicativo” ou “Instalar esta página como app”. No Android, a opção também pode aparecer em “Adicionar à tela inicial”.</li>
+        <li><strong>iPhone e iPad:</strong> no Safari, toque em Compartilhar → Adicionar à Tela de Início. Ative “Abrir como App” se essa opção aparecer.</li>
+        <li><strong>Safari no Mac:</strong> use Arquivo → Adicionar ao Dock, quando disponível.</li>
+      </ul><p>Se estiver no navegador interno de outro aplicativo, abra este endereço no Chrome, Edge ou Safari para instalar.</p></details>
+    </div>
+    <p class="pwa-offline" data-pwa-offline role="status">Acesse uma vez com internet para preparar o conteúdo principal para uso offline.</p>
+    <p class="pwa-note">As questões oficiais, imagens e PDFs precisam ter sido carregados com internet para serem consultados offline. Seu progresso fica neste navegador e dispositivo; não há sincronização entre aparelhos.</p>
+  </section>
   <div class="about-grid"><article class="info-card"><div class="big-number">${authoredCount}</div><h3>itens autorais únicos</h3><p>Banco inicial de Certo ou Errado. Os itens comuns aparecem nas quatro especialidades, sem duplicar o histórico.</p></article><article class="info-card"><div class="big-number">${officialCount}</div><h3>questões oficiais importadas</h3><p>Provas anteriores de cargos de TI da Cebraspe, com fonte e gabarito. Disponíveis no banco de prática.</p></article></div>
   <div class="notice"><strong>Como estudar:</strong> leia a introdução, resolva uma lição de até cinco questões e consulte a justificativa. Lições permitem até três erros por tentativa; reiniciar renova as chances. Na prática, não há limite de erros.</div>
   <div class="notice"><strong>Origem do conteúdo:</strong> as quatro trilhas da CGU contêm exercícios, comentários e introduções autorais. O banco de provas anteriores contém questões oficiais da Cebraspe, identificadas em cada item. Quando não há comentário, a correção apresenta somente o gabarito e a fonte. Os vínculos ao programa são editoriais. As trilhas da Câmara dos Deputados apresentam o programa do PDF enviado e um checklist, sem questões vinculadas. O app é independente das instituições e das bancas. Este banco inicial não cobre todos os tópicos do edital, e a discursiva não possui correção automática.</div>
-  <div class="notice"><strong>Instalar o Concursos:</strong> use “Instalar aplicativo” no menu do Chrome ou Edge. No iPhone/iPad, Compartilhar → Adicionar à Tela de Início. O conteúdo já carregado pode ser usado offline. Seu progresso fica neste navegador e é separado do ENEM.</div>
   <div class="notice"><strong>Fontes:</strong> <a href="${sourceHref(currentExam().sourceUrl)}" class="source-link" target="_blank" rel="noreferrer">página da banca</a> · <a href="${escapeHtml(examPdfUrl())}" class="source-link" download>edital selecionado em PDF</a> · <a href="/data/courses.json" class="source-link" download>baixar banco de estudo</a>. Verificação do edital: 13/10/2026. Consulte a banca para retificações.</div>`;
+  window.concursosPwa?.refresh();
 }
 
 function renderEdital() {

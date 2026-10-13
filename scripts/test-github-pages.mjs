@@ -20,7 +20,7 @@ async function fixture(t) {
     "favicon.svg": "<svg></svg>",
     "pwa.js": 'navigator.serviceWorker.register(new URL("./sw.js", import.meta.url)); const fallback = "/sw.js";',
     "sw.js": 'const root = self.registration.scope; const shell = ["./", "./app.js?v=2", "./styles.css?v=2"];',
-    "manifest.webmanifest": JSON.stringify({ name: "Concursos", id: "/", start_url: "/#aprender", scope: "/", display: "standalone", icons: [{ src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" }, { src: "/icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }] }),
+    "manifest.webmanifest": JSON.stringify({ name: "Concursos", id: "/", start_url: "/#aprender", scope: "/", display: "standalone", shortcuts: [{name: "Aprender", url: "/#aprender"}, {name: "Praticar", url: "/#praticar"}, {name: "Editais", url: "/#edital"}], icons: [{ src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" }, { src: "/icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }] }),
     "icons/icon-192.png": "192 pixel icon fixture",
     "icons/icon-512.png": "512 pixel icon fixture",
     "icons/icon-maskable-512.png": "maskable icon fixture",
@@ -78,6 +78,7 @@ for (const basePath of ["/", "/concursos-cgu", "/nested/concursos-cgu/"]) {
     assert.equal(manifest.scope, `${base}/`);
     assert.equal(manifest.start_url, `${base}/#aprender`);
     assert.equal(manifest.display, "standalone");
+    assert.deepEqual(manifest.shortcuts.map(shortcut => shortcut.url), ["aprender", "praticar", "edital"].map(view => `${base}/#${view}`));
     assert.deepEqual(manifest.icons.map(icon => icon.src), ["icon-192.png", "icon-512.png", "icon-maskable-512.png"].map(name => `${base}/icons/${name}`));
     assert.equal(manifest.icons[2].purpose, "maskable");
     const origin = "https://example.org";
@@ -153,4 +154,15 @@ test("requires a tracked entry point even when an untracked copy exists", async 
   execFileSync("git", ["rm", "--cached", "-q", "--", "dist/index.html"], { cwd: root });
   await assert.rejects(buildGitHubPages({ root }), /Missing tracked deployment file: dist\/index.html/);
   assert.ok(!(await readdir(root)).includes("_site"));
+});
+
+
+test("refuses unsafe shortcut URLs before packaging a PWA", async t => {
+  const { root, source } = await fixture(t);
+  for (const url of [undefined, "https://other.test/", "//other.test/", "/../other/", "relative/"]) {
+    const manifest = { ...JSON.parse(source["manifest.webmanifest"]), shortcuts: [{ name: "Praticar", url }] };
+    await writeFile(path.join(root, "dist/manifest.webmanifest"), JSON.stringify(manifest));
+    await assert.rejects(buildGitHubPages({ root, basePath: "/concursos-cgu" }), /Manifest shortcut URL/);
+    assert.ok(!(await readdir(root)).includes("_site"));
+  }
 });

@@ -68,7 +68,7 @@ if (official?.questions?.length) {
     if (!batch.length) return;
     const name = `part-${String(parts.length+1).padStart(3,'0')}.json.gz`;
     await writeFile(`${directory}/${name}`, gzipSync(`{"questions":[${batch.join(',')}]}`+'\n', {level:9}));
-    parts.push(`/data/cebraspe-ti/${name}?v=concursos-6`);
+    parts.push(`/data/cebraspe-ti/${name}?v=concursos-7`);
     batch = []; bytes = 0;
   }
   for (const q of official.questions) {
@@ -83,6 +83,6 @@ if (official?.questions?.length) {
 }
 const officialCount = official?.questions?.length || 0;
 const catalog = {schemaVersion:3,exam,exams,total:questions.length+officialCount,origin:officialCount?'Questões autorais de preparação e questões oficiais de provas anteriores, identificadas pela origem.':'Banco autoral inicial. Não contém itens oficiais de provas anteriores.',courses,questions,
-  ...(officialCount ? {officialBank:{url:'/data/cebraspe-ti-questions.json?v=concursos-6',total:officialCount},importSummary:official.summary} : {})};
+  ...(officialCount ? {officialBank:{url:'/data/cebraspe-ti-questions.json?v=concursos-7',total:officialCount},importSummary:official.summary} : {})};
 await writeFile('dist/data/courses.json',JSON.stringify(catalog,null,2)+'\n');
 console.log(JSON.stringify({questions:catalog.total,authored:questions.length,official:officialCount,modules:modules.length+camara.modules.length,tracks:courses.map(c=>({id:c.id,total:c.total}))}));

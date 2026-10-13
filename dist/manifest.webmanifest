@@ -9,7 +9,7 @@
   "scope": "/",
   "display": "standalone",
   "background_color": "#f6f7fb",
-  "theme_color": "#3659c9",
+  "theme_color": "#f6f7fb",
   "categories": [
     "education"
   ],
@@ -32,6 +32,23 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Continuar estudando",
+      "short_name": "Aprender",
+      "url": "/#aprender"
+    },
+    {
+      "name": "Resolver questões",
+      "short_name": "Praticar",
+      "url": "/#praticar"
+    },
+    {
+      "name": "Consultar editais",
+      "short_name": "Editais",
+      "url": "/#edital"
     }
   ]
 }
