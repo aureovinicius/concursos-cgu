@@ -52,13 +52,18 @@ def module_for(paper, question):
 
 def render_document(task):
     import pymupdf
+    from PIL import Image
     archive, record, pages, assets, width = task
     outputs = []
     with pymupdf.open(Path(archive) / record['file']) as doc:
         for pn in sorted(pages):
             filename = f"{record['sha256'][:20]}-p{pn}.webp"
             path = Path(assets) / filename
-            if not path.exists():
+            valid = False
+            if path.exists():
+                with Image.open(path) as existing:
+                    valid = existing.width == width
+            if not valid:
                 page = doc[pn - 1]
                 pix = page.get_pixmap(matrix=pymupdf.Matrix(width / page.rect.width, width / page.rect.width), alpha=False)
                 pix.pil_save(str(path), format='WEBP', lossless=True, method=4)
@@ -214,6 +219,7 @@ def build(args):
         report['renderedPages'] = renders
         summary['imageBytes'] = sum(x['bytes'] for x in renders)
     summary['imageEncoding'] = 'webp-lossless'
+    summary['imageWidth'] = args.width
     source_directory = ROOT/'data/official-content'
     source_directory.mkdir(parents=True,exist_ok=True)
     parts = []
@@ -243,7 +249,7 @@ if __name__=='__main__':
     ap.add_argument('--archive',default=str(ROOT/'research/cebraspe-ti'))
     ap.add_argument('--work',required=True)
     ap.add_argument('--extracted',required=True)
-    ap.add_argument('--width',type=int,default=1500)
+    ap.add_argument('--width',type=int,default=1150)
     ap.add_argument('--workers',type=int,default=4)
     ap.add_argument('--skip-render',action='store_true')
     build(ap.parse_args())
