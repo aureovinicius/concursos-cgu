@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { gunzipSync } from 'node:zlib';
 
 const read = file => JSON.parse(readFileSync(file, 'utf8'));
 const bank = read('data/official-content.json');
@@ -17,10 +18,10 @@ test('official bank is complete across published parts and isolated from authore
   assert.equal(catalog.total, catalog.questions.length + bank.questions.length);
   assert.ok(catalog.questions.every(q => q.origin === 'autoral'));
   const published = manifest.parts.flatMap(url => {
-    assert.match(url, /^\/data\/cebraspe-ti\/part-\d+\.json\?v=concursos-4$/);
+    assert.match(url, /^\/data\/cebraspe-ti\/part-\d+\.json\.gz\?v=concursos-5$/);
     const file = path.join('dist', url.split('?')[0]);
     assert.ok(statSync(file).size < 4 * 1024 * 1024 + 100);
-    return read(file).questions;
+    return JSON.parse(gunzipSync(readFileSync(file))).questions;
   });
   assert.deepEqual(published, bank.questions);
   assert.deepEqual(course.questionIds, bank.questions.map(q => q.id));

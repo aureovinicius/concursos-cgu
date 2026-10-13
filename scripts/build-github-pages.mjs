@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { lstat, mkdir, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { gzipSync, gunzipSync } from "node:zlib";
 
 const TEXT_EXTENSIONS = new Set([".html", ".js", ".css", ".json", ".webmanifest", ".svg"]);
 // Match local URL tokens only, including Markdown image URLs and the image allowlist.
@@ -69,8 +70,9 @@ export async function buildGitHubPages({ root = process.cwd(), output = "_site",
   let references = 0;
   // Validate before creating output, so a missing image never produces a partial package.
   for (const [relative, contents] of files) {
-    if (!TEXT_EXTENSIONS.has(path.extname(relative))) continue;
-    const text = contents.toString("utf8");
+    const compressed = relative.endsWith('.json.gz');
+    if (!compressed && !TEXT_EXTENSIONS.has(path.extname(relative))) continue;
+    const text = (compressed ? gunzipSync(contents) : contents).toString("utf8");
     for (const match of text.matchAll(LOCAL_REFERENCE)) {
       const resource = match[1].split(/[?#]/, 1)[0];
       if (resource.endsWith("/")) continue; // The Markdown renderer's directory allowlist.
@@ -78,7 +80,8 @@ export async function buildGitHubPages({ root = process.cwd(), output = "_site",
       references++;
     }
     const withRoutes = relative === "manifest.webmanifest" ? rewriteManifestRoutes(text, base) : text;
-    files.set(relative, Buffer.from(withRoutes.replace(LOCAL_URL, (_, boundary, resource) => `${boundary}${base}/${resource}`)));
+    const rewritten = Buffer.from(withRoutes.replace(LOCAL_URL, (_, boundary, resource) => `${boundary}${base}/${resource}`));
+    files.set(relative, compressed ? gzipSync(rewritten, {level:9}) : rewritten);
   }
   await mkdir(outputRoot, { recursive: true });
   // An output parent symlink must not turn a project-local path into an external write.

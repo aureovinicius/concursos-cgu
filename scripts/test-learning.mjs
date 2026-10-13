@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
+import {gzipSync} from 'node:zlib';
 const catalog = JSON.parse(readFileSync('dist/data/courses.json','utf8'));
 const source = readFileSync('dist/app.js','utf8').replace(/\ninit\(\);\s*$/,'');
 function harness(saved, customCatalog=catalog, search="", fetchImpl=async()=>{throw new Error("Offline")}) {
@@ -9,7 +10,7 @@ function harness(saved, customCatalog=catalog, search="", fetchImpl=async()=>{th
  const node=()=>({innerHTML:'',hidden:true,dataset:{},setAttribute(){},focus(){},matches(){return false},scrollIntoView(){},scrollTo(){},querySelector(){return node()},classList:{add(){},remove(){}}});
  const store=new Map([['fisio-progress-v1',JSON.stringify({xp:999,completed:['mecanica-1']})]]);
  if(saved) store.set('concursos-cgu-progress-v1',JSON.stringify(saved));
- const ctx=vm.createContext({fetch:fetchImpl,document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(){},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:'#aprender',search,pathname:'/concursos-cgu/'},window:{addEventListener(){},scrollTo(){}},history:{replaceState(_s,_title,url){ctx.lastReplacedUrl=url;ctx.location.search=new URL(url,"https://example.test").search;}},URLSearchParams,Intl,Date,setTimeout(){},structuredClone});
+ const ctx=vm.createContext({fetch:fetchImpl,Blob,Response,DecompressionStream,TextDecoder,Uint8Array,document:{querySelector(s){if(!nodes.has(s))nodes.set(s,node());return nodes.get(s)},querySelectorAll(){return[]},addEventListener(){},body:{style:{}},activeElement:node()},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},location:{hash:'#aprender',search,pathname:'/concursos-cgu/'},window:{addEventListener(){},scrollTo(){}},history:{replaceState(_s,_title,url){ctx.lastReplacedUrl=url;ctx.location.search=new URL(url,"https://example.test").search;}},URLSearchParams,Intl,Date,setTimeout(){},structuredClone});
  vm.runInContext(source,ctx);ctx.input=structuredClone(customCatalog);vm.runInContext('catalog=input;setCourse(state.activeCourse);',ctx);
  return {run:s=>vm.runInContext(s,ctx),nodes,store};
 }
@@ -99,7 +100,7 @@ function officialFixture() {
  const questions=[{...base,id:'oficial-a-51',index:51,examId:'concurso-a',examName:'Órgão A',year:2024},{...base,id:'oficial-b-52',index:52,examId:'concurso-b',examName:'Órgão B',year:2025,correctAlternative:'E'}];
  result.questions.push(...questions);
  result.courses.push({id:'cebraspe-ti',title:'Provas anteriores · Cebraspe TI',practiceOnly:true,questionIds:questions.map(q=>q.id),total:2,modules:[{id:'oficial-ti',title:'Conhecimentos de TI'}]});
- result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-4'};
+ result.officialBank={url:'/data/cebraspe-ti-questions.json?v=concursos-5'};
  return result;
 }
 
@@ -164,7 +165,7 @@ test('previous support pages remain available without hiding the numbered item b
 
 test('official manifest parts load atomically and without duplicate requests',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-4','/data/cebraspe-ti/part-002.json?v=concursos-4'];const calls=[];
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-5','/data/cebraspe-ti/part-002.json?v=concursos-5'];const calls=[];
  const a=harness(null,metadata,'',async url=>{calls.push(url);return {ok:true,json:async()=>url===metadata.officialBank.url?{parts,total:2}:{questions:[questions[parts.indexOf(url)]]}}});
  await Promise.all([a.run('ensureCourseData("cebraspe-ti")'),a.run('ensureCourseData("cebraspe-ti")')]);
  assert.equal(calls.length,3);assert.equal(new Set(calls).size,3);assert.equal(a.run('catalog.questions.length'),132);
@@ -172,7 +173,7 @@ test('official manifest parts load atomically and without duplicate requests',as
 
 test('missing official part never imports a partial bank and a retry stays unique',async()=>{
  const full=officialFixture();const questions=full.questions.filter(q=>q.origin==='oficial');const metadata=structuredClone(full);metadata.questions=metadata.questions.filter(q=>q.origin==='autoral');
- const parts=['/data/cebraspe-ti/part-001.json?v=concursos-4','/data/cebraspe-ti/part-002.json?v=concursos-4'];let fails=true;
+ const parts=['/data/cebraspe-ti/part-001.json?v=concursos-5','/data/cebraspe-ti/part-002.json?v=concursos-5'];let fails=true;
  const a=harness(null,metadata,'',async url=>({ok:!(fails&&url===parts[1]),json:async()=>url===metadata.officialBank.url?{parts}:{questions:[questions[parts.indexOf(url)]]}}));
  await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'),/parte do banco/);assert.equal(a.run('catalog.questions.length'),130);
  fails=false;await a.run('ensureCourseData("cebraspe-ti")');await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);assert.equal(a.run('new Set(catalog.questions.map(q=>q.id)).size'),132);
@@ -190,4 +191,22 @@ test('official filters identify coarse blocks and disambiguate identical exam na
  const a=harness(null,fixture);a.run('setCourse("cebraspe-ti");renderPractice()');const html=a.nodes.get('#app').innerHTML;
  assert.ok(html.includes('Bloco da prova'));assert.ok(!html.includes('<label>Disciplina'));
  assert.ok(html.includes('Mesmo órgão · concurso-a'));assert.ok(html.includes('Mesmo órgão · concurso-b'));
+});
+
+for (const decoded of [false,true]) test(`compressed official parts load correctly with server decoding=${decoded}`,async()=>{
+ const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-5';
+ const content=JSON.stringify({questions});
+ const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(decoded?content:gzipSync(content)));
+ await a.run('ensureCourseData("cebraspe-ti")');
+ assert.equal(a.run('catalog.questions.length'),132);
+ assert.equal(a.run('catalog.questions.filter(q=>q.origin==="oficial").length'),2);
+});
+
+test('a corrupted compressed part remains atomic and can be retried',async()=>{
+ const fixture=officialFixture(), questions=fixture.questions.filter(q=>q.origin==='oficial');fixture.questions=fixture.questions.filter(q=>q.origin==='autoral');
+ const part='/data/cebraspe-ti/part-001.json.gz?v=concursos-5';let broken=true;
+ const a=harness(null,fixture,'',async url=>url===fixture.officialBank.url?{ok:true,json:async()=>({parts:[part]})}:new Response(broken?new Uint8Array([31,139,8,0]):gzipSync(JSON.stringify({questions}))));
+ await assert.rejects(a.run('ensureCourseData("cebraspe-ti")'));assert.equal(a.run('catalog.questions.length'),130);
+ broken=false;await a.run('ensureCourseData("cebraspe-ti")');assert.equal(a.run('catalog.questions.length'),132);
 });

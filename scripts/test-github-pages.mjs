@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { gzipSync, gunzipSync } from "node:zlib";
 import { buildGitHubPages, normalizeBasePath } from "./build-github-pages.mjs";
 
 async function fixture(t) {
@@ -37,6 +38,17 @@ async function fixture(t) {
   await writeFile(path.join(root, "dist/assets/questions/2023/1/chart 2.png"), "untracked duplicate");
   return { root, source };
 }
+
+test('compressed bank assets preserve valid references at a repository base path',async t=>{
+ const {root}=await fixture(t);
+ const relative='data/cebraspe-ti/part-001.json.gz';
+ await mkdir(path.join(root,'dist/data/cebraspe-ti'),{recursive:true});
+ await writeFile(path.join(root,'dist',relative),gzipSync(JSON.stringify({questions:[{images:[{src:'/assets/questions/2023/1/chart.png'}]}]})));
+ execFileSync('git',['add','--','dist'],{cwd:root});
+ const built=await buildGitHubPages({root,basePath:'/concursos-cgu'});
+ const result=JSON.parse(gunzipSync(await readFile(path.join(built.output,relative))));
+ assert.equal(result.questions[0].images[0].src,'/concursos-cgu/assets/questions/2023/1/chart.png');
+});
 
 for (const basePath of ["/", "/concursos-cgu", "/nested/concursos-cgu/"]) {
   test(`packages all local resources for ${basePath}, preserving external URLs and source files`, async t => {

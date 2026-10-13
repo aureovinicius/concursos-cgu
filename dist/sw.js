@@ -1,5 +1,5 @@
 /* Change VERSION with every release of the application shell. */
-const VERSION = "concursos-4";
+const VERSION = "concursos-5";
 const SCOPE = new URL(self.registration.scope);
 const PREFIX = `concursos:${encodeURIComponent(SCOPE.href)}:`;
 const CORE_CACHE = `${PREFIX}${VERSION}:core`;
@@ -8,12 +8,12 @@ const MATH_FONTS = ["KaTeX_AMS-Regular.woff2", "KaTeX_Caligraphic-Bold.woff2", "
 const CORE_PATHS = [
   "vendor/katex/katex.min.js", "vendor/katex/katex.min.css",
   ...MATH_FONTS.map(name => `vendor/katex/fonts/${name}`),
-  "./", "app.js?v=concursos-4", "styles.css?v=concursos-4", "pwa.js?v=concursos-4",
-  "data/courses.json?v=concursos-4", "manifest.webmanifest", "icons/icon-192.png",
+  "./", "app.js?v=concursos-5", "styles.css?v=concursos-5", "pwa.js?v=concursos-5",
+  "data/courses.json?v=concursos-5", "manifest.webmanifest", "icons/icon-192.png",
   "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "favicon.svg",
 ];
 const CORE_URLS = new Set(CORE_PATHS.map(path => new URL(path, SCOPE).href));
-const OFFICIAL_BANK_URL = new URL("data/cebraspe-ti-questions.json?v=concursos-4", SCOPE).href;
+const OFFICIAL_BANK_URL = new URL("data/cebraspe-ti-questions.json?v=concursos-5", SCOPE).href;
 const OPTIONAL_DATA = new Set(["data/edital-cgu-2026.pdf", "data/courses.json"]);
 
 function relativePath(url) {
@@ -37,6 +37,7 @@ async function safeResponse(response, url, html = false) {
   if (/\.js$/.test(path)) return ["text/javascript", "application/javascript"].includes(type);
   if (/\.css$/.test(path)) return type === "text/css";
   if (/\.(json|webmanifest)$/.test(path)) return ["application/json", "application/manifest+json"].includes(type);
+  if (/\.json\.gz$/.test(path)) return ["application/gzip", "application/x-gzip", "application/octet-stream", "application/json"].includes(type);
   if (/\.woff2$/.test(path)) return ["font/woff2", "application/font-woff", "application/font-woff2", "application/octet-stream"].includes(type);
   if (/\.pdf$/.test(path)) return type === "application/pdf";
   return /^image\/(png|jpeg|svg\+xml|webp|gif|avif)$/.test(type);
@@ -122,6 +123,6 @@ self.addEventListener("fetch", event => {
   const core = CORE_URLS.has(url.href) && url.href !== SCOPE.href;
   const image = !url.search && /^assets\/questions\/[\w/.-]+\.(png|jpe?g|svg|webp|gif|avif)$/i.test(path);
   const data = !url.search && OPTIONAL_DATA.has(path);
-  const officialPart = /^data\/cebraspe-ti\/part-\d+\.json$/.test(path) && url.search === "?v=concursos-4";
+  const officialPart = /^data\/cebraspe-ti\/part-\d+\.json(?:\.gz)?$/.test(path) && url.search === "?v=concursos-5";
   if (core || image || data || officialPart || url.href === OFFICIAL_BANK_URL) event.respondWith(staticResource(request, core));
 });

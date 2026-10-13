@@ -30,4 +30,6 @@ node --test scripts/test-*.mjs
 
 `data/official-content.json` aponta para as partes do banco reproduzível em `data/official-content/`, e `data/cebraspe-import-report.json` registra inclusões e exclusões. O catálogo principal preserva as questões autorais e lista os IDs do banco oficial. Os dados de origem e publicação ficam em partes de até aproximadamente 4 MiB. As questões são carregadas quando o banco é selecionado. As imagens WebP sem perda são compartilhadas entre os itens da mesma página e entram no cache somente após acesso.
 
+As partes publicadas são arquivos `.json.gz`, descompactados sob demanda pelo navegador com `DecompressionStream`. Isso reduz também o pacote estático expandido, limitado pela hospedagem. O empacotador de GitHub Pages reescreve os caminhos dentro desses arquivos. As imagens usam 1.150 pixels de largura; o PDF original segue vinculado para consulta em maior resolução.
+
 Os intermediários, relatórios de extração e a conferência independente de uma amostra de gabaritos permanecem em `research/cebraspe-ti/import/`. Os PDFs originais continuam no acervo local. O processo verifica referências e consistência, mas não equivale a uma revisão humana de cada enunciado.

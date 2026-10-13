@@ -1,4 +1,4 @@
-const DATA_URL = "/data/courses.json?v=concursos-4";
+const DATA_URL = "/data/courses.json?v=concursos-5";
 const OFFICIAL_PART_PREFIX = "/data/cebraspe-ti/";
 const STORAGE_KEY = "concursos-cgu-progress-v1";
 const DAILY_GOAL = 50;
@@ -163,6 +163,14 @@ function isUnlocked(lesson) {
   return state.completed.includes(lesson.id) || lesson.index === 0 || state.completed.includes(lessons[lesson.globalIndex - 1]?.id);
 }
 
+async function readQuestionPart(response, url) {
+  if (!/\.json\.gz(?:\?|$)/.test(url)) return response.json();
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  if (bytes[0] !== 0x1f || bytes[1] !== 0x8b) return JSON.parse(new TextDecoder().decode(bytes));
+  if (typeof DecompressionStream === "undefined") throw new Error("Atualize seu navegador para abrir o banco de provas anteriores.");
+  return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"))).json();
+}
+
 async function ensureCourseData(courseId) {
   const course = catalog.courses.find(c => c.id === courseId);
   if (!course?.practiceOnly) return;
@@ -176,7 +184,7 @@ async function ensureCourseData(courseId) {
       const payload = await response.json();
       let questions = payload.questions;
       if (!Array.isArray(questions) && Array.isArray(payload.parts)) {
-        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json\?v=concursos-4$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
+        if (!payload.parts.length || new Set(payload.parts).size !== payload.parts.length || payload.parts.some(url => typeof url !== "string" || !url.startsWith(OFFICIAL_PART_PREFIX) || !/^part-\d+\.json(?:\.gz)?\?v=concursos-5$/.test(url.slice(OFFICIAL_PART_PREFIX.length)))) throw new Error("O índice do banco oficial contém arquivos inválidos.");
         const parts = new Array(payload.parts.length);
         let next = 0;
         let failure = null;
@@ -186,7 +194,7 @@ async function ensureCourseData(courseId) {
             try {
               const partResponse = await fetch(payload.parts[index], { cache: "no-cache" });
               if (!partResponse.ok) throw new Error("Uma parte do banco oficial não pôde ser baixada. Tente novamente quando estiver conectado.");
-              const part = await partResponse.json();
+              const part = await readQuestionPart(partResponse, payload.parts[index]);
               if (!Array.isArray(part.questions)) throw new Error("Uma parte do banco oficial está incompleta.");
               parts[index] = part.questions;
             } catch (error) { failure = error; }

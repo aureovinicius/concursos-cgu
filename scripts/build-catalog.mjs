@@ -1,4 +1,5 @@
 import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { gzipSync } from 'node:zlib';
 const read = async p => JSON.parse(await readFile(p, 'utf8'));
 const { exam, tracks, modules: syllabus } = await read('data/syllabus.json');
 const content = await Promise.all(['common','auditoria','ti'].map(n => read(`data/${n}-content.json`)));
@@ -57,9 +58,9 @@ if (official?.questions?.length) {
   let batch = [], bytes = 0;
   async function flush() {
     if (!batch.length) return;
-    const name = `part-${String(parts.length+1).padStart(3,'0')}.json`;
-    await writeFile(`${directory}/${name}`, `{"questions":[${batch.join(',')}]}`+'\n');
-    parts.push(`/data/cebraspe-ti/${name}?v=concursos-4`);
+    const name = `part-${String(parts.length+1).padStart(3,'0')}.json.gz`;
+    await writeFile(`${directory}/${name}`, gzipSync(`{"questions":[${batch.join(',')}]}`+'\n', {level:9}));
+    parts.push(`/data/cebraspe-ti/${name}?v=concursos-5`);
     batch = []; bytes = 0;
   }
   for (const q of official.questions) {
@@ -69,11 +70,11 @@ if (official?.questions?.length) {
   }
   await flush();
   const names = new Set(parts.map(p => p.split('/').pop().split('?')[0]));
-  for (const name of await readdir(directory)) if (/^part-\d+\.json$/.test(name) && !names.has(name)) await unlink(`${directory}/${name}`);
+  for (const name of await readdir(directory)) if (/^part-\d+\.json(?:\.gz)?$/.test(name) && !names.has(name)) await unlink(`${directory}/${name}`);
   await writeFile('dist/data/cebraspe-ti-questions.json', JSON.stringify({schemaVersion:1,total:official.questions.length,parts,summary:official.summary})+'\n');
 }
 const officialCount = official?.questions?.length || 0;
 const catalog = {schemaVersion:2,exam,total:questions.length+officialCount,origin:officialCount?'Questões autorais de preparação e questões oficiais de provas anteriores, identificadas pela origem.':'Banco autoral inicial. Não contém itens oficiais de provas anteriores.',courses,questions,
-  ...(officialCount ? {officialBank:{url:'/data/cebraspe-ti-questions.json?v=concursos-4',total:officialCount},importSummary:official.summary} : {})};
+  ...(officialCount ? {officialBank:{url:'/data/cebraspe-ti-questions.json?v=concursos-5',total:officialCount},importSummary:official.summary} : {})};
 await writeFile('dist/data/courses.json',JSON.stringify(catalog,null,2)+'\n');
 console.log(JSON.stringify({questions:catalog.total,authored:questions.length,official:officialCount,modules:modules.length,tracks:courses.map(c=>({id:c.id,total:c.total}))}));
